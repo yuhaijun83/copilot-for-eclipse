@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>WinMerge File Compare Report</title>
+<style>
+<!--
+body { font-family: "Segoe UI", Arial, sans-serif; margin: 20px; background-color: #ffffff; color: #1a1a1a; }
+table { table-layout: fixed; margin: 0; border: none; box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.15); font-size: 12.00pt; }
+.cmp-table-text td { word-break: break-all; padding: 0 3px; vertical-align: top; }
+.cmp-table-table td, .cmp-table-table th { word-break: break-all; padding: 0 3px; border: 1px solid #a0a0a0; vertical-align: top; }
+.cmp-table-image td, .cmp-table-webpage td { border: 1px solid #a0a0a0; }
+.title { font-weight: 600; color: #ffffff; text-align: left; padding: 8px 12px; background-color: #191970; border-bottom: none; position: sticky; vertical-align: top; text-align: center; top: 0; z-index: 9999; }
+.title-right, .title-middle { box-shadow: inset 1px 0 #ffffff; }
+.ln { position: sticky; left: 0; }
+.cmp-div-image { overflow: scroll; text-align: center; max-height: calc(100vh - 70px); }
+.cmp-pdf-webpage { width: 100%; height: calc(100vh - 70px) }
+.cmp-table-full { width: 100%; border-collapse: collapse; overflow: hidden; }
+.cmp-table-auto { width: max-content; border-collapse: collapse; overflow: hidden; }
+.cmp-table-header { position: sticky; top: 0; z-index: 99; }
+.cmp-grid { display: grid; grid-template-rows: max-content; height: calc(100vh - 30px); }
+.cmp-grid-2 { grid-template-columns: 50% 50%; }
+.cmp-grid-3 { grid-template-columns: 33.33% 33.33% 33.33%; }
+.cmp-collapsed-row { height: 1px; }
+.cmp-collapsed-cell { background-color: #000000; }
+.cmp-scroll { overflow-x: auto; }
+.sf3b2 {color: #000000; background-color: #ffffff; }
+.sf3b5 {color: #000000; background-color: #0078d7; }
+.sf3b14 {color: #000000; background-color: #ffa0a0; }
+.sf3b16 {color: #000000; background-color: #f1e2ad; }
+.sf3b18 {color: #000000; background-color: #ffaa82; }
+.sf3b19 {color: #000000; background-color: #c8816c; }
+.sf6b2 {color: #ffffff; background-color: #ffffff; }
+.sf6b5 {color: #ffffff; background-color: #0078d7; }
+.sf6b14 {color: #ffffff; background-color: #ffa0a0; }
+.sf6b16 {color: #ffffff; background-color: #f1e2ad; }
+.sf6b18 {color: #ffffff; background-color: #ffaa82; }
+.sf6b19 {color: #ffffff; background-color: #c8816c; }
+.sf7b2 {color: #0000ff; background-color: #ffffff; font-weight: bold; }
+.sf7b5 {color: #0000ff; background-color: #0078d7; font-weight: bold; }
+.sf7b14 {color: #0000ff; background-color: #ffa0a0; font-weight: bold; }
+.sf7b16 {color: #0000ff; background-color: #f1e2ad; font-weight: bold; }
+.sf7b18 {color: #0000ff; background-color: #ffaa82; font-weight: bold; }
+.sf7b19 {color: #0000ff; background-color: #c8816c; font-weight: bold; }
+.sf8b2 {color: #800080; background-color: #ffffff; }
+.sf8b5 {color: #800080; background-color: #0078d7; }
+.sf8b14 {color: #800080; background-color: #ffa0a0; }
+.sf8b16 {color: #800080; background-color: #f1e2ad; }
+.sf8b18 {color: #800080; background-color: #ffaa82; }
+.sf8b19 {color: #800080; background-color: #c8816c; }
+.sf9b2 {color: #008000; background-color: #ffffff; }
+.sf9b5 {color: #008000; background-color: #0078d7; }
+.sf9b14 {color: #008000; background-color: #ffa0a0; }
+.sf9b16 {color: #008000; background-color: #f1e2ad; }
+.sf9b18 {color: #008000; background-color: #ffaa82; }
+.sf9b19 {color: #008000; background-color: #c8816c; }
+.sf10b2 {color: #ff0000; background-color: #ffffff; }
+.sf10b5 {color: #ff0000; background-color: #0078d7; }
+.sf10b14 {color: #ff0000; background-color: #ffa0a0; }
+.sf10b16 {color: #ff0000; background-color: #f1e2ad; }
+.sf10b18 {color: #ff0000; background-color: #ffaa82; }
+.sf10b19 {color: #ff0000; background-color: #c8816c; }
+.sf11b2 {color: #606060; background-color: #ffffff; }
+.sf11b5 {color: #606060; background-color: #0078d7; }
+.sf11b14 {color: #606060; background-color: #ffa0a0; }
+.sf11b16 {color: #606060; background-color: #f1e2ad; }
+.sf11b18 {color: #606060; background-color: #ffaa82; }
+.sf11b19 {color: #606060; background-color: #c8816c; }
+.sf12b2 {color: #800000; background-color: #ffffff; }
+.sf12b5 {color: #800000; background-color: #0078d7; }
+.sf12b14 {color: #800000; background-color: #ffa0a0; }
+.sf12b16 {color: #800000; background-color: #f1e2ad; }
+.sf12b18 {color: #800000; background-color: #ffaa82; }
+.sf12b19 {color: #800000; background-color: #c8816c; }
+.sf13b2 {color: #0080c0; background-color: #ffffff; }
+.sf13b5 {color: #0080c0; background-color: #0078d7; }
+.sf13b14 {color: #0080c0; background-color: #ffa0a0; }
+.sf13b16 {color: #0080c0; background-color: #f1e2ad; }
+.sf13b18 {color: #0080c0; background-color: #ffaa82; }
+.sf13b19 {color: #0080c0; background-color: #c8816c; }
+.sf15b2 {color: #000000; background-color: #ffffff; }
+.sf15b5 {color: #000000; background-color: #0078d7; }
+.sf15b14 {color: #000000; background-color: #ffa0a0; }
+.sf15b16 {color: #000000; background-color: #f1e2ad; }
+.sf15b18 {color: #000000; background-color: #ffaa82; }
+.sf15b19 {color: #000000; background-color: #c8816c; }
+.sf17b2 {color: #000000; background-color: #ffffff; }
+.sf17b5 {color: #000000; background-color: #0078d7; }
+.sf17b14 {color: #000000; background-color: #ffa0a0; }
+.sf17b16 {color: #000000; background-color: #f1e2ad; }
+.sf17b18 {color: #000000; background-color: #ffaa82; }
+.sf17b19 {color: #000000; background-color: #c8816c; }
+.sf20b2 {color: #000080; background-color: #ffffff; }
+.sf20b5 {color: #000080; background-color: #0078d7; }
+.sf20b14 {color: #000080; background-color: #ffa0a0; }
+.sf20b16 {color: #000080; background-color: #f1e2ad; }
+.sf20b18 {color: #000080; background-color: #ffaa82; }
+.sf20b19 {color: #000080; background-color: #c8816c; }
+.sf21b2 {color: #0080c0; background-color: #ffffff; }
+.sf21b5 {color: #0080c0; background-color: #0078d7; }
+.sf21b14 {color: #0080c0; background-color: #ffa0a0; }
+.sf21b16 {color: #0080c0; background-color: #f1e2ad; }
+.sf21b18 {color: #0080c0; background-color: #ffaa82; }
+.sf21b19 {color: #0080c0; background-color: #c8816c; }
+.sf3b2i {color: #ababab; background-color: #ffffff; }
+.sf3b5i {color: #005190; background-color: #0078d7; }
+.sf3b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf3b16i {color: #a19774; background-color: #f1e2ad; }
+.sf3b18i {color: #ab7257; background-color: #ffaa82; }
+.sf3b19i {color: #865749; background-color: #c8816c; }
+.sf6b2i {color: #ffffff; background-color: #ffffff; }
+.sf6b5i {color: #54a4e4; background-color: #0078d7; }
+.sf6b14i {color: #ffbfbf; background-color: #ffa0a0; }
+.sf6b16i {color: #f5ebc8; background-color: #f1e2ad; }
+.sf6b18i {color: #ffc6ab; background-color: #ffaa82; }
+.sf6b19i {color: #daaa9c; background-color: #c8816c; }
+.sf7b2i {color: #ababff; background-color: #ffffff; font-weight: bold; }
+.sf7b5i {color: #0051e4; background-color: #0078d7; font-weight: bold; }
+.sf7b14i {color: #ab6bbf; background-color: #ffa0a0; font-weight: bold; }
+.sf7b16i {color: #a197c8; background-color: #f1e2ad; font-weight: bold; }
+.sf7b18i {color: #ab72ab; background-color: #ffaa82; font-weight: bold; }
+.sf7b19i {color: #86579c; background-color: #c8816c; font-weight: bold; }
+.sf8b2i {color: #d5abd5; background-color: #ffffff; }
+.sf8b5i {color: #2a51bb; background-color: #0078d7; }
+.sf8b14i {color: #d56b96; background-color: #ffa0a0; }
+.sf8b16i {color: #cc979f; background-color: #f1e2ad; }
+.sf8b18i {color: #d57282; background-color: #ffaa82; }
+.sf8b19i {color: #b15772; background-color: #c8816c; }
+.sf9b2i {color: #abd5ab; background-color: #ffffff; }
+.sf9b5i {color: #007a90; background-color: #0078d7; }
+.sf9b14i {color: #ab966b; background-color: #ffa0a0; }
+.sf9b16i {color: #a1c274; background-color: #f1e2ad; }
+.sf9b18i {color: #ab9d57; background-color: #ffaa82; }
+.sf9b19i {color: #868149; background-color: #c8816c; }
+.sf10b2i {color: #ffabab; background-color: #ffffff; }
+.sf10b5i {color: #545190; background-color: #0078d7; }
+.sf10b14i {color: #ff6b6b; background-color: #ffa0a0; }
+.sf10b16i {color: #f59774; background-color: #f1e2ad; }
+.sf10b18i {color: #ff7257; background-color: #ffaa82; }
+.sf10b19i {color: #da5749; background-color: #c8816c; }
+.sf11b2i {color: #cbcbcb; background-color: #ffffff; }
+.sf11b5i {color: #1f71b0; background-color: #0078d7; }
+.sf11b14i {color: #cb8b8b; background-color: #ffa0a0; }
+.sf11b16i {color: #c1b794; background-color: #f1e2ad; }
+.sf11b18i {color: #cb9277; background-color: #ffaa82; }
+.sf11b19i {color: #a67769; background-color: #c8816c; }
+.sf12b2i {color: #d5abab; background-color: #ffffff; }
+.sf12b5i {color: #2a5190; background-color: #0078d7; }
+.sf12b14i {color: #d56b6b; background-color: #ffa0a0; }
+.sf12b16i {color: #cc9774; background-color: #f1e2ad; }
+.sf12b18i {color: #d57257; background-color: #ffaa82; }
+.sf12b19i {color: #b15749; background-color: #c8816c; }
+.sf13b2i {color: #abd5eb; background-color: #ffffff; }
+.sf13b5i {color: #007ad0; background-color: #0078d7; }
+.sf13b14i {color: #ab96aa; background-color: #ffa0a0; }
+.sf13b16i {color: #a1c2b3; background-color: #f1e2ad; }
+.sf13b18i {color: #ab9d96; background-color: #ffaa82; }
+.sf13b19i {color: #868187; background-color: #c8816c; }
+.sf15b2i {color: #ababab; background-color: #ffffff; }
+.sf15b5i {color: #005190; background-color: #0078d7; }
+.sf15b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf15b16i {color: #a19774; background-color: #f1e2ad; }
+.sf15b18i {color: #ab7257; background-color: #ffaa82; }
+.sf15b19i {color: #865749; background-color: #c8816c; }
+.sf17b2i {color: #ababab; background-color: #ffffff; }
+.sf17b5i {color: #005190; background-color: #0078d7; }
+.sf17b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf17b16i {color: #a19774; background-color: #f1e2ad; }
+.sf17b18i {color: #ab7257; background-color: #ffaa82; }
+.sf17b19i {color: #865749; background-color: #c8816c; }
+.sf20b2i {color: #ababd5; background-color: #ffffff; }
+.sf20b5i {color: #0051bb; background-color: #0078d7; }
+.sf20b14i {color: #ab6b96; background-color: #ffa0a0; }
+.sf20b16i {color: #a1979f; background-color: #f1e2ad; }
+.sf20b18i {color: #ab7282; background-color: #ffaa82; }
+.sf20b19i {color: #865772; background-color: #c8816c; }
+.sf21b2i {color: #abd5eb; background-color: #ffffff; }
+.sf21b5i {color: #007ad0; background-color: #0078d7; }
+.sf21b14i {color: #ab96aa; background-color: #ffa0a0; }
+.sf21b16i {color: #a1c2b3; background-color: #f1e2ad; }
+.sf21b18i {color: #ab9d96; background-color: #ffaa82; }
+.sf21b19i {color: #868187; background-color: #c8816c; }
+.cn {text-align: center; word-break: normal; color: #000000; background-color: #f0f0f0;}
+.ln {text-align: right; word-break: normal; color: #000000; background-color: #f0f0f0;}
+--></style>
+</head><body>
+<table class="cmp-table-text cmp-table-full cmp-table-2">
+<colgroup>
+<col style="width: 1.8em;" />
+<col style="width: calc(100% / 2 - 1.8em);" />
+<col style="width: 1.8em;" />
+<col style="width: calc(100% / 2 - 1.8em);" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="2" class="title title-left">未命名 左</th>
+<th colspan="2" class="title title-right">D:\MyGitHub\copilot-for-eclipse_New\com.microsoft.copilot.eclipse.core\src\com\microsoft\copilot\eclipse\core\lsp\protocol\byok\ByokListCustomProviderConfigParams.java</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="ln"><a id="d1_1" href="#d1_1">.</a></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">1</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">// Copyright (c) Microsoft Corporation.</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">2</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">// Licensed under the MIT license.</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">3</td><td style="color: #000000; background-color: #ef7774; "><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">4</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">package</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">com</span><span style="color: #000000; background-color: #ef7774; ">.</span><span style="color: #000000; background-color: #ef7774; ">microsoft</span><span style="color: #000000; background-color: #ef7774; ">.</span><span style="color: #000000; background-color: #ef7774; ">copilot</span><span style="color: #000000; background-color: #ef7774; ">.</span><span style="color: #000000; background-color: #ef7774; ">eclipse</span><span style="color: #000000; background-color: #ef7774; ">.</span><span style="color: #000000; background-color: #ef7774; ">core</span><span style="color: #000000; background-color: #ef7774; ">.</span><span style="color: #000000; background-color: #ef7774; ">lsp</span><span style="color: #000000; background-color: #ef7774; ">.<wbr></span><span style="color: #000000; background-color: #ef7774; ">protocol</span><span style="color: #000000; background-color: #ef7774; ">.</span><span style="color: #000000; background-color: #ef7774; ">byok</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">5</td><td style="color: #000000; background-color: #ef7774; "><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">6</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">import</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">org</span><span style="color: #000000; background-color: #ef7774; ">.</span><span style="color: #000000; background-color: #ef7774; ">eclipse</span><span style="color: #000000; background-color: #ef7774; ">.</span><span style="color: #000000; background-color: #ef7774; ">jdt</span><span style="color: #000000; background-color: #ef7774; ">.</span><span style="color: #000000; background-color: #ef7774; ">annotation</span><span style="color: #000000; background-color: #ef7774; ">.</span><span style="color: #000000; background-color: #ef7774; ">Nullable</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">7</td><td style="color: #000000; background-color: #ef7774; "><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">8</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">/**</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">9</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp;* Parameters for listing custom BYOK endpoint provider configurations.</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">10</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp;*</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">11</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp;* @param providerName provider name, or {@code null} to list all configured custom providers</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">12</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp;*/</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">13</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">record</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">ByokListCustomProviderConfigParams</span><span style="color: #000000; background-color: #ef7774; ">(@</span><span style="color: #000000; background-color: #ef7774; ">Nul<wbr>lable</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">providerName</span><span style="color: #000000; background-color: #ef7774; ">) {</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">14</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">}</span></code></td>
+</tr>
+<tr>
+<td class="ln">1</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">15</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

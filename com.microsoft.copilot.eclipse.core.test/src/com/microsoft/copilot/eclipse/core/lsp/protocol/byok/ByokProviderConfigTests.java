@@ -52,4 +52,45 @@ class ByokProviderConfigTests {
     assertEquals(1, response.providers().size());
     assertEquals(new ByokProviderConfig("Ollama", "http://localhost:11434"), response.providers().get(0));
   }
+
+  @Test
+  void testCustomProviderConfig_serializesClsFieldNames() {
+    ByokCustomProviderConfig config = new ByokCustomProviderConfig("LM Studio", "dummy-key", "LM Studio",
+        "chatCompletions");
+
+    JsonObject json = JsonParser.parseString(GSON.toJson(config)).getAsJsonObject();
+
+    assertEquals("LM Studio", json.get("providerName").getAsString());
+    assertEquals("dummy-key", json.get("apiKey").getAsString());
+    assertEquals("LM Studio", json.get("groupName").getAsString());
+    assertEquals("chatCompletions", json.get("apiType").getAsString());
+  }
+
+  @Test
+  void testCustomProviderConfig_nullApiTypeOmitted() {
+    ByokCustomProviderConfig config = new ByokCustomProviderConfig("vLLM", "key", "vLLM", null);
+
+    JsonObject json = JsonParser.parseString(GSON.toJson(config)).getAsJsonObject();
+
+    assertEquals(3, json.size());
+  }
+
+  @Test
+  void testListCustomProviderConfigParams_nullProviderSerializesEmptyObject() {
+    ByokListCustomProviderConfigParams params = new ByokListCustomProviderConfigParams(null);
+
+    JsonObject json = JsonParser.parseString(GSON.toJson(params)).getAsJsonObject();
+
+    assertEquals(0, json.size());
+  }
+
+  @Test
+  void testListCustomProviderConfigResponse_deserializesClsResponse() {
+    ByokListCustomProviderConfigResponse response = GSON.fromJson(
+        "{\"providers\":[{\"providerName\":\"LM Studio\",\"groupName\":\"LM Studio\",\"apiType\":\"chatCompletions\"}]}",
+        ByokListCustomProviderConfigResponse.class);
+
+    assertEquals(1, response.providers().size());
+    assertEquals(new ByokCustomProviderInfo("LM Studio", "LM Studio", "chatCompletions"), response.providers().get(0));
+  }
 }

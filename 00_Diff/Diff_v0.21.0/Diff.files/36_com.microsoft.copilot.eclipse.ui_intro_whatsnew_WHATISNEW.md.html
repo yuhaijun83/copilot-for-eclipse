@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>WinMerge File Compare Report</title>
+<style>
+<!--
+body { font-family: "Segoe UI", Arial, sans-serif; margin: 20px; background-color: #ffffff; color: #1a1a1a; }
+table { table-layout: fixed; margin: 0; border: none; box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.15); font-size: 12.00pt; }
+.cmp-table-text td { word-break: break-all; padding: 0 3px; vertical-align: top; }
+.cmp-table-table td, .cmp-table-table th { word-break: break-all; padding: 0 3px; border: 1px solid #a0a0a0; vertical-align: top; }
+.cmp-table-image td, .cmp-table-webpage td { border: 1px solid #a0a0a0; }
+.title { font-weight: 600; color: #ffffff; text-align: left; padding: 8px 12px; background-color: #191970; border-bottom: none; position: sticky; vertical-align: top; text-align: center; top: 0; z-index: 9999; }
+.title-right, .title-middle { box-shadow: inset 1px 0 #ffffff; }
+.ln { position: sticky; left: 0; }
+.cmp-div-image { overflow: scroll; text-align: center; max-height: calc(100vh - 70px); }
+.cmp-pdf-webpage { width: 100%; height: calc(100vh - 70px) }
+.cmp-table-full { width: 100%; border-collapse: collapse; overflow: hidden; }
+.cmp-table-auto { width: max-content; border-collapse: collapse; overflow: hidden; }
+.cmp-table-header { position: sticky; top: 0; z-index: 99; }
+.cmp-grid { display: grid; grid-template-rows: max-content; height: calc(100vh - 30px); }
+.cmp-grid-2 { grid-template-columns: 50% 50%; }
+.cmp-grid-3 { grid-template-columns: 33.33% 33.33% 33.33%; }
+.cmp-collapsed-row { height: 1px; }
+.cmp-collapsed-cell { background-color: #000000; }
+.cmp-scroll { overflow-x: auto; }
+.sf3b2 {color: #000000; background-color: #ffffff; }
+.sf3b5 {color: #000000; background-color: #0078d7; }
+.sf3b14 {color: #000000; background-color: #ffa0a0; }
+.sf3b16 {color: #000000; background-color: #f1e2ad; }
+.sf3b18 {color: #000000; background-color: #ffaa82; }
+.sf3b19 {color: #000000; background-color: #c8816c; }
+.sf6b2 {color: #ffffff; background-color: #ffffff; }
+.sf6b5 {color: #ffffff; background-color: #0078d7; }
+.sf6b14 {color: #ffffff; background-color: #ffa0a0; }
+.sf6b16 {color: #ffffff; background-color: #f1e2ad; }
+.sf6b18 {color: #ffffff; background-color: #ffaa82; }
+.sf6b19 {color: #ffffff; background-color: #c8816c; }
+.sf7b2 {color: #0000ff; background-color: #ffffff; font-weight: bold; }
+.sf7b5 {color: #0000ff; background-color: #0078d7; font-weight: bold; }
+.sf7b14 {color: #0000ff; background-color: #ffa0a0; font-weight: bold; }
+.sf7b16 {color: #0000ff; background-color: #f1e2ad; font-weight: bold; }
+.sf7b18 {color: #0000ff; background-color: #ffaa82; font-weight: bold; }
+.sf7b19 {color: #0000ff; background-color: #c8816c; font-weight: bold; }
+.sf8b2 {color: #800080; background-color: #ffffff; }
+.sf8b5 {color: #800080; background-color: #0078d7; }
+.sf8b14 {color: #800080; background-color: #ffa0a0; }
+.sf8b16 {color: #800080; background-color: #f1e2ad; }
+.sf8b18 {color: #800080; background-color: #ffaa82; }
+.sf8b19 {color: #800080; background-color: #c8816c; }
+.sf9b2 {color: #008000; background-color: #ffffff; }
+.sf9b5 {color: #008000; background-color: #0078d7; }
+.sf9b14 {color: #008000; background-color: #ffa0a0; }
+.sf9b16 {color: #008000; background-color: #f1e2ad; }
+.sf9b18 {color: #008000; background-color: #ffaa82; }
+.sf9b19 {color: #008000; background-color: #c8816c; }
+.sf10b2 {color: #ff0000; background-color: #ffffff; }
+.sf10b5 {color: #ff0000; background-color: #0078d7; }
+.sf10b14 {color: #ff0000; background-color: #ffa0a0; }
+.sf10b16 {color: #ff0000; background-color: #f1e2ad; }
+.sf10b18 {color: #ff0000; background-color: #ffaa82; }
+.sf10b19 {color: #ff0000; background-color: #c8816c; }
+.sf11b2 {color: #606060; background-color: #ffffff; }
+.sf11b5 {color: #606060; background-color: #0078d7; }
+.sf11b14 {color: #606060; background-color: #ffa0a0; }
+.sf11b16 {color: #606060; background-color: #f1e2ad; }
+.sf11b18 {color: #606060; background-color: #ffaa82; }
+.sf11b19 {color: #606060; background-color: #c8816c; }
+.sf12b2 {color: #800000; background-color: #ffffff; }
+.sf12b5 {color: #800000; background-color: #0078d7; }
+.sf12b14 {color: #800000; background-color: #ffa0a0; }
+.sf12b16 {color: #800000; background-color: #f1e2ad; }
+.sf12b18 {color: #800000; background-color: #ffaa82; }
+.sf12b19 {color: #800000; background-color: #c8816c; }
+.sf13b2 {color: #0080c0; background-color: #ffffff; }
+.sf13b5 {color: #0080c0; background-color: #0078d7; }
+.sf13b14 {color: #0080c0; background-color: #ffa0a0; }
+.sf13b16 {color: #0080c0; background-color: #f1e2ad; }
+.sf13b18 {color: #0080c0; background-color: #ffaa82; }
+.sf13b19 {color: #0080c0; background-color: #c8816c; }
+.sf15b2 {color: #000000; background-color: #ffffff; }
+.sf15b5 {color: #000000; background-color: #0078d7; }
+.sf15b14 {color: #000000; background-color: #ffa0a0; }
+.sf15b16 {color: #000000; background-color: #f1e2ad; }
+.sf15b18 {color: #000000; background-color: #ffaa82; }
+.sf15b19 {color: #000000; background-color: #c8816c; }
+.sf17b2 {color: #000000; background-color: #ffffff; }
+.sf17b5 {color: #000000; background-color: #0078d7; }
+.sf17b14 {color: #000000; background-color: #ffa0a0; }
+.sf17b16 {color: #000000; background-color: #f1e2ad; }
+.sf17b18 {color: #000000; background-color: #ffaa82; }
+.sf17b19 {color: #000000; background-color: #c8816c; }
+.sf20b2 {color: #000080; background-color: #ffffff; }
+.sf20b5 {color: #000080; background-color: #0078d7; }
+.sf20b14 {color: #000080; background-color: #ffa0a0; }
+.sf20b16 {color: #000080; background-color: #f1e2ad; }
+.sf20b18 {color: #000080; background-color: #ffaa82; }
+.sf20b19 {color: #000080; background-color: #c8816c; }
+.sf21b2 {color: #0080c0; background-color: #ffffff; }
+.sf21b5 {color: #0080c0; background-color: #0078d7; }
+.sf21b14 {color: #0080c0; background-color: #ffa0a0; }
+.sf21b16 {color: #0080c0; background-color: #f1e2ad; }
+.sf21b18 {color: #0080c0; background-color: #ffaa82; }
+.sf21b19 {color: #0080c0; background-color: #c8816c; }
+.sf3b2i {color: #ababab; background-color: #ffffff; }
+.sf3b5i {color: #005190; background-color: #0078d7; }
+.sf3b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf3b16i {color: #a19774; background-color: #f1e2ad; }
+.sf3b18i {color: #ab7257; background-color: #ffaa82; }
+.sf3b19i {color: #865749; background-color: #c8816c; }
+.sf6b2i {color: #ffffff; background-color: #ffffff; }
+.sf6b5i {color: #54a4e4; background-color: #0078d7; }
+.sf6b14i {color: #ffbfbf; background-color: #ffa0a0; }
+.sf6b16i {color: #f5ebc8; background-color: #f1e2ad; }
+.sf6b18i {color: #ffc6ab; background-color: #ffaa82; }
+.sf6b19i {color: #daaa9c; background-color: #c8816c; }
+.sf7b2i {color: #ababff; background-color: #ffffff; font-weight: bold; }
+.sf7b5i {color: #0051e4; background-color: #0078d7; font-weight: bold; }
+.sf7b14i {color: #ab6bbf; background-color: #ffa0a0; font-weight: bold; }
+.sf7b16i {color: #a197c8; background-color: #f1e2ad; font-weight: bold; }
+.sf7b18i {color: #ab72ab; background-color: #ffaa82; font-weight: bold; }
+.sf7b19i {color: #86579c; background-color: #c8816c; font-weight: bold; }
+.sf8b2i {color: #d5abd5; background-color: #ffffff; }
+.sf8b5i {color: #2a51bb; background-color: #0078d7; }
+.sf8b14i {color: #d56b96; background-color: #ffa0a0; }
+.sf8b16i {color: #cc979f; background-color: #f1e2ad; }
+.sf8b18i {color: #d57282; background-color: #ffaa82; }
+.sf8b19i {color: #b15772; background-color: #c8816c; }
+.sf9b2i {color: #abd5ab; background-color: #ffffff; }
+.sf9b5i {color: #007a90; background-color: #0078d7; }
+.sf9b14i {color: #ab966b; background-color: #ffa0a0; }
+.sf9b16i {color: #a1c274; background-color: #f1e2ad; }
+.sf9b18i {color: #ab9d57; background-color: #ffaa82; }
+.sf9b19i {color: #868149; background-color: #c8816c; }
+.sf10b2i {color: #ffabab; background-color: #ffffff; }
+.sf10b5i {color: #545190; background-color: #0078d7; }
+.sf10b14i {color: #ff6b6b; background-color: #ffa0a0; }
+.sf10b16i {color: #f59774; background-color: #f1e2ad; }
+.sf10b18i {color: #ff7257; background-color: #ffaa82; }
+.sf10b19i {color: #da5749; background-color: #c8816c; }
+.sf11b2i {color: #cbcbcb; background-color: #ffffff; }
+.sf11b5i {color: #1f71b0; background-color: #0078d7; }
+.sf11b14i {color: #cb8b8b; background-color: #ffa0a0; }
+.sf11b16i {color: #c1b794; background-color: #f1e2ad; }
+.sf11b18i {color: #cb9277; background-color: #ffaa82; }
+.sf11b19i {color: #a67769; background-color: #c8816c; }
+.sf12b2i {color: #d5abab; background-color: #ffffff; }
+.sf12b5i {color: #2a5190; background-color: #0078d7; }
+.sf12b14i {color: #d56b6b; background-color: #ffa0a0; }
+.sf12b16i {color: #cc9774; background-color: #f1e2ad; }
+.sf12b18i {color: #d57257; background-color: #ffaa82; }
+.sf12b19i {color: #b15749; background-color: #c8816c; }
+.sf13b2i {color: #abd5eb; background-color: #ffffff; }
+.sf13b5i {color: #007ad0; background-color: #0078d7; }
+.sf13b14i {color: #ab96aa; background-color: #ffa0a0; }
+.sf13b16i {color: #a1c2b3; background-color: #f1e2ad; }
+.sf13b18i {color: #ab9d96; background-color: #ffaa82; }
+.sf13b19i {color: #868187; background-color: #c8816c; }
+.sf15b2i {color: #ababab; background-color: #ffffff; }
+.sf15b5i {color: #005190; background-color: #0078d7; }
+.sf15b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf15b16i {color: #a19774; background-color: #f1e2ad; }
+.sf15b18i {color: #ab7257; background-color: #ffaa82; }
+.sf15b19i {color: #865749; background-color: #c8816c; }
+.sf17b2i {color: #ababab; background-color: #ffffff; }
+.sf17b5i {color: #005190; background-color: #0078d7; }
+.sf17b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf17b16i {color: #a19774; background-color: #f1e2ad; }
+.sf17b18i {color: #ab7257; background-color: #ffaa82; }
+.sf17b19i {color: #865749; background-color: #c8816c; }
+.sf20b2i {color: #ababd5; background-color: #ffffff; }
+.sf20b5i {color: #0051bb; background-color: #0078d7; }
+.sf20b14i {color: #ab6b96; background-color: #ffa0a0; }
+.sf20b16i {color: #a1979f; background-color: #f1e2ad; }
+.sf20b18i {color: #ab7282; background-color: #ffaa82; }
+.sf20b19i {color: #865772; background-color: #c8816c; }
+.sf21b2i {color: #abd5eb; background-color: #ffffff; }
+.sf21b5i {color: #007ad0; background-color: #0078d7; }
+.sf21b14i {color: #ab96aa; background-color: #ffa0a0; }
+.sf21b16i {color: #a1c2b3; background-color: #f1e2ad; }
+.sf21b18i {color: #ab9d96; background-color: #ffaa82; }
+.sf21b19i {color: #868187; background-color: #c8816c; }
+.cn {text-align: center; word-break: normal; color: #000000; background-color: #f0f0f0;}
+.ln {text-align: right; word-break: normal; color: #000000; background-color: #f0f0f0;}
+--></style>
+</head><body>
+<table class="cmp-table-text cmp-table-full cmp-table-2">
+<colgroup>
+<col style="width: 1.8em;" />
+<col style="width: calc(100% / 2 - 1.8em);" />
+<col style="width: 1.8em;" />
+<col style="width: calc(100% / 2 - 1.8em);" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="2" class="title title-left">D:\MyGitHub\copilot-for-eclipse_Old\com.microsoft.copilot.eclipse.ui\intro\whatsnew\WHATISNEW.md</th>
+<th colspan="2" class="title title-right">D:\MyGitHub\copilot-for-eclipse_New\com.microsoft.copilot.eclipse.ui\intro\whatsnew\WHATISNEW.md</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="ln">1</td><td class="sf3b2"><code><span class="sf11b2">#</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">GitHub Copilot 0.21.0 Release Notes</span>&nbsp;</code></td>
+<td class="ln">1</td><td class="sf3b2"><code><span class="sf11b2">#</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">GitHub Copilot 0.21.0 Release Notes</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">2</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">2</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">3</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Use Ollama Models with BYOK</span>&nbsp;</code></td>
+<td class="ln">3</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Use Ollama Models with BYOK</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">4</td><td class="sf3b2"><code><span class="sf3b2">You can now connect Ollama as a custom Bring Your Own Key (BYOK) model provider and use locally hosted models in Copilot Chat.</span></code></td>
+<td class="ln">4</td><td class="sf3b2"><code><span class="sf3b2">You can now connect Ollama as a custom Bring Your Own Key (BYOK) model provider and use locally hosted models in Copilot Chat.</span></code></td>
+</tr>
+<tr>
+<td class="ln">5</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">5</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">6</td><td class="sf3b2"><code><span class="sf11b2">&lt;</span><span class="sf7b2">img</span><span class="sf3b2">&nbsp;</span><span class="sf13b2">src</span><span class="sf3b2">="</span><span class="sf12b2">0.21.0/ollama.png</span><span class="sf3b2">" </span><span class="sf13b2">alt</span><span class="sf3b2">="</span><span class="sf12b2">Ollama</span><span class="sf3b2">" </span><span class="sf13b2">width</span><span class="sf3b2">="</span><span class="sf12b2">600</span><span class="sf3b2">"</span><span class="sf11b2">/&gt;</span>&nbsp;</code></td>
+<td class="ln">6</td><td class="sf3b2"><code><span class="sf11b2">&lt;</span><span class="sf7b2">img</span><span class="sf3b2">&nbsp;</span><span class="sf13b2">src</span><span class="sf3b2">="</span><span class="sf12b2">0.21.0/ollama.png</span><span class="sf3b2">" </span><span class="sf13b2">alt</span><span class="sf3b2">="</span><span class="sf12b2">Ollama</span><span class="sf3b2">" </span><span class="sf13b2">width</span><span class="sf3b2">="</span><span class="sf12b2">600</span><span class="sf3b2">"</span><span class="sf11b2">/&gt;</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">7</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">7</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">8</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+<td class="ln">8</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+</tr>
+<tr>
+<td class="ln">9</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">9</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln"><a id="d1_1" href="#d1_1">.</a></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">10</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">###</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">Custom OpenAI-Compatible Providers</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">11</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">In addition to the built-in providers, you can now register your own model providers that expose an OpenAI-compatible API — for example LM Studio, vLLM, LocalAI or a llama.cpp server. Use </span><span style="color: #000000; background-color: #ef7774; ">**</span><span style="color: #000000; background-color: #ef7774; ">Add Provider...</span><span style="color: #000000; background-color: #ef7774; ">**</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;on the Model Management preference page to give the provider a name, its endpoint URL, an optional API key and the API type, then add the models you want to use. They appear in the chat model picker like any other custom model.</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">12</td><td style="color: #000000; background-color: #ef7774; "><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">13</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">---</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">14</td><td style="color: #000000; background-color: #ef7774; "><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">10</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Agent Skills Are Generally Available</span>&nbsp;</code></td>
+<td class="ln">15</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Agent Skills Are Generally Available</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">11</td><td class="sf3b2"><code><span class="sf3b2">Agent Skills are now generally available. Skills give Copilot reusable instructions and resources for specialized tasks, helping Agent Mode follow consistent workflows for your project.</span></code></td>
+<td class="ln">16</td><td class="sf3b2"><code><span class="sf3b2">Agent Skills are now generally available. Skills give Copilot reusable instructions and resources for specialized tasks, helping Agent Mode follow consistent workflows for your project.</span></code></td>
+</tr>
+<tr>
+<td class="ln">12</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">17</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">13</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+<td class="ln">18</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+</tr>
+<tr>
+<td class="ln">14</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">19</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">15</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Sub-Agents Are Always Enabled</span>&nbsp;</code></td>
+<td class="ln">20</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Sub-Agents Are Always Enabled</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">16</td><td class="sf3b2"><code><span class="sf3b2">Sub-agent support is now always enabled in Agent Mode. Copilot can delegate focused tasks to sub-agents without requiring a separate setting, making complex work easier to parallelize.</span></code></td>
+<td class="ln">21</td><td class="sf3b2"><code><span class="sf3b2">Sub-agent support is now always enabled in Agent Mode. Copilot can delegate focused tasks to sub-agents without requiring a separate setting, making complex work easier to parallelize.</span></code></td>
+</tr>
+<tr>
+<td class="ln">17</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">22</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">18</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+<td class="ln">23</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+</tr>
+<tr>
+<td class="ln">19</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">24</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">20</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Semantic Workspace Search Removed</span>&nbsp;</code></td>
+<td class="ln">25</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Semantic Workspace Search Removed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">21</td><td class="sf3b2"><code><span class="sf3b2">The semantic </span><span class="sf12b2">`</span><span class="sf3b2">@workspace</span><span class="sf11b2">`</span><span class="sf3b2">&nbsp;search integration has been removed. See </span><span class="sf11b2">[</span><span class="sf20b2">PR #373</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/copi<wbr>lot-for-eclipse/pull/373</span><span class="sf11b2">)</span><span class="sf3b2">&nbsp;for details about this decision.</span></code></td>
+<td class="ln">26</td><td class="sf3b2"><code><span class="sf3b2">The semantic </span><span class="sf12b2">`</span><span class="sf3b2">@workspace</span><span class="sf11b2">`</span><span class="sf3b2">&nbsp;search integration has been removed. See </span><span class="sf11b2">[</span><span class="sf20b2">PR #373</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/copi<wbr>lot-for-eclipse/pull/373</span><span class="sf11b2">)</span><span class="sf3b2">&nbsp;for details about this decision.</span></code></td>
+</tr>
+<tr>
+<td class="ln">22</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">27</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">23</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+<td class="ln">28</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+</tr>
+<tr>
+<td class="ln">24</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">29</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">25</td><td class="sf3b2"><code><span class="sf11b2">#</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">GitHub Copilot 0.20.0 Release Notes</span>&nbsp;</code></td>
+<td class="ln">30</td><td class="sf3b2"><code><span class="sf11b2">#</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">GitHub Copilot 0.20.0 Release Notes</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">26</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">31</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">27</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Organization-Level Custom Models</span>&nbsp;</code></td>
+<td class="ln">32</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Organization-Level Custom Models</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">28</td><td class="sf3b2"><code><span class="sf3b2">Copilot for Eclipse now supports organization-enabled custom models in the model picker. If your organization has configured custom models, they appear automatically so you can select them alongside Copilot's built-in models.</span></code></td>
+<td class="ln">33</td><td class="sf3b2"><code><span class="sf3b2">Copilot for Eclipse now supports organization-enabled custom models in the model picker. If your organization has configured custom models, they appear automatically so you can select them alongside Copilot's built-in models.</span></code></td>
+</tr>
+<tr>
+<td class="ln">29</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">34</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">30</td><td class="sf3b2"><code><span class="sf11b2">![</span><span class="sf20b2">Custom Model</span><span class="sf11b2">](</span><span class="sf21b2">0.20.0/custom-model.png</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">35</td><td class="sf3b2"><code><span class="sf11b2">![</span><span class="sf20b2">Custom Model</span><span class="sf11b2">](</span><span class="sf21b2">0.20.0/custom-model.png</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">31</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">36</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">32</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+<td class="ln">37</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+</tr>
+<tr>
+<td class="ln">33</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">38</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">34</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Faster and More Reliable Chat Rendering</span>&nbsp;</code></td>
+<td class="ln">39</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Faster and More Reliable Chat Rendering</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">35</td><td class="sf3b2"><code><span class="sf3b2">The chat view now renders long and streaming conversations more efficiently, reducing slowdowns during agent sessions and editor switches.</span></code></td>
+<td class="ln">40</td><td class="sf3b2"><code><span class="sf3b2">The chat view now renders long and streaming conversations more efficiently, reducing slowdowns during agent sessions and editor switches.</span></code></td>
+</tr>
+<tr>
+<td class="ln">36</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">41</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">37</td><td class="sf3b2"><code><span class="sf3b2">This release also includes chat fixes so long conversations scroll correctly to the newest messages, prompts that need user action are brought into view automatically, and model details display better on Linux.</span></code></td>
+<td class="ln">42</td><td class="sf3b2"><code><span class="sf3b2">This release also includes chat fixes so long conversations scroll correctly to the newest messages, prompts that need user action are brought into view automatically, and model details display better on Linux.</span></code></td>
+</tr>
+<tr>
+<td class="ln">38</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">43</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">39</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+<td class="ln">44</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+</tr>
+<tr>
+<td class="ln">40</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">45</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">41</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Copilot Menu on the Left</span>&nbsp;</code></td>
+<td class="ln">46</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Copilot Menu on the Left</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">42</td><td class="sf3b2"><code><span class="sf3b2">The Copilot menu has moved to the left side of the Eclipse menu bar, immediately before the Help menu.</span></code></td>
+<td class="ln">47</td><td class="sf3b2"><code><span class="sf3b2">The Copilot menu has moved to the left side of the Eclipse menu bar, immediately before the Help menu.</span></code></td>
+</tr>
+<tr>
+<td class="ln">43</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">48</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">44</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+<td class="ln">49</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+</tr>
+<tr>
+<td class="ln">45</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">50</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">46</td><td class="sf3b2"><code><span class="sf11b2">#</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">GitHub Copilot 0.19.0 Release Notes</span>&nbsp;</code></td>
+<td class="ln">51</td><td class="sf3b2"><code><span class="sf11b2">#</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">GitHub Copilot 0.19.0 Release Notes</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">47</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">52</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">48</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Agent Tool Auto-Approve Controls</span>&nbsp;</code></td>
+<td class="ln">53</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Agent Tool Auto-Approve Controls</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">49</td><td class="sf3b2"><code><span class="sf3b2">Agent Mode now supports auto-approve controls for tool confirmations. Configure rules for terminal commands, file operations, and MCP tools from Copilot preferences, or use the confirmation dialog's </span><span class="sf11b2">**</span><span class="sf3b2">Allow for Session</span><span class="sf11b2">**</span><span class="sf3b2">&nbsp;and </span><span class="sf11b2">**</span><span class="sf3b2">Always Allow</span><span class="sf11b2">**</span><span class="sf3b2">&nbsp;actions to keep trusted workflows moving without repeated prompts.</span></code></td>
+<td class="ln">54</td><td class="sf3b2"><code><span class="sf3b2">Agent Mode now supports auto-approve controls for tool confirmations. Configure rules for terminal commands, file operations, and MCP tools from Copilot preferences, or use the confirmation dialog's </span><span class="sf11b2">**</span><span class="sf3b2">Allow for Session</span><span class="sf11b2">**</span><span class="sf3b2">&nbsp;and </span><span class="sf11b2">**</span><span class="sf3b2">Always Allow</span><span class="sf11b2">**</span><span class="sf3b2">&nbsp;actions to keep trusted workflows moving without repeated prompts.</span></code></td>
+</tr>
+<tr>
+<td class="ln">50</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">55</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">51</td><td class="sf3b2"><code><span class="sf3b2">Default file safety rules, MCP tool annotations, and the global auto-approve toggle are supported, so you can reduce friction while keeping risky actions visible.</span></code></td>
+<td class="ln">56</td><td class="sf3b2"><code><span class="sf3b2">Default file safety rules, MCP tool annotations, and the global auto-approve toggle are supported, so you can reduce friction while keeping risky actions visible.</span></code></td>
+</tr>
+<tr>
+<td class="ln">52</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">57</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">53</td><td class="sf3b2"><code><span class="sf11b2">![</span><span class="sf20b2">Tool Auto Approve</span><span class="sf11b2">](</span><span class="sf21b2">0.19.0/auto-approve.png</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">58</td><td class="sf3b2"><code><span class="sf11b2">![</span><span class="sf20b2">Tool Auto Approve</span><span class="sf11b2">](</span><span class="sf21b2">0.19.0/auto-approve.png</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">54</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">59</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">55</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+<td class="ln">60</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+</tr>
+<tr>
+<td class="ln">56</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">61</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">57</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Automatic Chat Context Compression</span>&nbsp;</code></td>
+<td class="ln">62</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Automatic Chat Context Compression</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">58</td><td class="sf3b2"><code><span class="sf3b2">Copilot can now automatically compress chat context as conversations grow. When a session approaches the context limit, older conversation context is summarized so longer agent runs can continue with fewer interruptions.</span></code></td>
+<td class="ln">63</td><td class="sf3b2"><code><span class="sf3b2">Copilot can now automatically compress chat context as conversations grow. When a session approaches the context limit, older conversation context is summarized so longer agent runs can continue with fewer interruptions.</span></code></td>
+</tr>
+<tr>
+<td class="ln">59</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">64</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">60</td><td class="sf3b2"><code><span class="sf3b2">The chat view also shows compression status while Copilot is compacting the conversation, making long-running sessions easier to follow.</span></code></td>
+<td class="ln">65</td><td class="sf3b2"><code><span class="sf3b2">The chat view also shows compression status while Copilot is compacting the conversation, making long-running sessions easier to follow.</span></code></td>
+</tr>
+<tr>
+<td class="ln">61</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">66</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">62</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+<td class="ln">67</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+</tr>
+<tr>
+<td class="ln">63</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">68</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">64</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Create and Edit Local Files Outside the Workspace</span>&nbsp;</code></td>
+<td class="ln">69</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Create and Edit Local Files Outside the Workspace</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">65</td><td class="sf3b2"><code><span class="sf3b2">Agent Mode can now create and edit local files by absolute path even when they are outside the Eclipse workspace. This helps when your code spans external folders, linked resources, or files that are not loaded as Eclipse projects.</span></code></td>
+<td class="ln">70</td><td class="sf3b2"><code><span class="sf3b2">Agent Mode can now create and edit local files by absolute path even when they are outside the Eclipse workspace. This helps when your code spans external folders, linked resources, or files that are not loaded as Eclipse projects.</span></code></td>
+</tr>
+<tr>
+<td class="ln">66</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">71</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">67</td><td class="sf3b2"><code><span class="sf3b2">Local file changes are tracked alongside workspace edits in the changed-files bar, with support for </span><span class="sf11b2">**</span><span class="sf3b2">View Diff</span><span class="sf11b2">**</span><span class="sf3b2">, </span><span class="sf11b2">**</span><span class="sf3b2">Keep</span><span class="sf11b2">**</span><span class="sf3b2">, and </span><span class="sf11b2">**</span><span class="sf3b2">Undo</span><span class="sf11b2">**</span><span class="sf3b2">&nbsp;flows, including empty-baseline diffs for newly created files.</span></code></td>
+<td class="ln">72</td><td class="sf3b2"><code><span class="sf3b2">Local file changes are tracked alongside workspace edits in the changed-files bar, with support for </span><span class="sf11b2">**</span><span class="sf3b2">View Diff</span><span class="sf11b2">**</span><span class="sf3b2">, </span><span class="sf11b2">**</span><span class="sf3b2">Keep</span><span class="sf11b2">**</span><span class="sf3b2">, and </span><span class="sf11b2">**</span><span class="sf3b2">Undo</span><span class="sf11b2">**</span><span class="sf3b2">&nbsp;flows, including empty-baseline diffs for newly created files.</span></code></td>
+</tr>
+<tr>
+<td class="ln">68</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">73</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">69</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+<td class="ln">74</td><td class="sf3b2"><code><span class="sf11b2">---</span></code></td>
+</tr>
+<tr>
+<td class="ln">70</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">75</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">71</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">More Reliable Terminal Command Execution on Windows and Linux</span>&nbsp;</code></td>
+<td class="ln">76</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">More Reliable Terminal Command Execution on Windows and Linux</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">72</td><td class="sf3b2"><code><span class="sf3b2">Terminal command execution is more reliable across Windows and Linux. Copilot now runs commands through PowerShell on Windows and Bash on Linux, uses shell-integration markers to detect command completion and exit codes, and handles multiline commands with bracketed paste formatting.</span></code></td>
+<td class="ln">77</td><td class="sf3b2"><code><span class="sf3b2">Terminal command execution is more reliable across Windows and Linux. Copilot now runs commands through PowerShell on Windows and Bash on Linux, uses shell-integration markers to detect command completion and exit codes, and handles multiline commands with bracketed paste formatting.</span></code></td>
+</tr>
+<tr>
+<td class="ln">73</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">78</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">74</td><td class="sf3b2"><code><span class="sf3b2">Copilot also interrupts previous foreground commands before starting new ones, stops active terminal work when a chat request is canceled, truncates long terminal output before sending it back to the model, and chooses a better working directory from the current file or referenced files.</span></code></td>
+<td class="ln">79</td><td class="sf3b2"><code><span class="sf3b2">Copilot also interrupts previous foreground commands before starting new ones, stops active terminal work when a chat request is canceled, truncates long terminal output before sending it back to the model, and chooses a better working directory from the current file or referenced files.</span></code></td>
+</tr>
+<tr>
+<td class="ln">75</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">80</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

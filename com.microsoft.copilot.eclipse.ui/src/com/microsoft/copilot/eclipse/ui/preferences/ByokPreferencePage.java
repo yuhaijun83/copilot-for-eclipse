@@ -47,6 +47,7 @@ import org.eclipse.ui.PlatformUI;
 import com.microsoft.copilot.eclipse.core.AuthStatusManager;
 import com.microsoft.copilot.eclipse.core.CopilotCore;
 import com.microsoft.copilot.eclipse.core.FeatureFlags;
+import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokCustomProviderInfo;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokModel;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokModelProvider;
 import com.microsoft.copilot.eclipse.ui.CopilotImages;
@@ -71,6 +72,8 @@ public class ByokPreferencePage extends PreferencePage implements IWorkbenchPref
 
   private Map<String, String> byProviderUrls = new HashMap<>();
 
+  private Map<String, ByokCustomProviderInfo> customProviders = new HashMap<>();
+
   // used to determine whether remote models are fetched
   private Set<String> remotelyLoadedProviders = new HashSet<>();
 
@@ -93,12 +96,15 @@ public class ByokPreferencePage extends PreferencePage implements IWorkbenchPref
   private Image enabledIcon;
   private Image disabledIcon;
   private TreeViewer viewer;
+  private Button addProviderButton;
   private Button addModelButton;
   private Button removeModelButton;
   private Button toggleStatusButton;
   private Button reloadButton;
   private Button changeApiButton;
+  private Button changeUrlButton;
   private Button deleteApiButton;
+  private Composite buttonGroup;
 
   // ========================= Lifecycle =========================
   @Override
@@ -382,6 +388,12 @@ public class ByokPreferencePage extends PreferencePage implements IWorkbenchPref
     btnGroup.setLayout(new GridLayout(1, false));
     GridData btnData = new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false);
     btnGroup.setLayoutData(btnData);
+    this.buttonGroup = btnGroup;
+
+    addProviderButton = new Button(btnGroup, SWT.PUSH);
+    addProviderButton.setText(Messages.preferences_page_byok_addProvider_button);
+    addProviderButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+    addProviderButton.addListener(SWT.Selection, e -> onAddProvider());
 
     addModelButton = new Button(btnGroup, SWT.PUSH);
     addModelButton.setText(Messages.preferences_page_byok_addModel_button);
@@ -407,6 +419,12 @@ public class ByokPreferencePage extends PreferencePage implements IWorkbenchPref
     changeApiButton.setText(Messages.preferences_page_byok_changeApi_button);
     changeApiButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
     changeApiButton.addListener(SWT.Selection, e -> onChangeProviderApi());
+
+    changeUrlButton = new Button(btnGroup, SWT.PUSH);
+    changeUrlButton.setText(Messages.preferences_page_byok_changeUrl_button);
+    changeUrlButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+    changeUrlButton.addListener(SWT.Selection, e -> onChangeProviderUrl());
+    changeUrlButton.setVisible(false);
 
     deleteApiButton = new Button(btnGroup, SWT.PUSH);
     deleteApiButton.setText(Messages.preferences_page_byok_deleteApi_button);
@@ -506,32 +524,56 @@ public class ByokPreferencePage extends PreferencePage implements IWorkbenchPref
     reloadButton.setEnabled(true);
     boolean canManageApiKey = false;
     boolean canManageEndpoint = false;
+    boolean isCustomProvider = false;
     String providerName = getSelectedProviderName();
     if (providerName != null) {
+      isCustomProvider = ByokModelProvider.isCustomProvider(providerName);
       boolean hasApiKeyForProvider = byProviderApiKeys.containsKey(providerName);
       canManageApiKey = ByokModelProvider.requiresApiKey(providerName) && hasApiKeyForProvider;
-      canManageEndpoint = ByokModelProvider.isOllama(providerName) && byProviderUrls.containsKey(providerName);
+      canManageEndpoint = (ByokModelProvider.isOllama(providerName) || isCustomProvider)
+          && byProviderUrls.containsKey(providerName);
     }
 
     changeApiButton.setText(ByokModelProvider.isOllama(providerName)
         ? Messages.preferences_page_byok_changeEndpoint_button : Messages.preferences_page_byok_changeApi_button);
     deleteApiButton.setText(ByokModelProvider.isOllama(providerName)
-        ? Messages.preferences_page_byok_deleteEndpoint_button : Messages.preferences_page_byok_deleteApi_button);
+        ? Messages.preferences_page_byok_deleteEndpoint_button
+        : isCustomProvider ? Messages.preferences_page_byok_deleteProvider_button
+            : Messages.preferences_page_byok_deleteApi_button);
 
     changeApiButton.setEnabled(canManageApiKey || canManageEndpoint);
     deleteApiButton.setEnabled(canManageApiKey || canManageEndpoint);
+
+    boolean showChangeUrl = isCustomProvider;
+    if (changeUrlButton.getVisible() != showChangeUrl) {
+      changeUrlButton.setVisible(showChangeUrl);
+      if (buttonGroup != null && !buttonGroup.isDisposed()) {
+        buttonGroup.layout(true);
+      }
+    }
+    changeUrlButton.setEnabled(canManageEndpoint);
   }
 
   private void initializeTreeViewer() {
     // Initialize with all providers, even if they have no models yet
     byProviderModels.clear();
-    for (ByokModelProvider provider : ByokModelProvider.values()) {
-      byProviderModels.put(provider.getDisplayName(), new ArrayList<>());
-    }
+    addProviderNodes();
 
     if (viewer != null && !viewer.getControl().isDisposed()) {
       viewer.setInput(byProviderModels);
       refreshButtonsEnabled();
+    }
+  }
+
+  /**
+   * Seed the tree input with the built-in providers plus any configured custom endpoint providers.
+   */
+  private void addProviderNodes() {
+    for (ByokModelProvider provider : ByokModelProvider.values()) {
+      byProviderModels.put(provider.getDisplayName(), new ArrayList<>());
+    }
+    for (String providerName : customProviders.keySet()) {
+      byProviderModels.computeIfAbsent(providerName, k -> new ArrayList<>());
     }
   }
 
@@ -544,9 +586,7 @@ public class ByokPreferencePage extends PreferencePage implements IWorkbenchPref
       byProviderModels.clear();
       // Prevent UI flicker during bulk update
       viewer.getControl().setRedraw(false);
-      for (ByokModelProvider provider : ByokModelProvider.values()) {
-        byProviderModels.put(provider.getDisplayName(), new ArrayList<>());
-      }
+      addProviderNodes();
       if (modelsByProvider != null) {
         for (Map.Entry<String, List<ByokModel>> entry : modelsByProvider.entrySet()) {
           String providerName = entry.getKey();
@@ -586,6 +626,26 @@ public class ByokPreferencePage extends PreferencePage implements IWorkbenchPref
       if (providerUrls != null) {
         byProviderUrls.putAll(providerUrls);
       }
+      refreshButtonsEnabled();
+    }
+  }
+
+  /**
+   * Called by service to update the configured custom endpoint providers.
+   */
+  public void updateCustomProvidersDisplay(Map<String, ByokCustomProviderInfo> providers) {
+    if (viewer != null && !viewer.getControl().isDisposed()) {
+      customProviders.clear();
+      if (providers != null) {
+        customProviders.putAll(providers);
+      }
+      // Custom endpoint providers never fetch models remotely; their models are always locally stored.
+      remotelyLoadedProviders.addAll(customProviders.keySet());
+      for (String providerName : customProviders.keySet()) {
+        byProviderModels.computeIfAbsent(providerName, k -> new ArrayList<>());
+      }
+      viewer.setInput(byProviderModels);
+      restoreExpansionState();
       refreshButtonsEnabled();
     }
   }
@@ -657,6 +717,9 @@ public class ByokPreferencePage extends PreferencePage implements IWorkbenchPref
   }
 
   private void setButtonsEnabled(boolean enabled) {
+    if (addProviderButton != null && !addProviderButton.isDisposed()) {
+      addProviderButton.setEnabled(enabled);
+    }
     if (addModelButton != null && !addModelButton.isDisposed()) {
       addModelButton.setEnabled(enabled);
     }
@@ -671,6 +734,9 @@ public class ByokPreferencePage extends PreferencePage implements IWorkbenchPref
     }
     if (changeApiButton != null && !changeApiButton.isDisposed()) {
       changeApiButton.setEnabled(enabled);
+    }
+    if (changeUrlButton != null && !changeUrlButton.isDisposed()) {
+      changeUrlButton.setEnabled(enabled);
     }
     if (deleteApiButton != null && !deleteApiButton.isDisposed()) {
       deleteApiButton.setEnabled(enabled);
@@ -716,6 +782,21 @@ public class ByokPreferencePage extends PreferencePage implements IWorkbenchPref
       final String finalProviderName = providerName;
       if (ByokModelProvider.isOllama(providerName)) {
         openAddOllamaUrlDialog();
+        return;
+      }
+      if (ByokModelProvider.isCustomProvider(providerName)) {
+        AddByokModelDialog dialog = new AddByokModelDialog(getShell(), providerName,
+            byProviderUrls.get(providerName), model -> {
+              if (model != null && byokService != null) {
+                byokService.saveModel(model).whenComplete((result, throwable) -> {
+                  if (throwable != null) {
+                    CopilotCore.LOGGER.error("Failed to add model: ", throwable);
+                    handleError("Failed to add model: " + throwable.getMessage());
+                  }
+                });
+              }
+            });
+        dialog.open();
         return;
       }
       boolean hasApiKey = byProviderApiKeys.containsKey(providerName);
@@ -842,6 +923,18 @@ public class ByokPreferencePage extends PreferencePage implements IWorkbenchPref
       openAddOllamaUrlDialog();
       return;
     }
+    if (ByokModelProvider.isCustomProvider(providerName)) {
+      final String finalProviderName = providerName;
+      AddApiKeyDialog apiKeyDialog = new AddApiKeyDialog(getShell(), providerName,
+          byProviderApiKeys.get(providerName), newApiKey -> {
+            if (byokService != null) {
+              executeAsyncProviderOperation(finalProviderName,
+                  byokService.changeCustomProviderApiKey(finalProviderName, newApiKey), "Failed to update API key");
+            }
+          });
+      apiKeyDialog.open();
+      return;
+    }
     String apiKey = byProviderApiKeys.get(providerName);
     if (!ByokModelProvider.isAzure(providerName)) {
       final String finalProviderName = providerName;
@@ -879,6 +972,14 @@ public class ByokPreferencePage extends PreferencePage implements IWorkbenchPref
       return;
     }
 
+    if (ByokModelProvider.isCustomProvider(providerName)) {
+      if (showDeleteProviderConfirmationDialog(providerName)) {
+        executeAsyncProviderOperation(finalProviderName, byokService.deleteCustomProvider(finalProviderName),
+            "Failed to delete custom provider");
+      }
+      return;
+    }
+
     if (!ByokModelProvider.isAzure(providerName)) {
       if (showDeleteApiKeyConfirmationDialog(providerName)) {
         executeAsyncProviderOperation(finalProviderName, byokService.deleteApiKey(providerName),
@@ -904,6 +1005,47 @@ public class ByokPreferencePage extends PreferencePage implements IWorkbenchPref
         Messages.preferences_page_byok_deleteEndpoint_dialog_description, MessageDialog.QUESTION,
         new String[] { Messages.preferences_page_byok_dialog_delete, Messages.preferences_page_byok_dialog_cancel }, 0);
     return dialog.open() == 0;
+  }
+
+  private boolean showDeleteProviderConfirmationDialog(String providerName) {
+    MessageDialog dialog = new MessageDialog(getShell(),
+        String.format(Messages.preferences_page_byok_deleteProvider_dialog_title, providerName), null,
+        Messages.preferences_page_byok_deleteProvider_dialog_description, MessageDialog.QUESTION,
+        new String[] { Messages.preferences_page_byok_dialog_delete, Messages.preferences_page_byok_dialog_cancel }, 0);
+    return dialog.open() == 0;
+  }
+
+  /**
+   * Open the dialog that registers a new custom OpenAI-compatible endpoint provider.
+   */
+  private void onAddProvider() {
+    if (byokService == null) {
+      return;
+    }
+    AddCustomProviderDialog dialog = new AddCustomProviderDialog(getShell(), input -> {
+      executeAsyncProviderOperation(input.providerName(),
+          byokService.configureCustomProvider(input.providerName(), input.endpointUrl(), input.apiKey(),
+              input.apiType()),
+          "Failed to add custom provider");
+    });
+    dialog.open();
+  }
+
+  /**
+   * Open the endpoint URL dialog for the selected custom provider and re-point its models at the new URL.
+   */
+  private void onChangeProviderUrl() {
+    String providerName = getSelectedProviderName();
+    if (byokService == null || !ByokModelProvider.isCustomProvider(providerName)) {
+      return;
+    }
+    final String finalProviderName = providerName;
+    AddOllamaUrlDialog dialog = new AddOllamaUrlDialog(getShell(), byProviderUrls.get(providerName),
+        String.format(Messages.preferences_page_byok_customProvider_url_dialog_title, providerName), endpoint -> {
+          executeAsyncProviderOperation(finalProviderName,
+              byokService.updateCustomProviderEndpoint(finalProviderName, endpoint), "Failed to update endpoint URL");
+        });
+    dialog.open();
   }
 
   private void openAddOllamaUrlDialog() {
@@ -999,7 +1141,7 @@ public class ByokPreferencePage extends PreferencePage implements IWorkbenchPref
         if (page.loadingProviders.contains(providerName)) {
           return true;
         }
-        if (ByokModelProvider.isAzure(providerName)) {
+        if (ByokModelProvider.isAzure(providerName) || ByokModelProvider.isCustomProvider(providerName)) {
           List<ByokModel> models = page.byProviderModels.get(providerName);
           return models != null && !models.isEmpty();
         }

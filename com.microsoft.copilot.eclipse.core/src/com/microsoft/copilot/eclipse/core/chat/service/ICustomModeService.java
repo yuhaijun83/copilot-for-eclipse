@@ -3,6 +3,7 @@
 
 package com.microsoft.copilot.eclipse.core.chat.service;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 

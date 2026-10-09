@@ -20,20 +20,28 @@ import org.eclipse.core.databinding.observable.sideeffect.ISideEffect;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.PlatformUI;
 import org.osgi.service.event.EventHandler;
 
+import com.microsoft.copilot.eclipse.core.Constants;
 import com.microsoft.copilot.eclipse.core.CopilotCore;
 import com.microsoft.copilot.eclipse.core.events.CopilotEventConstants;
 import com.microsoft.copilot.eclipse.core.lsp.CopilotLanguageServerConnection;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.DidChangeFeatureFlagsParams;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokApiKey;
+import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokCustomProviderConfig;
+import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokCustomProviderInfo;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokDeleteProviderConfigParams;
+import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListApiKeyResponse;
+import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListCustomProviderConfigParams;
+import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListCustomProviderConfigResponse;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListModelParams;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListProviderConfigParams;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokModel;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokModelProvider;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokProviderConfig;
+import com.microsoft.copilot.eclipse.ui.CopilotUi;
 import com.microsoft.copilot.eclipse.ui.preferences.ByokPreferencePage;
 
 /**
@@ -42,10 +50,15 @@ import com.microsoft.copilot.eclipse.ui.preferences.ByokPreferencePage;
  */
 public class ByokService extends ChatBaseService {
 
+  // Placeholder API key for custom endpoints that do not require authentication; the language server rejects empty
+  // keys in saveCustomProviderConfig.
+  private static final String CUSTOM_PROVIDER_PLACEHOLDER_API_KEY = "not-needed";
+
   // Observable data for UI binding
   private IObservableValue<Map<String, List<ByokModel>>> byokModelsByProviderObservable;
   private IObservableValue<Map<String, String>> apiKeysObservable;
   private IObservableValue<Map<String, String>> providerUrlsObservable;
+  private IObservableValue<Map<String, ByokCustomProviderInfo>> customProvidersObservable;
   // Feature flag observable (byokEnabled)
   private IObservableValue<Boolean> byokEnabledObservable;
 
@@ -57,6 +70,7 @@ public class ByokService extends ChatBaseService {
   private ISideEffect modelsSideEffect;
   private ISideEffect apiKeysSideEffect;
   private ISideEffect providerUrlsSideEffect;
+  private ISideEffect customProvidersSideEffect;
   private ISideEffect byokFlagSideEffect;
 
   /**
@@ -71,6 +85,7 @@ public class ByokService extends ChatBaseService {
       byokModelsByProviderObservable = new WritableValue<>(new HashMap<>(), HashMap.class);
       apiKeysObservable = new WritableValue<>(new HashMap<>(), HashMap.class);
       providerUrlsObservable = new WritableValue<>(new HashMap<>(), HashMap.class);
+      customProvidersObservable = new WritableValue<>(new HashMap<>(), HashMap.class);
       byokEnabledObservable = new WritableValue<>(CopilotCore.getPlugin().getFeatureFlags().isByokEnabled(),
           Boolean.class);
     });
@@ -107,6 +122,9 @@ public class ByokService extends ChatBaseService {
       providerUrlsSideEffect = ISideEffect.create(() -> providerUrlsObservable.getValue(),
           page::updateProviderUrlsDisplay);
 
+      customProvidersSideEffect = ISideEffect.create(() -> customProvidersObservable.getValue(),
+          page::updateCustomProvidersDisplay);
+
       // Create side effect for byok flag updates
       byokFlagSideEffect = ISideEffect.create(() -> byokEnabledObservable.getValue(),
           flagValue -> page.updatePageState());
@@ -130,6 +148,11 @@ public class ByokService extends ChatBaseService {
     if (providerUrlsSideEffect != null) {
       providerUrlsSideEffect.dispose();
       providerUrlsSideEffect = null;
+    }
+
+    if (customProvidersSideEffect != null) {
+      customProvidersSideEffect.dispose();
+      customProvidersSideEffect = null;
     }
 
     if (byokFlagSideEffect != null) {
@@ -185,10 +208,38 @@ public class ByokService extends ChatBaseService {
   }
 
   /**
-   * Refresh BYOK data (including API keys and models).
+   * Load custom (user-named) endpoint provider configurations from persistent storage and merge their cached
+   * endpoint URLs into the provider URL map.
+   */
+  public CompletableFuture<Void> loadCustomProviders() {
+    return lsConnection.listByokCustomProviderConfigs(new ByokListCustomProviderConfigParams(null))
+        .thenAccept(response -> {
+          Map<String, ByokCustomProviderInfo> customProviders = response == null || response.providers() == null
+              ? Map.of()
+              : response.providers().stream()
+                  .filter(info -> info != null && StringUtils.isNotBlank(info.providerName()))
+                  .collect(Collectors.toMap(ByokCustomProviderInfo::providerName, info -> info,
+                      (firstInfo, duplicateInfo) -> firstInfo));
+          ensureRealm(() -> {
+            customProvidersObservable.setValue(customProviders);
+            Map<String, String> providerUrls = new HashMap<>(providerUrlsObservable.getValue());
+            for (String providerName : customProviders.keySet()) {
+              String storedUrl = readStoredCustomProviderUrl(providerName);
+              if (StringUtils.isNotBlank(storedUrl)) {
+                providerUrls.put(providerName, storedUrl);
+              }
+            }
+            providerUrlsObservable.setValue(providerUrls);
+          });
+        });
+  }
+
+  /**
+   * Refresh BYOK data (including API keys, custom providers and models).
    */
   public CompletableFuture<Void> refreshData() {
-    return loadApiKeys().thenCompose(unused -> loadProviderUrls()).thenCompose(unused -> loadLocalModels());
+    return loadApiKeys().thenCompose(unused -> loadProviderUrls()).thenCompose(unused -> loadCustomProviders())
+        .thenCompose(unused -> loadLocalModels());
   }
 
   /**
@@ -240,6 +291,134 @@ public class ByokService extends ChatBaseService {
       }
       providerUrlsObservable.setValue(providerUrls);
     });
+  }
+
+  /**
+   * Register a custom (user-named) OpenAI-compatible endpoint provider. The language server stores the API key and
+   * wire API type; the endpoint URL is cached client-side and attached per model as deploymentUrl when models are
+   * registered.
+   *
+   * @param providerName user-defined provider name; must not collide with a built-in provider name
+   * @param endpointUrl  base URL of the OpenAI-compatible server
+   * @param apiKey       API key, or blank to use a placeholder for key-less local servers
+   * @param apiType      wire API type: {@code chatCompletions}, {@code responses} or {@code messages}
+   */
+  public CompletableFuture<Void> configureCustomProvider(String providerName, String endpointUrl, String apiKey,
+      String apiType) {
+    String effectiveApiKey = StringUtils.defaultIfBlank(apiKey, CUSTOM_PROVIDER_PLACEHOLDER_API_KEY);
+    ByokCustomProviderConfig config = new ByokCustomProviderConfig(providerName, effectiveApiKey, providerName,
+        apiType);
+    return lsConnection.saveByokCustomProviderConfig(config).thenCompose(response -> {
+      if (!response.isSuccess()) {
+        String message = response.getMessage() != null ? response.getMessage() : "Failed to save custom provider";
+        return CompletableFuture.failedFuture(new IllegalStateException(message));
+      }
+      storeCustomProviderUrl(providerName, endpointUrl);
+      updateProviderUrl(providerName, endpointUrl);
+      updateApiKey(providerName, effectiveApiKey);
+      return loadCustomProviders();
+    });
+  }
+
+  /**
+   * Change the API key of a custom endpoint provider. Remote model discovery is not supported for custom providers,
+   * so only the stored key is updated.
+   */
+  public CompletableFuture<Void> changeCustomProviderApiKey(String providerName, String newApiKey) {
+    String effectiveApiKey = StringUtils.defaultIfBlank(newApiKey, CUSTOM_PROVIDER_PLACEHOLDER_API_KEY);
+    ByokApiKey key = new ByokApiKey(providerName, null);
+    key.setApiKey(effectiveApiKey);
+    return lsConnection.saveByokApiKey(key).thenCompose(response -> {
+      if (!response.isSuccess()) {
+        String errorMessage = response.getMessage() != null ? response.getMessage() : "Failed to save API key";
+        return CompletableFuture.failedFuture(new IllegalStateException(errorMessage));
+      }
+      updateApiKey(providerName, effectiveApiKey);
+      return CompletableFuture.completedFuture((Void) null);
+    });
+  }
+
+  /**
+   * Delete a custom endpoint provider: the language server removes its API key, provider config and all stored
+   * models in one call.
+   */
+  public CompletableFuture<Void> deleteCustomProvider(String providerName) {
+    return lsConnection.deleteByokApiKey(new ByokApiKey(providerName, null)).thenCompose(response -> {
+      if (!response.isSuccess()) {
+        String message = response.getMessage() != null ? response.getMessage() : "Failed to delete custom provider";
+        return CompletableFuture.failedFuture(new IllegalStateException(message));
+      }
+      clearStoredCustomProviderUrl(providerName);
+      updateProviderUrl(providerName, null);
+      ensureRealm(() -> {
+        Map<String, ByokCustomProviderInfo> customProviders = new HashMap<>(customProvidersObservable.getValue());
+        customProviders.remove(providerName);
+        customProvidersObservable.setValue(customProviders);
+        Map<String, String> apiKeys = new HashMap<>(apiKeysObservable.getValue());
+        apiKeys.remove(providerName);
+        apiKeysObservable.setValue(apiKeys);
+      });
+      return refreshData();
+    });
+  }
+
+  /**
+   * Point all models of a custom endpoint provider at a new base URL. The language server stores the URL per model,
+   * so each stored model is re-saved with the new deploymentUrl.
+   */
+  public CompletableFuture<Void> updateCustomProviderEndpoint(String providerName, String endpointUrl) {
+    storeCustomProviderUrl(providerName, endpointUrl);
+    updateProviderUrl(providerName, endpointUrl);
+    List<ByokModel> models = new ArrayList<>();
+    ensureRealm(() -> {
+      List<ByokModel> storedModels = byokModelsByProviderObservable.getValue().get(providerName);
+      if (storedModels != null) {
+        models.addAll(storedModels);
+      }
+    });
+    CompletableFuture<Void> chain = CompletableFuture.completedFuture(null);
+    for (ByokModel model : models) {
+      model.setDeploymentUrl(endpointUrl);
+      chain = chain.thenCompose(unused -> lsConnection.saveByokModel(model)).thenAccept(response -> {
+        if (!response.isSuccess()) {
+          String message = response.getMessage() != null ? response.getMessage() : "Failed to update model endpoint";
+          throw new IllegalStateException(message);
+        }
+      });
+    }
+    return chain.thenCompose(unused -> refreshData());
+  }
+
+  private void updateApiKey(String providerName, String apiKey) {
+    ensureRealm(() -> {
+      Map<String, String> apiKeys = new HashMap<>(apiKeysObservable.getValue());
+      apiKeys.put(providerName, apiKey);
+      apiKeysObservable.setValue(apiKeys);
+    });
+  }
+
+  private IPreferenceStore getPreferenceStore() {
+    CopilotUi plugin = CopilotUi.getPlugin();
+    return plugin != null ? plugin.getPreferenceStore() : null;
+  }
+
+  private String readStoredCustomProviderUrl(String providerName) {
+    IPreferenceStore store = getPreferenceStore();
+    return store == null ? null : store.getString(Constants.BYOK_CUSTOM_PROVIDER_URL_PREFIX + providerName);
+  }
+
+  private void storeCustomProviderUrl(String providerName, String endpointUrl) {
+    IPreferenceStore store = getPreferenceStore();
+    if (store != null) {
+      store.setValue(Constants.BYOK_CUSTOM_PROVIDER_URL_PREFIX + providerName, endpointUrl);
+    }
+  }
+
+  private void clearStoredCustomProviderUrl(String providerName) {
+    IPreferenceStore store = getPreferenceStore();
+    if (store != null) {
+      store.setValue(Constants.BYOK_CUSTOM_PROVIDER_URL_PREFIX + providerName, "");
+    }
   }
 
   /**
@@ -355,6 +534,11 @@ public class ByokService extends ChatBaseService {
       return fetchProviderModels(providerName).thenCompose(changed -> loadLocalModels());
     }
 
+    // Custom endpoint providers do not support remote model discovery; only locally stored models apply.
+    if (ByokModelProvider.isCustomProvider(providerName)) {
+      return loadLocalModels();
+    }
+
     final AtomicBoolean hasApiKey = new AtomicBoolean(false);
     ensureRealm(() -> {
       Map<String, String> currentKeys = apiKeysObservable != null ? apiKeysObservable.getValue() : null;
@@ -463,7 +647,9 @@ public class ByokService extends ChatBaseService {
         providers.addAll(currentProviderUrls.keySet());
       }
       List<String> providersToFetch = providers.stream()
-          .filter(providerName -> !ByokModelProvider.isAzure(providerName)).toList();
+          .filter(providerName -> !ByokModelProvider.isAzure(providerName)
+              && !ByokModelProvider.isCustomProvider(providerName))
+          .toList();
       providersRef.set(providersToFetch);
     });
     List<String> providersToFetch = providersRef.get();

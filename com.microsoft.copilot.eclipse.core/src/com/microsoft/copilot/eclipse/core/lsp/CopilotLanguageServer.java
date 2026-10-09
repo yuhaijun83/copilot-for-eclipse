@@ -52,8 +52,11 @@ import com.microsoft.copilot.eclipse.core.lsp.protocol.UpdateConversationToolsSt
 import com.microsoft.copilot.eclipse.core.lsp.protocol.UpdateMcpToolsStatusParams;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.WorkspaceFoldersParams;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokApiKey;
+import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokCustomProviderConfig;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokDeleteProviderConfigParams;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListApiKeyResponse;
+import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListCustomProviderConfigParams;
+import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListCustomProviderConfigResponse;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListModelParams;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListModelResponse;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListProviderConfigParams;
@@ -297,6 +300,19 @@ public interface CopilotLanguageServer extends LanguageServer {
    */
   @JsonRequest("copilot/byok/listProviderConfigs")
   CompletableFuture<ByokListProviderConfigResponse> listByokProviderConfigs(ByokListProviderConfigParams params);
+
+  /**
+   * Save a custom (user-named) BYOK endpoint provider configuration.
+   */
+  @JsonRequest("copilot/byok/saveCustomProviderConfig")
+  CompletableFuture<ByokStatusResponse> saveByokCustomProviderConfig(ByokCustomProviderConfig providerConfig);
+
+  /**
+   * List custom BYOK endpoint provider configurations.
+   */
+  @JsonRequest("copilot/byok/listCustomProviderConfigs")
+  CompletableFuture<ByokListCustomProviderConfigResponse> listByokCustomProviderConfigs(
+      ByokListCustomProviderConfigParams params);
 
   /**
    * Update the status of the mcp server and tools.

@@ -62,6 +62,10 @@ public class Constants {
   public static final String AUTO_APPROVE_TRUST_TOOL_ANNOTATIONS = "autoApproveTrustToolAnnotations";
   public static final String AUTO_APPROVE_YOLO_MODE = "autoApproveYoloMode";
 
+  // Client-side preference key prefix storing the endpoint URL of a custom BYOK provider. The language server keeps
+  // the URL per model (deploymentUrl); this prefix caches the provider-level URL for prefill and editing.
+  public static final String BYOK_CUSTOM_PROVIDER_URL_PREFIX = "byokCustomProviderUrl.";
+
   // Base excluded file types shared by both
   // Copied from InelliJ, excluded file extension list
   // https://github.com/microsoft/copilot-intellij/blob/main/core/src/main/kotlin/com/github/copilot/chat/references/FileSearchService.kt

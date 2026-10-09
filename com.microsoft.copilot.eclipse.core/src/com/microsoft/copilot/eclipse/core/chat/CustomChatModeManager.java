@@ -21,6 +21,7 @@ import com.microsoft.copilot.eclipse.core.chat.service.ICustomModeService;
 public enum CustomChatModeManager {
   INSTANCE;
 
+  private static final String SEPARATOR_PREFIX = "---";
   private List<CustomChatMode> customModes;
   private final ICustomModeService customModeService;
 

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>WinMerge File Compare Report</title>
+<style>
+<!--
+body { font-family: "Segoe UI", Arial, sans-serif; margin: 20px; background-color: #ffffff; color: #1a1a1a; }
+table { table-layout: fixed; margin: 0; border: none; box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.15); font-size: 12.00pt; }
+.cmp-table-text td { word-break: break-all; padding: 0 3px; vertical-align: top; }
+.cmp-table-table td, .cmp-table-table th { word-break: break-all; padding: 0 3px; border: 1px solid #a0a0a0; vertical-align: top; }
+.cmp-table-image td, .cmp-table-webpage td { border: 1px solid #a0a0a0; }
+.title { font-weight: 600; color: #ffffff; text-align: left; padding: 8px 12px; background-color: #191970; border-bottom: none; position: sticky; vertical-align: top; text-align: center; top: 0; z-index: 9999; }
+.title-right, .title-middle { box-shadow: inset 1px 0 #ffffff; }
+.ln { position: sticky; left: 0; }
+.cmp-div-image { overflow: scroll; text-align: center; max-height: calc(100vh - 70px); }
+.cmp-pdf-webpage { width: 100%; height: calc(100vh - 70px) }
+.cmp-table-full { width: 100%; border-collapse: collapse; overflow: hidden; }
+.cmp-table-auto { width: max-content; border-collapse: collapse; overflow: hidden; }
+.cmp-table-header { position: sticky; top: 0; z-index: 99; }
+.cmp-grid { display: grid; grid-template-rows: max-content; height: calc(100vh - 30px); }
+.cmp-grid-2 { grid-template-columns: 50% 50%; }
+.cmp-grid-3 { grid-template-columns: 33.33% 33.33% 33.33%; }
+.cmp-collapsed-row { height: 1px; }
+.cmp-collapsed-cell { background-color: #000000; }
+.cmp-scroll { overflow-x: auto; }
+.sf3b2 {color: #000000; background-color: #ffffff; }
+.sf3b5 {color: #000000; background-color: #0078d7; }
+.sf3b14 {color: #000000; background-color: #ffa0a0; }
+.sf3b16 {color: #000000; background-color: #f1e2ad; }
+.sf3b18 {color: #000000; background-color: #ffaa82; }
+.sf3b19 {color: #000000; background-color: #c8816c; }
+.sf6b2 {color: #ffffff; background-color: #ffffff; }
+.sf6b5 {color: #ffffff; background-color: #0078d7; }
+.sf6b14 {color: #ffffff; background-color: #ffa0a0; }
+.sf6b16 {color: #ffffff; background-color: #f1e2ad; }
+.sf6b18 {color: #ffffff; background-color: #ffaa82; }
+.sf6b19 {color: #ffffff; background-color: #c8816c; }
+.sf7b2 {color: #0000ff; background-color: #ffffff; font-weight: bold; }
+.sf7b5 {color: #0000ff; background-color: #0078d7; font-weight: bold; }
+.sf7b14 {color: #0000ff; background-color: #ffa0a0; font-weight: bold; }
+.sf7b16 {color: #0000ff; background-color: #f1e2ad; font-weight: bold; }
+.sf7b18 {color: #0000ff; background-color: #ffaa82; font-weight: bold; }
+.sf7b19 {color: #0000ff; background-color: #c8816c; font-weight: bold; }
+.sf8b2 {color: #800080; background-color: #ffffff; }
+.sf8b5 {color: #800080; background-color: #0078d7; }
+.sf8b14 {color: #800080; background-color: #ffa0a0; }
+.sf8b16 {color: #800080; background-color: #f1e2ad; }
+.sf8b18 {color: #800080; background-color: #ffaa82; }
+.sf8b19 {color: #800080; background-color: #c8816c; }
+.sf9b2 {color: #008000; background-color: #ffffff; }
+.sf9b5 {color: #008000; background-color: #0078d7; }
+.sf9b14 {color: #008000; background-color: #ffa0a0; }
+.sf9b16 {color: #008000; background-color: #f1e2ad; }
+.sf9b18 {color: #008000; background-color: #ffaa82; }
+.sf9b19 {color: #008000; background-color: #c8816c; }
+.sf10b2 {color: #ff0000; background-color: #ffffff; }
+.sf10b5 {color: #ff0000; background-color: #0078d7; }
+.sf10b14 {color: #ff0000; background-color: #ffa0a0; }
+.sf10b16 {color: #ff0000; background-color: #f1e2ad; }
+.sf10b18 {color: #ff0000; background-color: #ffaa82; }
+.sf10b19 {color: #ff0000; background-color: #c8816c; }
+.sf11b2 {color: #606060; background-color: #ffffff; }
+.sf11b5 {color: #606060; background-color: #0078d7; }
+.sf11b14 {color: #606060; background-color: #ffa0a0; }
+.sf11b16 {color: #606060; background-color: #f1e2ad; }
+.sf11b18 {color: #606060; background-color: #ffaa82; }
+.sf11b19 {color: #606060; background-color: #c8816c; }
+.sf12b2 {color: #800000; background-color: #ffffff; }
+.sf12b5 {color: #800000; background-color: #0078d7; }
+.sf12b14 {color: #800000; background-color: #ffa0a0; }
+.sf12b16 {color: #800000; background-color: #f1e2ad; }
+.sf12b18 {color: #800000; background-color: #ffaa82; }
+.sf12b19 {color: #800000; background-color: #c8816c; }
+.sf13b2 {color: #0080c0; background-color: #ffffff; }
+.sf13b5 {color: #0080c0; background-color: #0078d7; }
+.sf13b14 {color: #0080c0; background-color: #ffa0a0; }
+.sf13b16 {color: #0080c0; background-color: #f1e2ad; }
+.sf13b18 {color: #0080c0; background-color: #ffaa82; }
+.sf13b19 {color: #0080c0; background-color: #c8816c; }
+.sf15b2 {color: #000000; background-color: #ffffff; }
+.sf15b5 {color: #000000; background-color: #0078d7; }
+.sf15b14 {color: #000000; background-color: #ffa0a0; }
+.sf15b16 {color: #000000; background-color: #f1e2ad; }
+.sf15b18 {color: #000000; background-color: #ffaa82; }
+.sf15b19 {color: #000000; background-color: #c8816c; }
+.sf17b2 {color: #000000; background-color: #ffffff; }
+.sf17b5 {color: #000000; background-color: #0078d7; }
+.sf17b14 {color: #000000; background-color: #ffa0a0; }
+.sf17b16 {color: #000000; background-color: #f1e2ad; }
+.sf17b18 {color: #000000; background-color: #ffaa82; }
+.sf17b19 {color: #000000; background-color: #c8816c; }
+.sf20b2 {color: #000080; background-color: #ffffff; }
+.sf20b5 {color: #000080; background-color: #0078d7; }
+.sf20b14 {color: #000080; background-color: #ffa0a0; }
+.sf20b16 {color: #000080; background-color: #f1e2ad; }
+.sf20b18 {color: #000080; background-color: #ffaa82; }
+.sf20b19 {color: #000080; background-color: #c8816c; }
+.sf21b2 {color: #0080c0; background-color: #ffffff; }
+.sf21b5 {color: #0080c0; background-color: #0078d7; }
+.sf21b14 {color: #0080c0; background-color: #ffa0a0; }
+.sf21b16 {color: #0080c0; background-color: #f1e2ad; }
+.sf21b18 {color: #0080c0; background-color: #ffaa82; }
+.sf21b19 {color: #0080c0; background-color: #c8816c; }
+.sf3b2i {color: #ababab; background-color: #ffffff; }
+.sf3b5i {color: #005190; background-color: #0078d7; }
+.sf3b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf3b16i {color: #a19774; background-color: #f1e2ad; }
+.sf3b18i {color: #ab7257; background-color: #ffaa82; }
+.sf3b19i {color: #865749; background-color: #c8816c; }
+.sf6b2i {color: #ffffff; background-color: #ffffff; }
+.sf6b5i {color: #54a4e4; background-color: #0078d7; }
+.sf6b14i {color: #ffbfbf; background-color: #ffa0a0; }
+.sf6b16i {color: #f5ebc8; background-color: #f1e2ad; }
+.sf6b18i {color: #ffc6ab; background-color: #ffaa82; }
+.sf6b19i {color: #daaa9c; background-color: #c8816c; }
+.sf7b2i {color: #ababff; background-color: #ffffff; font-weight: bold; }
+.sf7b5i {color: #0051e4; background-color: #0078d7; font-weight: bold; }
+.sf7b14i {color: #ab6bbf; background-color: #ffa0a0; font-weight: bold; }
+.sf7b16i {color: #a197c8; background-color: #f1e2ad; font-weight: bold; }
+.sf7b18i {color: #ab72ab; background-color: #ffaa82; font-weight: bold; }
+.sf7b19i {color: #86579c; background-color: #c8816c; font-weight: bold; }
+.sf8b2i {color: #d5abd5; background-color: #ffffff; }
+.sf8b5i {color: #2a51bb; background-color: #0078d7; }
+.sf8b14i {color: #d56b96; background-color: #ffa0a0; }
+.sf8b16i {color: #cc979f; background-color: #f1e2ad; }
+.sf8b18i {color: #d57282; background-color: #ffaa82; }
+.sf8b19i {color: #b15772; background-color: #c8816c; }
+.sf9b2i {color: #abd5ab; background-color: #ffffff; }
+.sf9b5i {color: #007a90; background-color: #0078d7; }
+.sf9b14i {color: #ab966b; background-color: #ffa0a0; }
+.sf9b16i {color: #a1c274; background-color: #f1e2ad; }
+.sf9b18i {color: #ab9d57; background-color: #ffaa82; }
+.sf9b19i {color: #868149; background-color: #c8816c; }
+.sf10b2i {color: #ffabab; background-color: #ffffff; }
+.sf10b5i {color: #545190; background-color: #0078d7; }
+.sf10b14i {color: #ff6b6b; background-color: #ffa0a0; }
+.sf10b16i {color: #f59774; background-color: #f1e2ad; }
+.sf10b18i {color: #ff7257; background-color: #ffaa82; }
+.sf10b19i {color: #da5749; background-color: #c8816c; }
+.sf11b2i {color: #cbcbcb; background-color: #ffffff; }
+.sf11b5i {color: #1f71b0; background-color: #0078d7; }
+.sf11b14i {color: #cb8b8b; background-color: #ffa0a0; }
+.sf11b16i {color: #c1b794; background-color: #f1e2ad; }
+.sf11b18i {color: #cb9277; background-color: #ffaa82; }
+.sf11b19i {color: #a67769; background-color: #c8816c; }
+.sf12b2i {color: #d5abab; background-color: #ffffff; }
+.sf12b5i {color: #2a5190; background-color: #0078d7; }
+.sf12b14i {color: #d56b6b; background-color: #ffa0a0; }
+.sf12b16i {color: #cc9774; background-color: #f1e2ad; }
+.sf12b18i {color: #d57257; background-color: #ffaa82; }
+.sf12b19i {color: #b15749; background-color: #c8816c; }
+.sf13b2i {color: #abd5eb; background-color: #ffffff; }
+.sf13b5i {color: #007ad0; background-color: #0078d7; }
+.sf13b14i {color: #ab96aa; background-color: #ffa0a0; }
+.sf13b16i {color: #a1c2b3; background-color: #f1e2ad; }
+.sf13b18i {color: #ab9d96; background-color: #ffaa82; }
+.sf13b19i {color: #868187; background-color: #c8816c; }
+.sf15b2i {color: #ababab; background-color: #ffffff; }
+.sf15b5i {color: #005190; background-color: #0078d7; }
+.sf15b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf15b16i {color: #a19774; background-color: #f1e2ad; }
+.sf15b18i {color: #ab7257; background-color: #ffaa82; }
+.sf15b19i {color: #865749; background-color: #c8816c; }
+.sf17b2i {color: #ababab; background-color: #ffffff; }
+.sf17b5i {color: #005190; background-color: #0078d7; }
+.sf17b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf17b16i {color: #a19774; background-color: #f1e2ad; }
+.sf17b18i {color: #ab7257; background-color: #ffaa82; }
+.sf17b19i {color: #865749; background-color: #c8816c; }
+.sf20b2i {color: #ababd5; background-color: #ffffff; }
+.sf20b5i {color: #0051bb; background-color: #0078d7; }
+.sf20b14i {color: #ab6b96; background-color: #ffa0a0; }
+.sf20b16i {color: #a1979f; background-color: #f1e2ad; }
+.sf20b18i {color: #ab7282; background-color: #ffaa82; }
+.sf20b19i {color: #865772; background-color: #c8816c; }
+.sf21b2i {color: #abd5eb; background-color: #ffffff; }
+.sf21b5i {color: #007ad0; background-color: #0078d7; }
+.sf21b14i {color: #ab96aa; background-color: #ffa0a0; }
+.sf21b16i {color: #a1c2b3; background-color: #f1e2ad; }
+.sf21b18i {color: #ab9d96; background-color: #ffaa82; }
+.sf21b19i {color: #868187; background-color: #c8816c; }
+.cn {text-align: center; word-break: normal; color: #000000; background-color: #f0f0f0;}
+.ln {text-align: right; word-break: normal; color: #000000; background-color: #f0f0f0;}
+--></style>
+</head><body>
+<table class="cmp-table-text cmp-table-full cmp-table-2">
+<colgroup>
+<col style="width: 2.5em;" />
+<col style="width: calc(100% / 2 - 2.5em);" />
+<col style="width: 2.5em;" />
+<col style="width: calc(100% / 2 - 2.5em);" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="2" class="title title-left">D:\MyGitHub\copilot-for-eclipse_Old\com.microsoft.copilot.eclipse.ui\src\com\microsoft\copilot\eclipse\ui\chat\ModelPickerGroupsBuilder.java</th>
+<th colspan="2" class="title title-right">D:\MyGitHub\copilot-for-eclipse_New\com.microsoft.copilot.eclipse.ui\src\com\microsoft\copilot\eclipse\ui\chat\ModelPickerGroupsBuilder.java</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="ln">1</td><td class="sf3b2"><code><span class="sf9b2">// Copyright (c) Microsoft Corporation.</span></code></td>
+<td class="ln">1</td><td class="sf3b2"><code><span class="sf9b2">// Copyright (c) Microsoft Corporation.</span></code></td>
+</tr>
+<tr>
+<td class="ln">2</td><td class="sf3b2"><code><span class="sf9b2">// Licensed under the MIT license.</span></code></td>
+<td class="ln">2</td><td class="sf3b2"><code><span class="sf9b2">// Licensed under the MIT license.</span></code></td>
+</tr>
+<tr>
+<td class="ln">3</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">3</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">4</td><td class="sf3b2"><code><span class="sf7b2">package</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">chat</span><span class="sf11b2">;</span></code></td>
+<td class="ln">4</td><td class="sf3b2"><code><span class="sf7b2">package</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">chat</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">5</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">5</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">6</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">java</span><span class="sf11b2">.</span><span class="sf3b2">util</span><span class="sf11b2">.</span><span class="sf3b2">ArrayList</span><span class="sf11b2">;</span></code></td>
+<td class="ln">6</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">java</span><span class="sf11b2">.</span><span class="sf3b2">util</span><span class="sf11b2">.</span><span class="sf3b2">ArrayList</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">7</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">java</span><span class="sf11b2">.</span><span class="sf3b2">util</span><span class="sf11b2">.</span><span class="sf3b2">HashMap</span><span class="sf11b2">;</span></code></td>
+<td class="ln">7</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">java</span><span class="sf11b2">.</span><span class="sf3b2">util</span><span class="sf11b2">.</span><span class="sf3b2">HashMap</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">8</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">java</span><span class="sf11b2">.</span><span class="sf3b2">util</span><span class="sf11b2">.</span><span class="sf3b2">List</span><span class="sf11b2">;</span></code></td>
+<td class="ln">8</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">java</span><span class="sf11b2">.</span><span class="sf3b2">util</span><span class="sf11b2">.</span><span class="sf3b2">List</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">9</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">java</span><span class="sf11b2">.</span><span class="sf3b2">util</span><span class="sf11b2">.</span><span class="sf3b2">Map</span><span class="sf11b2">;</span></code></td>
+<td class="ln">9</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">java</span><span class="sf11b2">.</span><span class="sf3b2">util</span><span class="sf11b2">.</span><span class="sf3b2">Map</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">10</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">java</span><span class="sf11b2">.</span><span class="sf3b2">util</span><span class="sf11b2">.</span><span class="sf3b2">function</span><span class="sf11b2">.</span><span class="sf3b2">Function</span><span class="sf11b2">;</span></code></td>
+<td class="ln">10</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">java</span><span class="sf11b2">.</span><span class="sf3b2">util</span><span class="sf11b2">.</span><span class="sf3b2">function</span><span class="sf11b2">.</span><span class="sf3b2">Function</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">11</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">11</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">12</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">org</span><span class="sf11b2">.</span><span class="sf3b2">apache</span><span class="sf11b2">.</span><span class="sf3b2">commons</span><span class="sf11b2">.</span><span class="sf3b2">lang3</span><span class="sf11b2">.</span><span class="sf3b2">StringUtils</span><span class="sf11b2">;</span></code></td>
+<td class="ln">12</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">org</span><span class="sf11b2">.</span><span class="sf3b2">apache</span><span class="sf11b2">.</span><span class="sf3b2">commons</span><span class="sf11b2">.</span><span class="sf3b2">lang3</span><span class="sf11b2">.</span><span class="sf3b2">StringUtils</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"><a id="d1_1" href="#d1_1">.</a></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">13</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">import</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">org</span><span style="color: #000000; background-color: #ef7774; ">.</span><span style="color: #000000; background-color: #ef7774; ">eclipse</span><span style="color: #000000; background-color: #ef7774; ">.</span><span style="color: #000000; background-color: #ef7774; ">swt</span><span style="color: #000000; background-color: #ef7774; ">.</span><span style="color: #000000; background-color: #ef7774; ">SWT</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">13</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">org</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">swt</span><span class="sf11b2">.</span><span class="sf3b2">graphics</span><span class="sf11b2">.</span><span class="sf3b2">Image</span><span class="sf11b2">;</span></code></td>
+<td class="ln">14</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">org</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">swt</span><span class="sf11b2">.</span><span class="sf3b2">graphics</span><span class="sf11b2">.</span><span class="sf3b2">Image</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">14</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">15</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">15</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">core</span><span class="sf11b2">.</span><span class="sf3b2">lsp</span><span class="sf11b2">.<wbr></span><span class="sf3b2">protocol</span><span class="sf11b2">.</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">;</span></code></td>
+<td class="ln">16</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">core</span><span class="sf11b2">.</span><span class="sf3b2">lsp</span><span class="sf11b2">.<wbr></span><span class="sf3b2">protocol</span><span class="sf11b2">.</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">16</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">Copilo<wbr>tImages</span><span class="sf11b2">;</span></code></td>
+<td class="ln">17</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">Copilo<wbr>tImages</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">17</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">i18n</span><span class="sf11b2">.</span><span class="sf3b2">M<wbr>essages</span><span class="sf11b2">;</span></code></td>
+<td class="ln">18</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">i18n</span><span class="sf11b2">.</span><span class="sf3b2">M<wbr>essages</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">18</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">prefer<wbr>ences</span><span class="sf11b2">.</span><span class="sf3b2">ByokPreferencePage</span><span class="sf11b2">;</span></code></td>
+<td class="ln">19</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">prefer<wbr>ences</span><span class="sf11b2">.</span><span class="sf3b2">ByokPreferencePage</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">19</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">swt</span><span class="sf11b2">.</span><span class="sf3b2">Dr<wbr>opdownItem</span><span class="sf11b2">;</span></code></td>
+<td class="ln">20</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">swt</span><span class="sf11b2">.</span><span class="sf3b2">Dr<wbr>opdownItem</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">20</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">swt</span><span class="sf11b2">.</span><span class="sf3b2">Dr<wbr>opdownItemGroup</span><span class="sf11b2">;</span></code></td>
+<td class="ln">21</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">swt</span><span class="sf11b2">.</span><span class="sf3b2">Dr<wbr>opdownItemGroup</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">21</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">swt</span><span class="sf11b2">.</span><span class="sf3b2">Mo<wbr>delHoverContentProvider</span><span class="sf11b2">;</span></code></td>
+<td class="ln">22</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">swt</span><span class="sf11b2">.</span><span class="sf3b2">Mo<wbr>delHoverContentProvider</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">22</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">utils</span><span class="sf11b2">.<wbr></span><span class="sf3b2">ModelUtils</span><span class="sf11b2">;</span></code></td>
+<td class="ln">23</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">utils</span><span class="sf11b2">.<wbr></span><span class="sf3b2">ModelUtils</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">23</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">utils</span><span class="sf11b2">.<wbr></span><span class="sf3b2">PreferencesUtils</span><span class="sf11b2">;</span></code></td>
+<td class="ln">24</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">utils</span><span class="sf11b2">.<wbr></span><span class="sf3b2">PreferencesUtils</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"><a id="d1_2" href="#d1_2">.</a></td><td style="color: #000000; background-color: #c0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">25</td><td style="color: #000000; background-color: #efcb05; "><code><span style="color: #000000; background-color: #efcb05; font-weight: bold; ">import</span><span style="color: #000000; background-color: #efcb05; ">&nbsp;</span><span style="color: #000000; background-color: #efcb05; ">com</span><span style="color: #000000; background-color: #efcb05; ">.</span><span style="color: #000000; background-color: #efcb05; ">microsoft</span><span style="color: #000000; background-color: #efcb05; ">.</span><span style="color: #000000; background-color: #efcb05; ">copilot</span><span style="color: #000000; background-color: #efcb05; ">.</span><span style="color: #000000; background-color: #efcb05; ">eclipse</span><span style="color: #000000; background-color: #efcb05; ">.</span><span style="color: #000000; background-color: #efcb05; ">ui</span><span style="color: #000000; background-color: #efcb05; ">.</span><span style="color: #000000; background-color: #efcb05; ">utils</span><span style="color: #000000; background-color: #efcb05; ">.<wbr></span><span style="color: #000000; background-color: #efcb05; ">SwtUtils</span><span style="color: #000000; background-color: #efcb05; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">24</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">utils</span><span class="sf11b2">.<wbr></span><span class="sf3b2">UiUtils</span><span class="sf11b2">;</span></code></td>
+<td class="ln">26</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">utils</span><span class="sf11b2">.<wbr></span><span class="sf3b2">UiUtils</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">25</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">27</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">26</td><td class="sf3b2"><code><span class="sf9b2">/**</span></code></td>
+<td class="ln">28</td><td class="sf3b2"><code><span class="sf9b2">/**</span></code></td>
+</tr>
+<tr>
+<td class="ln">27</td><td class="sf3b2"><code><span class="sf9b2">&nbsp;* Builds model picker dropdown groups for the chat UI.</span></code></td>
+<td class="ln">29</td><td class="sf3b2"><code><span class="sf9b2">&nbsp;* Builds model picker dropdown groups for the chat UI.</span></code></td>
+</tr>
+<tr>
+<td class="ln">28</td><td class="sf3b2"><code><span class="sf9b2">&nbsp;*/</span>&nbsp;</code></td>
+<td class="ln">30</td><td class="sf3b2"><code><span class="sf9b2">&nbsp;*/</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">29</td><td class="sf3b2"><code><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">final</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">class</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ModelPickerGroupsBuilder</span><span class="sf11b2">&nbsp;{</span></code></td>
+<td class="ln">31</td><td class="sf3b2"><code><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">final</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">class</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ModelPickerGroupsBuilder</span><span class="sf11b2">&nbsp;{</span></code></td>
+</tr>
+<tr>
+<td class="ln">30</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">32</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">31</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">private</span><span class="sf11b2">&nbsp;</span><span class="sf8b2">ModelPickerGroupsBuilder</span><span class="sf11b2">() {</span></code></td>
+<td class="ln">33</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">private</span><span class="sf11b2">&nbsp;</span><span class="sf8b2">ModelPickerGroupsBuilder</span><span class="sf11b2">() {</span></code></td>
+</tr>
+<tr>
+<td class="ln">32</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; }</span></code></td>
+<td class="ln">34</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">33</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">35</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">34</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">/**</span></code></td>
+<td class="ln">36</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">/**</span></code></td>
+</tr>
+<tr>
+<td class="ln">35</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* Builds grouped dropdown items for the model picker, including the effective reasoning effort and context-window</span></code></td>
+<td class="ln">37</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* Builds grouped dropdown items for the model picker, including the effective reasoning effort and context-window</span></code></td>
+</tr>
+<tr>
+<td class="ln">36</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* size in the suffix.</span></code></td>
+<td class="ln">38</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* size in the suffix.</span></code></td>
+</tr>
+<tr>
+<td class="ln">37</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;*</span></code></td>
+<td class="ln">39</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;*</span></code></td>
+</tr>
+<tr>
+<td class="ln">38</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* @param modelMap available models keyed by id</span></code></td>
+<td class="ln">40</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* @param modelMap available models keyed by id</span></code></td>
+</tr>
+<tr>
+<td class="ln">39</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* @param showAddPremiumModelOption whether to include the premium upsell action</span></code></td>
+<td class="ln">41</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* @param showAddPremiumModelOption whether to include the premium upsell action</span></code></td>
+</tr>
+<tr>
+<td class="ln">40</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* @param showByokManageOption whether to include the BYOK manage action</span></code></td>
+<td class="ln">42</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* @param showByokManageOption whether to include the BYOK manage action</span></code></td>
+</tr>
+<tr>
+<td class="ln">41</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* @param reasoningEffortResolver resolves the effective reasoning effort for a given model (user-selected when</span></code></td>
+<td class="ln">43</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* @param reasoningEffortResolver resolves the effective reasoning effort for a given model (user-selected when</span></code></td>
+</tr>
+<tr>
+<td class="ln">42</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* &nbsp; &nbsp; present, otherwise the inferred default), or {@code null} when none applies</span></code></td>
+<td class="ln">44</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* &nbsp; &nbsp; present, otherwise the inferred default), or {@code null} when none applies</span></code></td>
+</tr>
+<tr>
+<td class="ln">43</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* @param contextWindowResolver resolves the effective context-window display size for a given model (user-selected</span></code></td>
+<td class="ln">45</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* @param contextWindowResolver resolves the effective context-window display size for a given model (user-selected</span></code></td>
+</tr>
+<tr>
+<td class="ln">44</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* &nbsp; &nbsp; tier when present, otherwise the default tier), or {@code null} when none applies</span></code></td>
+<td class="ln">46</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* &nbsp; &nbsp; tier when present, otherwise the default tier), or {@code null} when none applies</span></code></td>
+</tr>
+<tr>
+<td class="ln">45</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* @return grouped dropdown items for the model picker</span></code></td>
+<td class="ln">47</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;* @return grouped dropdown items for the model picker</span></code></td>
+</tr>
+<tr>
+<td class="ln">46</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;*/</span>&nbsp;</code></td>
+<td class="ln">48</td><td class="sf3b2"><code><span class="sf9b2">&nbsp; &nbsp;*/</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">47</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">DropdownItemGroup</span><span class="sf11b2">&gt; </span><span class="sf8b2">build</span><span class="sf11b2">(</span><span class="sf3b2">Map</span><span class="sf11b2">&lt;</span><span class="sf3b2">String</span><span class="sf11b2">, </span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&gt; </span><span class="sf3b2">modelMap</span><span class="sf11b2">, </span><span class="sf7b2">boolean</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">showAddPremiumModelOption</span><span class="sf11b2">,</span></code></td>
+<td class="ln">49</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">DropdownItemGroup</span><span class="sf11b2">&gt; </span><span class="sf8b2">build</span><span class="sf11b2">(</span><span class="sf3b2">Map</span><span class="sf11b2">&lt;</span><span class="sf3b2">String</span><span class="sf11b2">, </span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&gt; </span><span class="sf3b2">modelMap</span><span class="sf11b2">, </span><span class="sf7b2">boolean</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">showAddPremiumModelOption</span><span class="sf11b2">,</span></code></td>
+</tr>
+<tr>
+<td class="ln">48</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf7b2">boolean</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">showByokManageOption</span><span class="sf11b2">, </span><span class="sf3b2">Function</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">, </span><span class="sf3b2">String</span><span class="sf11b2">&gt; </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">,</span></code></td>
+<td class="ln">50</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf7b2">boolean</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">showByokManageOption</span><span class="sf11b2">, </span><span class="sf3b2">Function</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">, </span><span class="sf3b2">String</span><span class="sf11b2">&gt; </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">,</span></code></td>
+</tr>
+<tr>
+<td class="ln">49</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">Function</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">, </span><span class="sf3b2">String</span><span class="sf11b2">&gt; </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">) {</span></code></td>
+<td class="ln">51</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">Function</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">, </span><span class="sf3b2">String</span><span class="sf11b2">&gt; </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">50</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&gt; </span><span class="sf3b2">otherModels</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+<td class="ln">52</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&gt; </span><span class="sf3b2">otherModels</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+</tr>
+<tr>
+<td class="ln">51</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&gt; </span><span class="sf3b2">standardModels</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+<td class="ln">53</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&gt; </span><span class="sf3b2">standardModels</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+</tr>
+<tr>
+<td class="ln">52</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&gt; </span><span class="sf3b2">premiumModels</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+<td class="ln">54</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&gt; </span><span class="sf3b2">premiumModels</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+</tr>
+<tr>
+<td class="ln">53</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&gt; </span><span class="sf3b2">customModels</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+<td class="ln">55</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&gt; </span><span class="sf3b2">customModels</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+</tr>
+<tr>
+<td class="ln">54</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">56</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">55</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">for</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">model</span><span class="sf11b2">&nbsp;: </span><span class="sf3b2">modelMap</span><span class="sf11b2">.</span><span class="sf8b2">values</span><span class="sf11b2">()) {</span></code></td>
+<td class="ln">57</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">for</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">model</span><span class="sf11b2">&nbsp;: </span><span class="sf3b2">modelMap</span><span class="sf11b2">.</span><span class="sf8b2">values</span><span class="sf11b2">()) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">56</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">model</span><span class="sf11b2">.</span><span class="sf8b2">getProviderName</span><span class="sf11b2">() != </span><span class="sf7b2">null</span><span class="sf11b2">&nbsp;|| </span><span class="sf3b2">model</span><span class="sf11b2">.</span><span class="sf8b2">getCustomModel</span><span class="sf11b2">() != </span><span class="sf7b2">null</span><span class="sf11b2">) {</span></code></td>
+<td class="ln">58</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">model</span><span class="sf11b2">.</span><span class="sf8b2">getProviderName</span><span class="sf11b2">() != </span><span class="sf7b2">null</span><span class="sf11b2">&nbsp;|| </span><span class="sf3b2">model</span><span class="sf11b2">.</span><span class="sf8b2">getCustomModel</span><span class="sf11b2">() != </span><span class="sf7b2">null</span><span class="sf11b2">) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">57</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">customModels</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">);</span></code></td>
+<td class="ln">59</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">customModels</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">);</span></code></td>
+</tr>
+<tr>
+<td class="ln">58</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; } </span><span class="sf7b2">else</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">model</span><span class="sf11b2">.</span><span class="sf8b2">getBilling</span><span class="sf11b2">() != </span><span class="sf7b2">null</span><span class="sf11b2">) {</span></code></td>
+<td class="ln">60</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; } </span><span class="sf7b2">else</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">model</span><span class="sf11b2">.</span><span class="sf8b2">getBilling</span><span class="sf11b2">() != </span><span class="sf7b2">null</span><span class="sf11b2">) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">59</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">model</span><span class="sf11b2">.</span><span class="sf8b2">getBilling</span><span class="sf11b2">().</span><span class="sf8b2">isPremium</span><span class="sf11b2">()) {</span></code></td>
+<td class="ln">61</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">model</span><span class="sf11b2">.</span><span class="sf8b2">getBilling</span><span class="sf11b2">().</span><span class="sf8b2">isPremium</span><span class="sf11b2">()) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">60</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">premiumModels</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">);</span></code></td>
+<td class="ln">62</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">premiumModels</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">);</span></code></td>
+</tr>
+<tr>
+<td class="ln">61</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; } </span><span class="sf7b2">else</span><span class="sf11b2">&nbsp;{</span></code></td>
+<td class="ln">63</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; } </span><span class="sf7b2">else</span><span class="sf11b2">&nbsp;{</span></code></td>
+</tr>
+<tr>
+<td class="ln">62</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">standardModels</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">);</span></code></td>
+<td class="ln">64</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">standardModels</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">);</span></code></td>
+</tr>
+<tr>
+<td class="ln">63</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; }</span></code></td>
+<td class="ln">65</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">64</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; } </span><span class="sf7b2">else</span><span class="sf11b2">&nbsp;{</span></code></td>
+<td class="ln">66</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; } </span><span class="sf7b2">else</span><span class="sf11b2">&nbsp;{</span></code></td>
+</tr>
+<tr>
+<td class="ln">65</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">otherModels</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">);</span></code></td>
+<td class="ln">67</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">otherModels</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">);</span></code></td>
+</tr>
+<tr>
+<td class="ln">66</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; }</span></code></td>
+<td class="ln">68</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">67</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+<td class="ln">69</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">68</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">70</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">69</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">standardModels</span><span class="sf11b2">.</span><span class="sf8b2">sort</span><span class="sf11b2">((</span><span class="sf3b2">a</span><span class="sf11b2">, </span><span class="sf3b2">b</span><span class="sf11b2">) -&gt; </span><span class="sf3b2">String</span><span class="sf11b2">.</span><span class="sf3b2">CASE_INSENSITIVE_ORDER</span><span class="sf11b2">.</span><span class="sf8b2">compare</span><span class="sf11b2">(</span><span class="sf3b2">a<wbr></span><span class="sf11b2">.</span><span class="sf8b2">getModelName</span><span class="sf11b2">(), </span><span class="sf3b2">b</span><span class="sf11b2">.</span><span class="sf8b2">getModelName</span><span class="sf11b2">()));</span></code></td>
+<td class="ln">71</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">standardModels</span><span class="sf11b2">.</span><span class="sf8b2">sort</span><span class="sf11b2">((</span><span class="sf3b2">a</span><span class="sf11b2">, </span><span class="sf3b2">b</span><span class="sf11b2">) -&gt; </span><span class="sf3b2">String</span><span class="sf11b2">.</span><span class="sf3b2">CASE_INSENSITIVE_ORDER</span><span class="sf11b2">.</span><span class="sf8b2">compare</span><span class="sf11b2">(</span><span class="sf3b2">a<wbr></span><span class="sf11b2">.</span><span class="sf8b2">getModelName</span><span class="sf11b2">(), </span><span class="sf3b2">b</span><span class="sf11b2">.</span><span class="sf8b2">getModelName</span><span class="sf11b2">()));</span></code></td>
+</tr>
+<tr>
+<td class="ln">70</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">premiumModels</span><span class="sf11b2">.</span><span class="sf8b2">sort</span><span class="sf11b2">((</span><span class="sf3b2">a</span><span class="sf11b2">, </span><span class="sf3b2">b</span><span class="sf11b2">) -&gt; </span><span class="sf3b2">String</span><span class="sf11b2">.</span><span class="sf3b2">CASE_INSENSITIVE_ORDER</span><span class="sf11b2">.</span><span class="sf8b2">compare</span><span class="sf11b2">(</span><span class="sf3b2">a<wbr></span><span class="sf11b2">.</span><span class="sf8b2">getModelName</span><span class="sf11b2">(), </span><span class="sf3b2">b</span><span class="sf11b2">.</span><span class="sf8b2">getModelName</span><span class="sf11b2">()));</span></code></td>
+<td class="ln">72</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">premiumModels</span><span class="sf11b2">.</span><span class="sf8b2">sort</span><span class="sf11b2">((</span><span class="sf3b2">a</span><span class="sf11b2">, </span><span class="sf3b2">b</span><span class="sf11b2">) -&gt; </span><span class="sf3b2">String</span><span class="sf11b2">.</span><span class="sf3b2">CASE_INSENSITIVE_ORDER</span><span class="sf11b2">.</span><span class="sf8b2">compare</span><span class="sf11b2">(</span><span class="sf3b2">a<wbr></span><span class="sf11b2">.</span><span class="sf8b2">getModelName</span><span class="sf11b2">(), </span><span class="sf3b2">b</span><span class="sf11b2">.</span><span class="sf8b2">getModelName</span><span class="sf11b2">()));</span></code></td>
+</tr>
+<tr>
+<td class="ln">71</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">customModels</span><span class="sf11b2">.</span><span class="sf8b2">sort</span><span class="sf11b2">((</span><span class="sf3b2">a</span><span class="sf11b2">, </span><span class="sf3b2">b</span><span class="sf11b2">) -&gt; </span><span class="sf3b2">String</span><span class="sf11b2">.</span><span class="sf3b2">CASE_INSENSITIVE_ORDER</span><span class="sf11b2">.</span><span class="sf8b2">compare</span><span class="sf11b2">(</span><span class="sf3b2">a<wbr></span><span class="sf11b2">.</span><span class="sf8b2">getModelName</span><span class="sf11b2">(), </span><span class="sf3b2">b</span><span class="sf11b2">.</span><span class="sf8b2">getModelName</span><span class="sf11b2">()));</span></code></td>
+<td class="ln">73</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">customModels</span><span class="sf11b2">.</span><span class="sf8b2">sort</span><span class="sf11b2">((</span><span class="sf3b2">a</span><span class="sf11b2">, </span><span class="sf3b2">b</span><span class="sf11b2">) -&gt; </span><span class="sf3b2">String</span><span class="sf11b2">.</span><span class="sf3b2">CASE_INSENSITIVE_ORDER</span><span class="sf11b2">.</span><span class="sf8b2">compare</span><span class="sf11b2">(</span><span class="sf3b2">a<wbr></span><span class="sf11b2">.</span><span class="sf8b2">getModelName</span><span class="sf11b2">(), </span><span class="sf3b2">b</span><span class="sf11b2">.</span><span class="sf8b2">getModelName</span><span class="sf11b2">()));</span></code></td>
+</tr>
+<tr>
+<td class="ln">72</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">74</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">73</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">DropdownItemGroup</span><span class="sf11b2">&gt; </span><span class="sf3b2">groups</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+<td class="ln">75</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">DropdownItemGroup</span><span class="sf11b2">&gt; </span><span class="sf3b2">groups</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+</tr>
+<tr>
+<td class="ln">74</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(!</span><span class="sf3b2">otherModels</span><span class="sf11b2">.</span><span class="sf8b2">isEmpty</span><span class="sf11b2">()) {</span></code></td>
+<td class="ln">76</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(!</span><span class="sf3b2">otherModels</span><span class="sf11b2">.</span><span class="sf8b2">isEmpty</span><span class="sf11b2">()) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">75</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">groups</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">DropdownItemGroup</span><span class="sf11b2">.</span><span class="sf8b2">of</span><span class="sf11b2">(</span><span class="sf8b2">buildMo<wbr>delDropdownItems</span><span class="sf11b2">(</span><span class="sf3b2">otherModels</span><span class="sf11b2">, </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">,</span></code></td>
+<td class="ln">77</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">groups</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">DropdownItemGroup</span><span class="sf11b2">.</span><span class="sf8b2">of</span><span class="sf11b2">(</span><span class="sf8b2">buildMo<wbr>delDropdownItems</span><span class="sf11b2">(</span><span class="sf3b2">otherModels</span><span class="sf11b2">, </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">,</span></code></td>
+</tr>
+<tr>
+<td class="ln">76</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">)));</span></code></td>
+<td class="ln">78</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">)));</span></code></td>
+</tr>
+<tr>
+<td class="ln">77</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+<td class="ln">79</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">78</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(!</span><span class="sf3b2">standardModels</span><span class="sf11b2">.</span><span class="sf8b2">isEmpty</span><span class="sf11b2">()) {</span></code></td>
+<td class="ln">80</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(!</span><span class="sf3b2">standardModels</span><span class="sf11b2">.</span><span class="sf8b2">isEmpty</span><span class="sf11b2">()) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">79</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">groups</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">DropdownItemGroup</span><span class="sf11b2">.</span><span class="sf8b2">of</span><span class="sf11b2">(</span><span class="sf3b2">Message<wbr>s</span><span class="sf11b2">.</span><span class="sf3b2">chat_standardModels</span><span class="sf11b2">,</span></code></td>
+<td class="ln">81</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">groups</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">DropdownItemGroup</span><span class="sf11b2">.</span><span class="sf8b2">of</span><span class="sf11b2">(</span><span class="sf3b2">Message<wbr>s</span><span class="sf11b2">.</span><span class="sf3b2">chat_standardModels</span><span class="sf11b2">,</span></code></td>
+</tr>
+<tr>
+<td class="ln">80</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf8b2">buildModelDropdownItems</span><span class="sf11b2">(</span><span class="sf3b2">standardModels</span><span class="sf11b2">,<wbr> </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">, </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">)));</span></code></td>
+<td class="ln">82</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf8b2">buildModelDropdownItems</span><span class="sf11b2">(</span><span class="sf3b2">standardModels</span><span class="sf11b2">,<wbr> </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">, </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">)));</span></code></td>
+</tr>
+<tr>
+<td class="ln">81</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+<td class="ln">83</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">82</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(!</span><span class="sf3b2">premiumModels</span><span class="sf11b2">.</span><span class="sf8b2">isEmpty</span><span class="sf11b2">()) {</span></code></td>
+<td class="ln">84</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(!</span><span class="sf3b2">premiumModels</span><span class="sf11b2">.</span><span class="sf8b2">isEmpty</span><span class="sf11b2">()) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">83</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">header</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">standardModels</span><span class="sf11b2">.</span><span class="sf8b2">isEmpty</span><span class="sf11b2">() ? </span><span class="sf3b2">Messages</span><span class="sf11b2">.</span><span class="sf3b2">chat_copilotModels</span><span class="sf11b2">&nbsp;: </span><span class="sf3b2">Messages</span><span class="sf11b2">.</span><span class="sf3b2">chat_premiumModels</span><span class="sf11b2">;</span></code></td>
+<td class="ln">85</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">header</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">standardModels</span><span class="sf11b2">.</span><span class="sf8b2">isEmpty</span><span class="sf11b2">() ? </span><span class="sf3b2">Messages</span><span class="sf11b2">.</span><span class="sf3b2">chat_copilotModels</span><span class="sf11b2">&nbsp;: </span><span class="sf3b2">Messages</span><span class="sf11b2">.</span><span class="sf3b2">chat_premiumModels</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">84</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">groups</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">DropdownItemGroup</span><span class="sf11b2">.</span><span class="sf8b2">of</span><span class="sf11b2">(</span><span class="sf3b2">header</span><span class="sf11b2">,<wbr> </span><span class="sf8b2">buildModelDropdownItems</span><span class="sf11b2">(</span><span class="sf3b2">premiumModels</span><span class="sf11b2">, </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">,</span></code></td>
+<td class="ln">86</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">groups</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">DropdownItemGroup</span><span class="sf11b2">.</span><span class="sf8b2">of</span><span class="sf11b2">(</span><span class="sf3b2">header</span><span class="sf11b2">,<wbr> </span><span class="sf8b2">buildModelDropdownItems</span><span class="sf11b2">(</span><span class="sf3b2">premiumModels</span><span class="sf11b2">, </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">,</span></code></td>
+</tr>
+<tr>
+<td class="ln">85</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">)));</span></code></td>
+<td class="ln">87</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">)));</span></code></td>
+</tr>
+<tr>
+<td class="ln">86</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+<td class="ln">88</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">87</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(!</span><span class="sf3b2">customModels</span><span class="sf11b2">.</span><span class="sf8b2">isEmpty</span><span class="sf11b2">()) {</span></code></td>
+<td class="ln">89</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(!</span><span class="sf3b2">customModels</span><span class="sf11b2">.</span><span class="sf8b2">isEmpty</span><span class="sf11b2">()) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">88</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">groups</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">DropdownItemGroup</span><span class="sf11b2">.</span><span class="sf8b2">of</span><span class="sf11b2">(</span><span class="sf3b2">Message<wbr>s</span><span class="sf11b2">.</span><span class="sf3b2">chat_customModels</span><span class="sf11b2">,</span></code></td>
+<td class="ln">90</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">groups</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">DropdownItemGroup</span><span class="sf11b2">.</span><span class="sf8b2">of</span><span class="sf11b2">(</span><span class="sf3b2">Message<wbr>s</span><span class="sf11b2">.</span><span class="sf3b2">chat_customModels</span><span class="sf11b2">,</span></code></td>
+</tr>
+<tr>
+<td class="ln">89</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf8b2">buildModelDropdownItems</span><span class="sf11b2">(</span><span class="sf3b2">customModels</span><span class="sf11b2">, </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">, </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">)));</span></code></td>
+<td class="ln">91</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf8b2">buildModelDropdownItems</span><span class="sf11b2">(</span><span class="sf3b2">customModels</span><span class="sf11b2">, </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">, </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">)));</span></code></td>
+</tr>
+<tr>
+<td class="ln">90</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+<td class="ln">92</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">91</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">93</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">92</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">DropdownItem</span><span class="sf11b2">&gt; </span><span class="sf3b2">actionItems</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+<td class="ln">94</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">DropdownItem</span><span class="sf11b2">&gt; </span><span class="sf3b2">actionItems</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+</tr>
+<tr>
+<td class="ln">93</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">showAddPremiumModelOption</span><span class="sf11b2">) {</span></code></td>
+<td class="ln">95</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">showAddPremiumModelOption</span><span class="sf11b2">) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">94</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">actionItems</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">DropdownItem</span><span class="sf11b2">.</span><span class="sf8b2">Builder</span><span class="sf11b2">().</span><span class="sf8b2">label</span><span class="sf11b2">(</span><span class="sf3b2">Messages</span><span class="sf11b2">.</span><span class="sf3b2">c<wbr>hat_addPremiumModels</span><span class="sf11b2">).</span><span class="sf8b2">onAction</span><span class="sf11b2">(</span></code></td>
+<td class="ln">96</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">actionItems</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">DropdownItem</span><span class="sf11b2">.</span><span class="sf8b2">Builder</span><span class="sf11b2">().</span><span class="sf8b2">label</span><span class="sf11b2">(</span><span class="sf3b2">Messages</span><span class="sf11b2">.</span><span class="sf3b2">c<wbr>hat_addPremiumModels</span><span class="sf11b2">).</span><span class="sf8b2">onAction</span><span class="sf11b2">(</span></code></td>
+</tr>
+<tr>
+<td class="ln">95</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; () -&gt; </span><span class="sf3b2">UiUtils</span><span class="sf11b2">.</span><span class="sf8b2">executeCommandWithParameters</span><span class="sf11b2">(</span><span class="sf12b2">"c<wbr>om.microsoft.copilot.eclipse.commands.u<wbr>pgradeCopilotPlan"</span><span class="sf11b2">, </span><span class="sf7b2">null</span><span class="sf11b2">))</span></code></td>
+<td class="ln">97</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; () -&gt; </span><span class="sf3b2">UiUtils</span><span class="sf11b2">.</span><span class="sf8b2">executeCommandWithParameters</span><span class="sf11b2">(</span><span class="sf12b2">"c<wbr>om.microsoft.copilot.eclipse.commands.u<wbr>pgradeCopilotPlan"</span><span class="sf11b2">, </span><span class="sf7b2">null</span><span class="sf11b2">))</span></code></td>
+</tr>
+<tr>
+<td class="ln">96</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .</span><span class="sf8b2">build</span><span class="sf11b2">());</span></code></td>
+<td class="ln">98</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .</span><span class="sf8b2">build</span><span class="sf11b2">());</span></code></td>
+</tr>
+<tr>
+<td class="ln">97</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+<td class="ln">99</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">98</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">showByokManageOption</span><span class="sf11b2">) {</span></code></td>
+<td class="ln">100</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">showByokManageOption</span><span class="sf11b2">) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">99</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">actionItems</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">DropdownItem</span><span class="sf11b2">.</span><span class="sf8b2">Builder</span><span class="sf11b2">().</span><span class="sf8b2">label</span><span class="sf11b2">(</span><span class="sf3b2">Messages</span><span class="sf11b2">.</span><span class="sf3b2">c<wbr>hat_actionBar_modelPicker_manageModels</span><span class="sf11b2">)<wbr></span></code></td>
+<td class="ln">101</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">actionItems</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">DropdownItem</span><span class="sf11b2">.</span><span class="sf8b2">Builder</span><span class="sf11b2">().</span><span class="sf8b2">label</span><span class="sf11b2">(</span><span class="sf3b2">Messages</span><span class="sf11b2">.</span><span class="sf3b2">c<wbr>hat_actionBar_modelPicker_manageModels</span><span class="sf11b2">)<wbr></span></code></td>
+</tr>
+<tr>
+<td class="ln">100</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .</span><span class="sf8b2">onAction</span><span class="sf11b2">(</span><span class="sf3b2">ModelPickerGroupsBuilder</span><span class="sf11b2">::</span><span class="sf3b2">ope<wbr>nManageModelsPreferences</span><span class="sf11b2">).</span><span class="sf8b2">build</span><span class="sf11b2">());</span></code></td>
+<td class="ln">102</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .</span><span class="sf8b2">onAction</span><span class="sf11b2">(</span><span class="sf3b2">ModelPickerGroupsBuilder</span><span class="sf11b2">::</span><span class="sf3b2">ope<wbr>nManageModelsPreferences</span><span class="sf11b2">).</span><span class="sf8b2">build</span><span class="sf11b2">());</span></code></td>
+</tr>
+<tr>
+<td class="ln">101</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+<td class="ln">103</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">102</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(!</span><span class="sf3b2">actionItems</span><span class="sf11b2">.</span><span class="sf8b2">isEmpty</span><span class="sf11b2">()) {</span></code></td>
+<td class="ln">104</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(!</span><span class="sf3b2">actionItems</span><span class="sf11b2">.</span><span class="sf8b2">isEmpty</span><span class="sf11b2">()) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">103</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">groups</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">DropdownItemGroup</span><span class="sf11b2">.</span><span class="sf8b2">of</span><span class="sf11b2">(</span><span class="sf3b2">actionI<wbr>tems</span><span class="sf11b2">));</span></code></td>
+<td class="ln">105</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">groups</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">DropdownItemGroup</span><span class="sf11b2">.</span><span class="sf8b2">of</span><span class="sf11b2">(</span><span class="sf3b2">actionI<wbr>tems</span><span class="sf11b2">));</span></code></td>
+</tr>
+<tr>
+<td class="ln">104</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+<td class="ln">106</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">105</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">return</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">groups</span><span class="sf11b2">;</span></code></td>
+<td class="ln">107</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">return</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">groups</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">106</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; }</span></code></td>
+<td class="ln">108</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">107</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">109</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">108</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">private</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">DropdownItem</span><span class="sf11b2">&gt; </span><span class="sf8b2">buildModelDropdownItems</span><span class="sf11b2">(</span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotMod<wbr>el</span><span class="sf11b2">&gt; </span><span class="sf3b2">models</span><span class="sf11b2">,</span></code></td>
+<td class="ln">110</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">private</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">DropdownItem</span><span class="sf11b2">&gt; </span><span class="sf8b2">buildModelDropdownItems</span><span class="sf11b2">(</span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotMod<wbr>el</span><span class="sf11b2">&gt; </span><span class="sf3b2">models</span><span class="sf11b2">,</span></code></td>
+</tr>
+<tr>
+<td class="ln">109</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">Function</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">, </span><span class="sf3b2">String</span><span class="sf11b2">&gt; </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">, </span><span class="sf3b2">Function</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">, </span><span class="sf3b2">String</span><span class="sf11b2">&gt; </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">) {</span></code></td>
+<td class="ln">111</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">Function</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">, </span><span class="sf3b2">String</span><span class="sf11b2">&gt; </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">, </span><span class="sf3b2">Function</span><span class="sf11b2">&lt;</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">, </span><span class="sf3b2">String</span><span class="sf11b2">&gt; </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">110</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">DropdownItem</span><span class="sf11b2">&gt; </span><span class="sf3b2">items</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+<td class="ln">112</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">DropdownItem</span><span class="sf11b2">&gt; </span><span class="sf3b2">items</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+</tr>
+<tr>
+<td class="ln">111</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">for</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">model</span><span class="sf11b2">&nbsp;: </span><span class="sf3b2">models</span><span class="sf11b2">) {</span></code></td>
+<td class="ln">113</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">for</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">model</span><span class="sf11b2">&nbsp;: </span><span class="sf3b2">models</span><span class="sf11b2">) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">112</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">rawName</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">model</span><span class="sf11b2">.</span><span class="sf8b2">getModelName</span><span class="sf11b2">();</span></code></td>
+<td class="ln">114</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">rawName</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">model</span><span class="sf11b2">.</span><span class="sf8b2">getModelName</span><span class="sf11b2">();</span></code></td>
+</tr>
+<tr>
+<td class="ln">113</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf7b2">boolean</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">alreadyHasPreview</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">rawName</span><span class="sf11b2">&nbsp;!= </span><span class="sf7b2">null</span><span class="sf11b2">&nbsp;&amp;&amp; </span><span class="sf3b2">rawName</span><span class="sf11b2">.</span><span class="sf8b2">toLowerCase</span><span class="sf11b2">().</span><span class="sf8b2">endsWith</span><span class="sf11b2">(</span><span class="sf12b2">"(previe<wbr>w)"</span><span class="sf11b2">);</span></code></td>
+<td class="ln">115</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf7b2">boolean</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">alreadyHasPreview</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">rawName</span><span class="sf11b2">&nbsp;!= </span><span class="sf7b2">null</span><span class="sf11b2">&nbsp;&amp;&amp; </span><span class="sf3b2">rawName</span><span class="sf11b2">.</span><span class="sf8b2">toLowerCase</span><span class="sf11b2">().</span><span class="sf8b2">endsWith</span><span class="sf11b2">(</span><span class="sf12b2">"(previe<wbr>w)"</span><span class="sf11b2">);</span></code></td>
+</tr>
+<tr>
+<td class="ln">114</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">name</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">model</span><span class="sf11b2">.</span><span class="sf8b2">isPreview</span><span class="sf11b2">() &amp;&amp; !</span><span class="sf3b2">alreadyHasPreview</span><span class="sf11b2">&nbsp;? </span><span class="sf3b2">rawName</span><span class="sf11b2">&nbsp;+ </span><span class="sf12b2">" "</span><span class="sf11b2">&nbsp;+ </span><span class="sf3b2">Messages</span><span class="sf11b2">.</span><span class="sf3b2">model_preview_suffix</span><span class="sf11b2">&nbsp;: </span><span class="sf3b2">rawName</span><span class="sf11b2">;</span></code></td>
+<td class="ln">116</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">name</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">model</span><span class="sf11b2">.</span><span class="sf8b2">isPreview</span><span class="sf11b2">() &amp;&amp; !</span><span class="sf3b2">alreadyHasPreview</span><span class="sf11b2">&nbsp;? </span><span class="sf3b2">rawName</span><span class="sf11b2">&nbsp;+ </span><span class="sf12b2">" "</span><span class="sf11b2">&nbsp;+ </span><span class="sf3b2">Messages</span><span class="sf11b2">.</span><span class="sf3b2">model_preview_suffix</span><span class="sf11b2">&nbsp;: </span><span class="sf3b2">rawName</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">115</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">117</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">116</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">effectiveEffort</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">&nbsp;!= </span><span class="sf7b2">null</span><span class="sf11b2">&nbsp;? </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">.</span><span class="sf8b2">apply</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">) : </span><span class="sf7b2">null</span><span class="sf11b2">;</span></code></td>
+<td class="ln">118</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">effectiveEffort</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">&nbsp;!= </span><span class="sf7b2">null</span><span class="sf11b2">&nbsp;? </span><span class="sf3b2">reasoningEffortResolver</span><span class="sf11b2">.</span><span class="sf8b2">apply</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">) : </span><span class="sf7b2">null</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">117</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">effectiveContextWindow</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">&nbsp;!= </span><span class="sf7b2">null</span><span class="sf11b2">&nbsp;? </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">.</span><span class="sf8b2">apply</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">) : </span><span class="sf7b2">null</span><span class="sf11b2">;</span></code></td>
+<td class="ln">119</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">effectiveContextWindow</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">&nbsp;!= </span><span class="sf7b2">null</span><span class="sf11b2">&nbsp;? </span><span class="sf3b2">contextWindowResolver</span><span class="sf11b2">.</span><span class="sf8b2">apply</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">) : </span><span class="sf7b2">null</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">118</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">suffix</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">ModelUtils</span><span class="sf11b2">.</span><span class="sf8b2">getModelSuffix</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">, </span><span class="sf3b2">effectiveEffort</span><span class="sf11b2">, </span><span class="sf3b2">effectiveContextWindow</span><span class="sf11b2">);</span></code></td>
+<td class="ln">120</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">suffix</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">ModelUtils</span><span class="sf11b2">.</span><span class="sf8b2">getModelSuffix</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">, </span><span class="sf3b2">effectiveEffort</span><span class="sf11b2">, </span><span class="sf3b2">effectiveContextWindow</span><span class="sf11b2">);</span></code></td>
+</tr>
+<tr>
+<td class="ln">119</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">effortLevel</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">ModelUtils</span><span class="sf11b2">.</span><span class="sf8b2">formatReasoningEffortLevel</span><span class="sf11b2">(</span><span class="sf3b2">e<wbr>ffectiveEffort</span><span class="sf11b2">);</span></code></td>
+<td class="ln">121</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">effortLevel</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">ModelUtils</span><span class="sf11b2">.</span><span class="sf8b2">formatReasoningEffortLevel</span><span class="sf11b2">(</span><span class="sf3b2">e<wbr>ffectiveEffort</span><span class="sf11b2">);</span></code></td>
+</tr>
+<tr>
+<td class="ln">120</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">String</span><span class="sf11b2">&gt; </span><span class="sf3b2">selectedDetails</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+<td class="ln">122</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">List</span><span class="sf11b2">&lt;</span><span class="sf3b2">String</span><span class="sf11b2">&gt; </span><span class="sf3b2">selectedDetails</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">ArrayList</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+</tr>
+<tr>
+<td class="ln">121</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">StringUtils</span><span class="sf11b2">.</span><span class="sf8b2">isNotBlank</span><span class="sf11b2">(</span><span class="sf3b2">effectiveContex<wbr>tWindow</span><span class="sf11b2">)) {</span></code></td>
+<td class="ln">123</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">StringUtils</span><span class="sf11b2">.</span><span class="sf8b2">isNotBlank</span><span class="sf11b2">(</span><span class="sf3b2">effectiveContex<wbr>tWindow</span><span class="sf11b2">)) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">122</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">selectedDetails</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">effectiveContextWin<wbr>dow</span><span class="sf11b2">);</span></code></td>
+<td class="ln">124</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">selectedDetails</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">effectiveContextWin<wbr>dow</span><span class="sf11b2">);</span></code></td>
+</tr>
+<tr>
+<td class="ln">123</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; }</span></code></td>
+<td class="ln">125</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">124</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">StringUtils</span><span class="sf11b2">.</span><span class="sf8b2">isNotBlank</span><span class="sf11b2">(</span><span class="sf3b2">effortLevel</span><span class="sf11b2">)) {</span></code></td>
+<td class="ln">126</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">StringUtils</span><span class="sf11b2">.</span><span class="sf8b2">isNotBlank</span><span class="sf11b2">(</span><span class="sf3b2">effortLevel</span><span class="sf11b2">)) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">125</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">selectedDetails</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">effortLevel</span><span class="sf11b2">);</span></code></td>
+<td class="ln">127</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">selectedDetails</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf3b2">effortLevel</span><span class="sf11b2">);</span></code></td>
+</tr>
+<tr>
+<td class="ln">126</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; }</span></code></td>
+<td class="ln">128</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">127</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">selectedLabel</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">StringUtils</span><span class="sf11b2">.</span><span class="sf8b2">isNotBlank</span><span class="sf11b2">(</span><span class="sf3b2">name</span><span class="sf11b2">) &amp;&amp; !</span><span class="sf3b2">selectedDetails</span><span class="sf11b2">.</span><span class="sf8b2">isEmpty</span><span class="sf11b2">()</span></code></td>
+<td class="ln">129</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">selectedLabel</span><span class="sf11b2">&nbsp;= </span><span class="sf3b2">StringUtils</span><span class="sf11b2">.</span><span class="sf8b2">isNotBlank</span><span class="sf11b2">(</span><span class="sf3b2">name</span><span class="sf11b2">) &amp;&amp; !</span><span class="sf3b2">selectedDetails</span><span class="sf11b2">.</span><span class="sf8b2">isEmpty</span><span class="sf11b2">()</span></code></td>
+</tr>
+<tr>
+<td class="ln">128</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ? </span><span class="sf3b2">name</span><span class="sf11b2">&nbsp;+ </span><span class="sf12b2">" - "</span><span class="sf11b2">&nbsp;+ </span><span class="sf3b2">String</span><span class="sf11b2">.</span><span class="sf8b2">join</span><span class="sf11b2">(</span><span class="sf12b2">" - "</span><span class="sf11b2">, </span><span class="sf3b2">selectedDetails</span><span class="sf11b2">) : </span><span class="sf7b2">null</span><span class="sf11b2">;</span></code></td>
+<td class="ln">130</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ? </span><span class="sf3b2">name</span><span class="sf11b2">&nbsp;+ </span><span class="sf12b2">" - "</span><span class="sf11b2">&nbsp;+ </span><span class="sf3b2">String</span><span class="sf11b2">.</span><span class="sf8b2">join</span><span class="sf11b2">(</span><span class="sf12b2">" - "</span><span class="sf11b2">, </span><span class="sf3b2">selectedDetails</span><span class="sf11b2">) : </span><span class="sf7b2">null</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">129</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">131</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">130</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">items</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">DropdownItem</span><span class="sf11b2">.</span><span class="sf8b2">Builder</span><span class="sf11b2">().</span><span class="sf8b2">id</span><span class="sf11b2">(</span><span class="sf3b2">rawName</span><span class="sf11b2">).</span><span class="sf8b2">labe<wbr>l</span><span class="sf11b2">(</span><span class="sf3b2">name</span><span class="sf11b2">).</span><span class="sf8b2">selectedLabel</span><span class="sf11b2">(</span><span class="sf3b2">selectedLabel</span><span class="sf11b2">).</span><span class="sf8b2">su<wbr>ffix</span><span class="sf11b2">(</span><span class="sf3b2">suffix</span><span class="sf11b2">)</span></code></td>
+<td class="ln">132</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf3b2">items</span><span class="sf11b2">.</span><span class="sf8b2">add</span><span class="sf11b2">(</span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">DropdownItem</span><span class="sf11b2">.</span><span class="sf8b2">Builder</span><span class="sf11b2">().</span><span class="sf8b2">id</span><span class="sf11b2">(</span><span class="sf3b2">rawName</span><span class="sf11b2">).</span><span class="sf8b2">labe<wbr>l</span><span class="sf11b2">(</span><span class="sf3b2">name</span><span class="sf11b2">).</span><span class="sf8b2">selectedLabel</span><span class="sf11b2">(</span><span class="sf3b2">selectedLabel</span><span class="sf11b2">).</span><span class="sf8b2">su<wbr>ffix</span><span class="sf11b2">(</span><span class="sf3b2">suffix</span><span class="sf11b2">)</span></code></td>
+</tr>
+<tr>
+<td class="ln">131</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .</span><span class="sf8b2">icon</span><span class="sf11b2">(</span><span class="sf8b2">resolveModelIcon</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">)).</span><span class="sf8b2">hoverPro<wbr>vider</span><span class="sf11b2">(</span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf8b2">ModelHoverContentProvider</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">)).</span><span class="sf8b2">build<wbr></span><span class="sf11b2">());</span></code></td>
+<td class="ln">133</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .</span><span class="sf8b2">icon</span><span class="sf11b2">(</span><span class="sf8b2">resolveModelIcon</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">)).</span><span class="sf8b2">hoverPro<wbr>vider</span><span class="sf11b2">(</span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf8b2">ModelHoverContentProvider</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">)).</span><span class="sf8b2">build<wbr></span><span class="sf11b2">());</span></code></td>
+</tr>
+<tr>
+<td class="ln">132</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+<td class="ln">134</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">133</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">return</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">items</span><span class="sf11b2">;</span></code></td>
+<td class="ln">135</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">return</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">items</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">134</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; }</span></code></td>
+<td class="ln">136</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">135</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">137</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">136</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">private</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">Image</span><span class="sf11b2">&nbsp;</span><span class="sf8b2">resolveModelIcon</span><span class="sf11b2">(</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">model</span><span class="sf11b2">) {</span></code></td>
+<td class="ln">138</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">private</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">Image</span><span class="sf11b2">&nbsp;</span><span class="sf8b2">resolveModelIcon</span><span class="sf11b2">(</span><span class="sf3b2">CopilotModel</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">model</span><span class="sf11b2">) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">137</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">StringUtils</span><span class="sf11b2">.</span><span class="sf8b2">isBlank</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">.</span><span class="sf8b2">getDegradati<wbr>onReason</span><span class="sf11b2">())) {</span></code></td>
+<td class="ln">139</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">if</span><span class="sf11b2">&nbsp;(</span><span class="sf3b2">StringUtils</span><span class="sf11b2">.</span><span class="sf8b2">isBlank</span><span class="sf11b2">(</span><span class="sf3b2">model</span><span class="sf11b2">.</span><span class="sf8b2">getDegradati<wbr>onReason</span><span class="sf11b2">())) {</span></code></td>
+</tr>
+<tr>
+<td class="ln">138</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf7b2">return</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">null</span><span class="sf11b2">;</span></code></td>
+<td class="ln">140</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; </span><span class="sf7b2">return</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">null</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">139</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+<td class="ln">141</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">140</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">return</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">CopilotImages</span><span class="sf11b2">.</span><span class="sf8b2">getThemedImage</span><span class="sf11b2">(</span><span class="sf3b2">CopilotIma<wbr>ges</span><span class="sf11b2">.</span><span class="sf3b2">IMG_DROPDOWN_WARNING</span><span class="sf11b2">,</span></code></td>
+<td class="ln">142</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf7b2">return</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">CopilotImages</span><span class="sf11b2">.</span><span class="sf8b2">getThemedImage</span><span class="sf11b2">(</span><span class="sf3b2">CopilotIma<wbr>ges</span><span class="sf11b2">.</span><span class="sf3b2">IMG_DROPDOWN_WARNING</span><span class="sf11b2">,</span></code></td>
+</tr>
+<tr>
+<td class="ln">141</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">CopilotImages</span><span class="sf11b2">.</span><span class="sf3b2">IMG_DROPDOWN_WARNING_DARK<wbr></span><span class="sf11b2">);</span></code></td>
+<td class="ln">143</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">CopilotImages</span><span class="sf11b2">.</span><span class="sf3b2">IMG_DROPDOWN_WARNING_DARK<wbr></span><span class="sf11b2">);</span></code></td>
+</tr>
+<tr>
+<td class="ln">142</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; }</span></code></td>
+<td class="ln">144</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">143</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">145</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">144</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">private</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">void</span><span class="sf11b2">&nbsp;</span><span class="sf8b2">openManageModelsPreferences</span><span class="sf11b2">() {</span></code></td>
+<td class="ln">146</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">private</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">void</span><span class="sf11b2">&nbsp;</span><span class="sf8b2">openManageModelsPreferences</span><span class="sf11b2">() {</span></code></td>
+</tr>
+<tr>
+<td class="ln">145</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">Map</span><span class="sf11b2">&lt;</span><span class="sf3b2">String</span><span class="sf11b2">, </span><span class="sf3b2">Object</span><span class="sf11b2">&gt; </span><span class="sf3b2">parameters</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">HashMap</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+<td class="ln">147</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">Map</span><span class="sf11b2">&lt;</span><span class="sf3b2">String</span><span class="sf11b2">, </span><span class="sf3b2">Object</span><span class="sf11b2">&gt; </span><span class="sf3b2">parameters</span><span class="sf11b2">&nbsp;= </span><span class="sf7b2">new</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">HashMap</span><span class="sf11b2">&lt;&gt;();</span></code></td>
+</tr>
+<tr>
+<td class="ln">146</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">parameters</span><span class="sf11b2">.</span><span class="sf8b2">put</span><span class="sf11b2">(</span><span class="sf12b2">"com.microsoft.copilot.e<wbr>clipse.commands.openPreferences.activeP<wbr>ageId"</span><span class="sf11b2">, </span><span class="sf3b2">ByokPreferencePage</span><span class="sf11b2">.</span><span class="sf3b2">ID</span><span class="sf11b2">);</span></code></td>
+<td class="ln">148</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">parameters</span><span class="sf11b2">.</span><span class="sf8b2">put</span><span class="sf11b2">(</span><span class="sf12b2">"com.microsoft.copilot.e<wbr>clipse.commands.openPreferences.activeP<wbr>ageId"</span><span class="sf11b2">, </span><span class="sf3b2">ByokPreferencePage</span><span class="sf11b2">.</span><span class="sf3b2">ID</span><span class="sf11b2">);</span></code></td>
+</tr>
+<tr>
+<td class="ln">147</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">parameters</span><span class="sf11b2">.</span><span class="sf8b2">put</span><span class="sf11b2">(</span><span class="sf12b2">"com.microsoft.copilot.e<wbr>clipse.commands.openPreferences.pageIds<wbr>"</span><span class="sf11b2">,</span></code></td>
+<td class="ln">149</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">parameters</span><span class="sf11b2">.</span><span class="sf8b2">put</span><span class="sf11b2">(</span><span class="sf12b2">"com.microsoft.copilot.e<wbr>clipse.commands.openPreferences.pageIds<wbr>"</span><span class="sf11b2">,</span></code></td>
+</tr>
+<tr>
+<td class="ln">148</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">.</span><span class="sf8b2">join</span><span class="sf11b2">(</span><span class="sf12b2">","</span><span class="sf11b2">, </span><span class="sf3b2">PreferencesUtils</span><span class="sf11b2">.</span><span class="sf8b2">getAllPreferenceIds</span><span class="sf11b2">())<wbr>);</span></code></td>
+<td class="ln">150</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="sf3b2">String</span><span class="sf11b2">.</span><span class="sf8b2">join</span><span class="sf11b2">(</span><span class="sf12b2">","</span><span class="sf11b2">, </span><span class="sf3b2">PreferencesUtils</span><span class="sf11b2">.</span><span class="sf8b2">getAllPreferenceIds</span><span class="sf11b2">())<wbr>);</span></code></td>
+</tr>
+<tr>
+<td class="ln">149</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">UiUtils</span><span class="sf11b2">.</span><span class="sf8b2">executeCommandWithParameters</span><span class="sf11b2">(</span><span class="sf12b2">"c<wbr>om.microsoft.copilot.eclipse.commands.o<wbr>penPreferences"</span><span class="sf11b2">, </span><span class="sf3b2">parameters</span><span class="sf11b2">);</span></code></td>
+<td class="ln">151</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">UiUtils</span><span class="sf11b2">.</span><span class="sf8b2">executeCommandWithParameters</span><span class="sf11b2">(</span><span class="sf12b2">"c<wbr>om.microsoft.copilot.eclipse.commands.o<wbr>penPreferences"</span><span class="sf11b2">, </span><span class="sf3b2">parameters</span><span class="sf11b2">);</span></code></td>
+</tr>
+<tr>
+<td class="ln">150</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; }</span></code></td>
+<td class="ln">152</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">151</td><td class="sf3b2"><code><span class="sf11b2">}</span></code></td>
+<td class="ln">153</td><td class="sf3b2"><code><span class="sf11b2">}</span></code></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

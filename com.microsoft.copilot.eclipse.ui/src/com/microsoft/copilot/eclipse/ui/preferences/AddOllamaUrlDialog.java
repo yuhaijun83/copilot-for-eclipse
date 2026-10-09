@@ -30,6 +30,7 @@ public class AddOllamaUrlDialog extends TrayDialog {
 
   private final String endpoint;
   private final boolean editMode;
+  private final String title;
   private final Consumer<String> onSave;
   private Text endpointText;
   private Button okButton;
@@ -42,9 +43,22 @@ public class AddOllamaUrlDialog extends TrayDialog {
    * @param onSave      endpoint consumer
    */
   public AddOllamaUrlDialog(Shell parentShell, String endpoint, Consumer<String> onSave) {
+    this(parentShell, endpoint, null, onSave);
+  }
+
+  /**
+   * Creates an endpoint URL dialog with a custom title (used for custom endpoint providers).
+   *
+   * @param parentShell parent shell
+   * @param endpoint    existing endpoint, or {@code null} for the default
+   * @param title       dialog title, or {@code null} for the Ollama default
+   * @param onSave      endpoint consumer
+   */
+  public AddOllamaUrlDialog(Shell parentShell, String endpoint, String title, Consumer<String> onSave) {
     super(parentShell);
     this.editMode = StringUtils.isNotBlank(endpoint);
     this.endpoint = StringUtils.defaultIfBlank(endpoint, DEFAULT_ENDPOINT);
+    this.title = title;
     this.onSave = onSave;
     setShellStyle(getShellStyle() | SWT.RESIZE);
   }
@@ -52,8 +66,12 @@ public class AddOllamaUrlDialog extends TrayDialog {
   @Override
   protected void configureShell(Shell newShell) {
     super.configureShell(newShell);
-    newShell.setText(editMode ? Messages.preferences_page_byok_ollama_dialog_title
-        : Messages.preferences_page_byok_ollama_create_dialog_title);
+    if (StringUtils.isNotBlank(title)) {
+      newShell.setText(title);
+    } else {
+      newShell.setText(editMode ? Messages.preferences_page_byok_ollama_dialog_title
+          : Messages.preferences_page_byok_ollama_create_dialog_title);
+    }
   }
 
   @Override

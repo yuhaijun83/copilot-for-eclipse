@@ -48,6 +48,22 @@ public enum ByokModelProvider {
     return !isAzure(providerDisplayName) && !isOllama(providerDisplayName);
   }
 
+  /**
+   * Returns whether the given name refers to a user-defined custom endpoint provider, i.e. any name that is not
+   * reserved by a built-in provider.
+   */
+  public static boolean isCustomProvider(String providerDisplayName) {
+    if (providerDisplayName == null) {
+      return false;
+    }
+    for (ByokModelProvider provider : values()) {
+      if (provider.displayName.equals(providerDisplayName)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   @Override
   public String toString() {
     return displayName;

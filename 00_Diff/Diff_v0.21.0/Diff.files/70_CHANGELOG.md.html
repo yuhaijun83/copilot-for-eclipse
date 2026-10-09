@@ -1,0 +1,2156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>WinMerge File Compare Report</title>
+<style>
+<!--
+body { font-family: "Segoe UI", Arial, sans-serif; margin: 20px; background-color: #ffffff; color: #1a1a1a; }
+table { table-layout: fixed; margin: 0; border: none; box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.15); font-size: 12.00pt; }
+.cmp-table-text td { word-break: break-all; padding: 0 3px; vertical-align: top; }
+.cmp-table-table td, .cmp-table-table th { word-break: break-all; padding: 0 3px; border: 1px solid #a0a0a0; vertical-align: top; }
+.cmp-table-image td, .cmp-table-webpage td { border: 1px solid #a0a0a0; }
+.title { font-weight: 600; color: #ffffff; text-align: left; padding: 8px 12px; background-color: #191970; border-bottom: none; position: sticky; vertical-align: top; text-align: center; top: 0; z-index: 9999; }
+.title-right, .title-middle { box-shadow: inset 1px 0 #ffffff; }
+.ln { position: sticky; left: 0; }
+.cmp-div-image { overflow: scroll; text-align: center; max-height: calc(100vh - 70px); }
+.cmp-pdf-webpage { width: 100%; height: calc(100vh - 70px) }
+.cmp-table-full { width: 100%; border-collapse: collapse; overflow: hidden; }
+.cmp-table-auto { width: max-content; border-collapse: collapse; overflow: hidden; }
+.cmp-table-header { position: sticky; top: 0; z-index: 99; }
+.cmp-grid { display: grid; grid-template-rows: max-content; height: calc(100vh - 30px); }
+.cmp-grid-2 { grid-template-columns: 50% 50%; }
+.cmp-grid-3 { grid-template-columns: 33.33% 33.33% 33.33%; }
+.cmp-collapsed-row { height: 1px; }
+.cmp-collapsed-cell { background-color: #000000; }
+.cmp-scroll { overflow-x: auto; }
+.sf3b2 {color: #000000; background-color: #ffffff; }
+.sf3b5 {color: #000000; background-color: #0078d7; }
+.sf3b14 {color: #000000; background-color: #ffa0a0; }
+.sf3b16 {color: #000000; background-color: #f1e2ad; }
+.sf3b18 {color: #000000; background-color: #ffaa82; }
+.sf3b19 {color: #000000; background-color: #c8816c; }
+.sf6b2 {color: #ffffff; background-color: #ffffff; }
+.sf6b5 {color: #ffffff; background-color: #0078d7; }
+.sf6b14 {color: #ffffff; background-color: #ffa0a0; }
+.sf6b16 {color: #ffffff; background-color: #f1e2ad; }
+.sf6b18 {color: #ffffff; background-color: #ffaa82; }
+.sf6b19 {color: #ffffff; background-color: #c8816c; }
+.sf7b2 {color: #0000ff; background-color: #ffffff; font-weight: bold; }
+.sf7b5 {color: #0000ff; background-color: #0078d7; font-weight: bold; }
+.sf7b14 {color: #0000ff; background-color: #ffa0a0; font-weight: bold; }
+.sf7b16 {color: #0000ff; background-color: #f1e2ad; font-weight: bold; }
+.sf7b18 {color: #0000ff; background-color: #ffaa82; font-weight: bold; }
+.sf7b19 {color: #0000ff; background-color: #c8816c; font-weight: bold; }
+.sf8b2 {color: #800080; background-color: #ffffff; }
+.sf8b5 {color: #800080; background-color: #0078d7; }
+.sf8b14 {color: #800080; background-color: #ffa0a0; }
+.sf8b16 {color: #800080; background-color: #f1e2ad; }
+.sf8b18 {color: #800080; background-color: #ffaa82; }
+.sf8b19 {color: #800080; background-color: #c8816c; }
+.sf9b2 {color: #008000; background-color: #ffffff; }
+.sf9b5 {color: #008000; background-color: #0078d7; }
+.sf9b14 {color: #008000; background-color: #ffa0a0; }
+.sf9b16 {color: #008000; background-color: #f1e2ad; }
+.sf9b18 {color: #008000; background-color: #ffaa82; }
+.sf9b19 {color: #008000; background-color: #c8816c; }
+.sf10b2 {color: #ff0000; background-color: #ffffff; }
+.sf10b5 {color: #ff0000; background-color: #0078d7; }
+.sf10b14 {color: #ff0000; background-color: #ffa0a0; }
+.sf10b16 {color: #ff0000; background-color: #f1e2ad; }
+.sf10b18 {color: #ff0000; background-color: #ffaa82; }
+.sf10b19 {color: #ff0000; background-color: #c8816c; }
+.sf11b2 {color: #606060; background-color: #ffffff; }
+.sf11b5 {color: #606060; background-color: #0078d7; }
+.sf11b14 {color: #606060; background-color: #ffa0a0; }
+.sf11b16 {color: #606060; background-color: #f1e2ad; }
+.sf11b18 {color: #606060; background-color: #ffaa82; }
+.sf11b19 {color: #606060; background-color: #c8816c; }
+.sf12b2 {color: #800000; background-color: #ffffff; }
+.sf12b5 {color: #800000; background-color: #0078d7; }
+.sf12b14 {color: #800000; background-color: #ffa0a0; }
+.sf12b16 {color: #800000; background-color: #f1e2ad; }
+.sf12b18 {color: #800000; background-color: #ffaa82; }
+.sf12b19 {color: #800000; background-color: #c8816c; }
+.sf13b2 {color: #0080c0; background-color: #ffffff; }
+.sf13b5 {color: #0080c0; background-color: #0078d7; }
+.sf13b14 {color: #0080c0; background-color: #ffa0a0; }
+.sf13b16 {color: #0080c0; background-color: #f1e2ad; }
+.sf13b18 {color: #0080c0; background-color: #ffaa82; }
+.sf13b19 {color: #0080c0; background-color: #c8816c; }
+.sf15b2 {color: #000000; background-color: #ffffff; }
+.sf15b5 {color: #000000; background-color: #0078d7; }
+.sf15b14 {color: #000000; background-color: #ffa0a0; }
+.sf15b16 {color: #000000; background-color: #f1e2ad; }
+.sf15b18 {color: #000000; background-color: #ffaa82; }
+.sf15b19 {color: #000000; background-color: #c8816c; }
+.sf17b2 {color: #000000; background-color: #ffffff; }
+.sf17b5 {color: #000000; background-color: #0078d7; }
+.sf17b14 {color: #000000; background-color: #ffa0a0; }
+.sf17b16 {color: #000000; background-color: #f1e2ad; }
+.sf17b18 {color: #000000; background-color: #ffaa82; }
+.sf17b19 {color: #000000; background-color: #c8816c; }
+.sf20b2 {color: #000080; background-color: #ffffff; }
+.sf20b5 {color: #000080; background-color: #0078d7; }
+.sf20b14 {color: #000080; background-color: #ffa0a0; }
+.sf20b16 {color: #000080; background-color: #f1e2ad; }
+.sf20b18 {color: #000080; background-color: #ffaa82; }
+.sf20b19 {color: #000080; background-color: #c8816c; }
+.sf21b2 {color: #0080c0; background-color: #ffffff; }
+.sf21b5 {color: #0080c0; background-color: #0078d7; }
+.sf21b14 {color: #0080c0; background-color: #ffa0a0; }
+.sf21b16 {color: #0080c0; background-color: #f1e2ad; }
+.sf21b18 {color: #0080c0; background-color: #ffaa82; }
+.sf21b19 {color: #0080c0; background-color: #c8816c; }
+.sf3b2i {color: #ababab; background-color: #ffffff; }
+.sf3b5i {color: #005190; background-color: #0078d7; }
+.sf3b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf3b16i {color: #a19774; background-color: #f1e2ad; }
+.sf3b18i {color: #ab7257; background-color: #ffaa82; }
+.sf3b19i {color: #865749; background-color: #c8816c; }
+.sf6b2i {color: #ffffff; background-color: #ffffff; }
+.sf6b5i {color: #54a4e4; background-color: #0078d7; }
+.sf6b14i {color: #ffbfbf; background-color: #ffa0a0; }
+.sf6b16i {color: #f5ebc8; background-color: #f1e2ad; }
+.sf6b18i {color: #ffc6ab; background-color: #ffaa82; }
+.sf6b19i {color: #daaa9c; background-color: #c8816c; }
+.sf7b2i {color: #ababff; background-color: #ffffff; font-weight: bold; }
+.sf7b5i {color: #0051e4; background-color: #0078d7; font-weight: bold; }
+.sf7b14i {color: #ab6bbf; background-color: #ffa0a0; font-weight: bold; }
+.sf7b16i {color: #a197c8; background-color: #f1e2ad; font-weight: bold; }
+.sf7b18i {color: #ab72ab; background-color: #ffaa82; font-weight: bold; }
+.sf7b19i {color: #86579c; background-color: #c8816c; font-weight: bold; }
+.sf8b2i {color: #d5abd5; background-color: #ffffff; }
+.sf8b5i {color: #2a51bb; background-color: #0078d7; }
+.sf8b14i {color: #d56b96; background-color: #ffa0a0; }
+.sf8b16i {color: #cc979f; background-color: #f1e2ad; }
+.sf8b18i {color: #d57282; background-color: #ffaa82; }
+.sf8b19i {color: #b15772; background-color: #c8816c; }
+.sf9b2i {color: #abd5ab; background-color: #ffffff; }
+.sf9b5i {color: #007a90; background-color: #0078d7; }
+.sf9b14i {color: #ab966b; background-color: #ffa0a0; }
+.sf9b16i {color: #a1c274; background-color: #f1e2ad; }
+.sf9b18i {color: #ab9d57; background-color: #ffaa82; }
+.sf9b19i {color: #868149; background-color: #c8816c; }
+.sf10b2i {color: #ffabab; background-color: #ffffff; }
+.sf10b5i {color: #545190; background-color: #0078d7; }
+.sf10b14i {color: #ff6b6b; background-color: #ffa0a0; }
+.sf10b16i {color: #f59774; background-color: #f1e2ad; }
+.sf10b18i {color: #ff7257; background-color: #ffaa82; }
+.sf10b19i {color: #da5749; background-color: #c8816c; }
+.sf11b2i {color: #cbcbcb; background-color: #ffffff; }
+.sf11b5i {color: #1f71b0; background-color: #0078d7; }
+.sf11b14i {color: #cb8b8b; background-color: #ffa0a0; }
+.sf11b16i {color: #c1b794; background-color: #f1e2ad; }
+.sf11b18i {color: #cb9277; background-color: #ffaa82; }
+.sf11b19i {color: #a67769; background-color: #c8816c; }
+.sf12b2i {color: #d5abab; background-color: #ffffff; }
+.sf12b5i {color: #2a5190; background-color: #0078d7; }
+.sf12b14i {color: #d56b6b; background-color: #ffa0a0; }
+.sf12b16i {color: #cc9774; background-color: #f1e2ad; }
+.sf12b18i {color: #d57257; background-color: #ffaa82; }
+.sf12b19i {color: #b15749; background-color: #c8816c; }
+.sf13b2i {color: #abd5eb; background-color: #ffffff; }
+.sf13b5i {color: #007ad0; background-color: #0078d7; }
+.sf13b14i {color: #ab96aa; background-color: #ffa0a0; }
+.sf13b16i {color: #a1c2b3; background-color: #f1e2ad; }
+.sf13b18i {color: #ab9d96; background-color: #ffaa82; }
+.sf13b19i {color: #868187; background-color: #c8816c; }
+.sf15b2i {color: #ababab; background-color: #ffffff; }
+.sf15b5i {color: #005190; background-color: #0078d7; }
+.sf15b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf15b16i {color: #a19774; background-color: #f1e2ad; }
+.sf15b18i {color: #ab7257; background-color: #ffaa82; }
+.sf15b19i {color: #865749; background-color: #c8816c; }
+.sf17b2i {color: #ababab; background-color: #ffffff; }
+.sf17b5i {color: #005190; background-color: #0078d7; }
+.sf17b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf17b16i {color: #a19774; background-color: #f1e2ad; }
+.sf17b18i {color: #ab7257; background-color: #ffaa82; }
+.sf17b19i {color: #865749; background-color: #c8816c; }
+.sf20b2i {color: #ababd5; background-color: #ffffff; }
+.sf20b5i {color: #0051bb; background-color: #0078d7; }
+.sf20b14i {color: #ab6b96; background-color: #ffa0a0; }
+.sf20b16i {color: #a1979f; background-color: #f1e2ad; }
+.sf20b18i {color: #ab7282; background-color: #ffaa82; }
+.sf20b19i {color: #865772; background-color: #c8816c; }
+.sf21b2i {color: #abd5eb; background-color: #ffffff; }
+.sf21b5i {color: #007ad0; background-color: #0078d7; }
+.sf21b14i {color: #ab96aa; background-color: #ffa0a0; }
+.sf21b16i {color: #a1c2b3; background-color: #f1e2ad; }
+.sf21b18i {color: #ab9d96; background-color: #ffaa82; }
+.sf21b19i {color: #868187; background-color: #c8816c; }
+.cn {text-align: center; word-break: normal; color: #000000; background-color: #f0f0f0;}
+.ln {text-align: right; word-break: normal; color: #000000; background-color: #f0f0f0;}
+--></style>
+</head><body>
+<table class="cmp-table-text cmp-table-full cmp-table-2">
+<colgroup>
+<col style="width: 2.5em;" />
+<col style="width: calc(100% / 2 - 2.5em);" />
+<col style="width: 2.5em;" />
+<col style="width: calc(100% / 2 - 2.5em);" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="2" class="title title-left">D:\MyGitHub\copilot-for-eclipse_Old\CHANGELOG.md</th>
+<th colspan="2" class="title title-right">D:\MyGitHub\copilot-for-eclipse_New\CHANGELOG.md</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="ln">1</td><td class="sf3b2"><code><span class="sf11b2">#</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changelog</span>&nbsp;</code></td>
+<td class="ln">1</td><td class="sf3b2"><code><span class="sf11b2">#</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changelog</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">2</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">2</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">3</td><td class="sf3b2"><code><span class="sf3b2">All notable changes to this project will be documented in this file.</span></code></td>
+<td class="ln">3</td><td class="sf3b2"><code><span class="sf3b2">All notable changes to this project will be documented in this file.</span></code></td>
+</tr>
+<tr>
+<td class="ln">4</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">4</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">5</td><td class="sf3b2"><code><span class="sf3b2">The format is based on </span><span class="sf11b2">[</span><span class="sf20b2">Keep a Changelog</span><span class="sf11b2">](</span><span class="sf21b2">https://keepachangelog.com/e<wbr>n/1.1.0/</span><span class="sf11b2">)</span><span class="sf3b2">,</span></code></td>
+<td class="ln">5</td><td class="sf3b2"><code><span class="sf3b2">The format is based on </span><span class="sf11b2">[</span><span class="sf20b2">Keep a Changelog</span><span class="sf11b2">](</span><span class="sf21b2">https://keepachangelog.com/e<wbr>n/1.1.0/</span><span class="sf11b2">)</span><span class="sf3b2">,</span></code></td>
+</tr>
+<tr>
+<td class="ln">6</td><td class="sf3b2"><code><span class="sf3b2">and this project adheres to </span><span class="sf11b2">[</span><span class="sf20b2">Semantic Versioning</span><span class="sf11b2">](</span><span class="sf21b2">https://semver.org/spec/v2.<wbr>0.0.html</span><span class="sf11b2">)</span><span class="sf3b2">.</span></code></td>
+<td class="ln">6</td><td class="sf3b2"><code><span class="sf3b2">and this project adheres to </span><span class="sf11b2">[</span><span class="sf20b2">Semantic Versioning</span><span class="sf11b2">](</span><span class="sf21b2">https://semver.org/spec/v2.<wbr>0.0.html</span><span class="sf11b2">)</span><span class="sf3b2">.</span></code></td>
+</tr>
+<tr>
+<td class="ln">7</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">7</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">8</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.21.0</span>&nbsp;</code></td>
+<td class="ln">8</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.21.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">9</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">9</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">10</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support Ollama as a custom (BYOK) model provider. </span><span class="sf11b2">[</span><span class="sf20b2">#93</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/copi<wbr>lot-for-eclipse/issues/93</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">10</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support Ollama as a custom (BYOK) model provider. </span><span class="sf11b2">[</span><span class="sf20b2">#93</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/copi<wbr>lot-for-eclipse/issues/93</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln"><a id="d1_1" href="#d1_1">.</a></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">11</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">- </span><span style="color: #000000; background-color: #ef7774; ">Support user-defined custom model providers with OpenAI-compatible endpoints (e.g. LM Studio, vLLM, llama.cpp server) as BYOK providers.</span></code></td>
+</tr>
+<tr>
+<td class="ln">11</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support group policy for Auto model. </span><span class="sf11b2">[</span><span class="sf20b2">#305</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/305</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">12</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support group policy for Auto model. </span><span class="sf11b2">[</span><span class="sf20b2">#305</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/305</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">12</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Make skills generally available. </span><span class="sf11b2">[</span><span class="sf20b2">#302</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/302</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">13</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Make skills generally available. </span><span class="sf11b2">[</span><span class="sf20b2">#302</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/302</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">13</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add unique accessible names to chat controls. </span><span class="sf11b2">[</span><span class="sf20b2">#78</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/copi<wbr>lot-for-eclipse/issues/78</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">14</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add unique accessible names to chat controls. </span><span class="sf11b2">[</span><span class="sf20b2">#78</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/copi<wbr>lot-for-eclipse/issues/78</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">14</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">15</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">15</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+<td class="ln">16</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">16</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Always enabling sub-agent. </span><span class="sf11b2">[</span><span class="sf20b2">#304</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/304</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">17</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Always enabling sub-agent. </span><span class="sf11b2">[</span><span class="sf20b2">#304</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/304</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">17</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">18</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">18</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Removed</span>&nbsp;</code></td>
+<td class="ln">19</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Removed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">19</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove the semantic workspace search integration. </span><span class="sf11b2">[</span><span class="sf20b2">PR#373</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/373</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">20</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove the semantic workspace search integration. </span><span class="sf11b2">[</span><span class="sf20b2">PR#373</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/373</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">20</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">21</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">21</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">22</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">22</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Provide a default MCP auto-approve configuration. </span><span class="sf11b2">[</span><span class="sf20b2">#358</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/358</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">23</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Provide a default MCP auto-approve configuration. </span><span class="sf11b2">[</span><span class="sf20b2">#358</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/358</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">23</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Prevent Agent mode from hanging when a PowerShell prompt fails. </span><span class="sf11b2">[</span><span class="sf20b2">#375</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/375</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">24</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Prevent Agent mode from hanging when a PowerShell prompt fails. </span><span class="sf11b2">[</span><span class="sf20b2">#375</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/375</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">24</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">25</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">25</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Engineering</span>&nbsp;</code></td>
+<td class="ln">26</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Engineering</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">26</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Make the UI test bundle a fragment of the UI bundle. </span><span class="sf11b2">[</span><span class="sf20b2">PR#361</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/361</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@travkin79</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/travkin<wbr>79</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">27</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Make the UI test bundle a fragment of the UI bundle. </span><span class="sf11b2">[</span><span class="sf20b2">PR#361</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/361</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@travkin79</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/travkin<wbr>79</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">27</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Load images through image registries. </span><span class="sf11b2">[</span><span class="sf20b2">#364</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/364</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@travkin79</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/travkin<wbr>79</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">28</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Load images through image registries. </span><span class="sf11b2">[</span><span class="sf20b2">#364</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/364</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@travkin79</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/travkin<wbr>79</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">28</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Prevent test processes from hanging CI. </span><span class="sf11b2">[</span><span class="sf20b2">PR#392</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/392</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">29</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Prevent test processes from hanging CI. </span><span class="sf11b2">[</span><span class="sf20b2">PR#392</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/392</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">29</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Avoid starting the Copilot language server during Jobs image checks. </span><span class="sf11b2">[</span><span class="sf20b2">PR#396</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/396</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">30</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Avoid starting the Copilot language server during Jobs image checks. </span><span class="sf11b2">[</span><span class="sf20b2">PR#396</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/396</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">30</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">31</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">31</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">32</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">32</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.20.0</span>&nbsp;</code></td>
+<td class="ln">33</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.20.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">33</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">34</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">34</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support organization-enabled custom (BYOK) models automatically in the model picker. </span><span class="sf11b2">[</span><span class="sf20b2">PR#333</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/333</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">35</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support organization-enabled custom (BYOK) models automatically in the model picker. </span><span class="sf11b2">[</span><span class="sf20b2">PR#333</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/333</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">35</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">36</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">36</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+<td class="ln">37</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">37</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Move Copilot Menu to the left of the Help menu. </span><span class="sf11b2">[</span><span class="sf20b2">#287</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/287</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">38</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Move Copilot Menu to the left of the Help menu. </span><span class="sf11b2">[</span><span class="sf20b2">#287</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/287</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">38</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">39</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">39</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">40</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">40</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Chat cannot be scrolled down to see the newest messages in long conversations. </span><span class="sf11b2">[</span><span class="sf20b2">#63</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/copi<wbr>lot-for-eclipse/issues/63</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">41</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Chat cannot be scrolled down to see the newest messages in long conversations. </span><span class="sf11b2">[</span><span class="sf20b2">#63</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/copi<wbr>lot-for-eclipse/issues/63</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">41</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Copilot asks read permission for a global skill file. </span><span class="sf11b2">[</span><span class="sf20b2">#318</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/318</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">42</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Copilot asks read permission for a global skill file. </span><span class="sf11b2">[</span><span class="sf20b2">#318</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/318</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">42</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Detailed model information on dropdown hover is cropped on Linux. </span><span class="sf11b2">[</span><span class="sf20b2">#113</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/113</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@travkin79</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/travkin<wbr>79</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">43</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Detailed model information on dropdown hover is cropped on Linux. </span><span class="sf11b2">[</span><span class="sf20b2">#113</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/113</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@travkin79</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/travkin<wbr>79</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">43</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Automatically scroll the chat view to prompts requiring user action (e.g. "Continue") in Agent mode. </span><span class="sf11b2">[</span><span class="sf20b2">#120</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/120</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@raghucssit</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/raghuc<wbr>ssit</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">44</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Automatically scroll the chat view to prompts requiring user action (e.g. "Continue") in Agent mode. </span><span class="sf11b2">[</span><span class="sf20b2">#120</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/120</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@raghucssit</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/raghuc<wbr>ssit</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">44</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Agents become extremely slow due to expensive chat view re-layout on every streamed chunk. </span><span class="sf11b2">[</span><span class="sf20b2">#259</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/259</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">45</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Agents become extremely slow due to expensive chat view re-layout on every streamed chunk. </span><span class="sf11b2">[</span><span class="sf20b2">#259</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/259</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">45</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">UI freezes on editor switch when the Chat view has a long conversation. </span><span class="sf11b2">[</span><span class="sf20b2">#335</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/335</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">46</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">UI freezes on editor switch when the Chat view has a long conversation. </span><span class="sf11b2">[</span><span class="sf20b2">#335</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/335</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">46</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">47</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">47</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.19.0</span>&nbsp;</code></td>
+<td class="ln">48</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.19.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">48</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">49</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">49</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve terminal command execution across Windows and Linux. </span><span class="sf11b2">[</span><span class="sf20b2">PR#247</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/247</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">50</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve terminal command execution across Windows and Linux. </span><span class="sf11b2">[</span><span class="sf20b2">PR#247</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/247</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">50</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support editing/creating local files outside the workspace. </span><span class="sf11b2">[</span><span class="sf20b2">PR#248</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/248</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">51</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support editing/creating local files outside the workspace. </span><span class="sf11b2">[</span><span class="sf20b2">PR#248</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/248</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">51</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support automatic chat context compression. </span><span class="sf11b2">[</span><span class="sf20b2">PR#250</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/250</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">52</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support automatic chat context compression. </span><span class="sf11b2">[</span><span class="sf20b2">PR#250</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/250</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">52</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support tool auto-approve controls. </span><span class="sf11b2">[</span><span class="sf20b2">PR#255</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/255</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">53</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support tool auto-approve controls. </span><span class="sf11b2">[</span><span class="sf20b2">PR#255</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/255</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">53</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">54</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">54</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">55</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">55</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Copilot reports failure when extension-point contributed MCP server has changed. </span><span class="sf11b2">[</span><span class="sf20b2">#153</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/153</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">56</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Copilot reports failure when extension-point contributed MCP server has changed. </span><span class="sf11b2">[</span><span class="sf20b2">#153</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/153</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">56</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Subagent panel size is not updated if conversation is canceled. </span><span class="sf11b2">[</span><span class="sf20b2">#169</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/169</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@rsd-darshan</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/rsd-d<wbr>arshan</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">57</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Subagent panel size is not updated if conversation is canceled. </span><span class="sf11b2">[</span><span class="sf20b2">#169</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/169</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@rsd-darshan</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/rsd-d<wbr>arshan</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">57</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Thinking effort descriptions are truncated in the model picker hover card. </span><span class="sf11b2">[</span><span class="sf20b2">#233</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/233</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">58</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Thinking effort descriptions are truncated in the model picker hover card. </span><span class="sf11b2">[</span><span class="sf20b2">#233</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/233</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">58</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Canceled terminal tool calling status will become ongoing again after chat history restoration. </span><span class="sf11b2">[</span><span class="sf20b2">#239</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/239</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">59</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Canceled terminal tool calling status will become ongoing again after chat history restoration. </span><span class="sf11b2">[</span><span class="sf20b2">#239</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/239</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">59</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Cannot navigate to the file out of workspace. </span><span class="sf11b2">[</span><span class="sf20b2">#262</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/262</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">60</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Cannot navigate to the file out of workspace. </span><span class="sf11b2">[</span><span class="sf20b2">#262</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/262</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">60</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Read the default text editor preferences from platform instead of defaulting to spaces. </span><span class="sf11b2">[</span><span class="sf20b2">PR#267</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/267</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@jomillerOpen</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/jomi<wbr>llerOpen</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">61</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Read the default text editor preferences from platform instead of defaulting to spaces. </span><span class="sf11b2">[</span><span class="sf20b2">PR#267</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/267</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@jomillerOpen</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/jomi<wbr>llerOpen</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">61</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">62</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">62</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Engineering</span>&nbsp;</code></td>
+<td class="ln">63</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Engineering</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">63</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove unused message keys and properties across various modules. </span><span class="sf11b2">[</span><span class="sf20b2">PR#208</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/208</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">64</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove unused message keys and properties across various modules. </span><span class="sf11b2">[</span><span class="sf20b2">PR#208</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/208</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">64</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add endgame skill. </span><span class="sf11b2">[</span><span class="sf20b2">PR#230</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/230</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">65</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add endgame skill. </span><span class="sf11b2">[</span><span class="sf20b2">PR#230</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/230</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">65</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix typo in README upgrade recommendation. </span><span class="sf11b2">[</span><span class="sf20b2">PR#251</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/251</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@evanclan</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/evanclan<wbr></span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">66</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix typo in README upgrade recommendation. </span><span class="sf11b2">[</span><span class="sf20b2">PR#251</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/251</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@evanclan</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/evanclan<wbr></span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">66</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">67</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">67</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.18.0</span>&nbsp;</code></td>
+<td class="ln">68</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.18.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">68</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">69</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">69</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">ℹ️ Prepare for the </span><span class="sf11b2">[</span><span class="sf20b2">upcoming usage-based billing</span><span class="sf11b2">](</span><span class="sf21b2">https://github.blog/news-insig<wbr>hts/company-news/github-copilot-is-movi<wbr>ng-to-usage-based-billing/</span><span class="sf11b2">)</span><span class="sf3b2">. We strongly recommend upgrading to this version as soon as possible. </span><span class="sf11b2">[</span><span class="sf20b2">#203</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/203</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">70</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">ℹ️ Prepare for the </span><span class="sf11b2">[</span><span class="sf20b2">upcoming usage-based billing</span><span class="sf11b2">](</span><span class="sf21b2">https://github.blog/news-insig<wbr>hts/company-news/github-copilot-is-movi<wbr>ng-to-usage-based-billing/</span><span class="sf11b2">)</span><span class="sf3b2">. We strongly recommend upgrading to this version as soon as possible. </span><span class="sf11b2">[</span><span class="sf20b2">#203</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/203</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">70</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add Copilot preference for a chat's custom instructions loading. </span><span class="sf11b2">[</span><span class="sf20b2">#62</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/copi<wbr>lot-for-eclipse/issues/62</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@travkin79</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/travkin<wbr>79</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">71</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add Copilot preference for a chat's custom instructions loading. </span><span class="sf11b2">[</span><span class="sf20b2">#62</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/copi<wbr>lot-for-eclipse/issues/62</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@travkin79</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/travkin<wbr>79</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">71</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support skills and prompt files. </span><span class="sf11b2">[</span><span class="sf20b2">PR#133</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/133</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">72</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support skills and prompt files. </span><span class="sf11b2">[</span><span class="sf20b2">PR#133</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/133</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">72</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support displaying thinking blocks in chat view. </span><span class="sf11b2">[</span><span class="sf20b2">#202</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/202</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">73</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support displaying thinking blocks in chat view. </span><span class="sf11b2">[</span><span class="sf20b2">#202</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/202</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">73</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support selecting thinking effort for model. </span><span class="sf11b2">[</span><span class="sf20b2">#204</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/204</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">74</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support selecting thinking effort for model. </span><span class="sf11b2">[</span><span class="sf20b2">#204</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/204</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">74</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">75</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">75</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">76</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">76</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Cannot fall back to JS-based CLS when native binary fails to start. </span><span class="sf11b2">[</span><span class="sf20b2">#116</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/116</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">77</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Cannot fall back to JS-based CLS when native binary fails to start. </span><span class="sf11b2">[</span><span class="sf20b2">#116</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/116</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">77</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">400 Bad Request when restoring conversation from persistence. </span><span class="sf11b2">[</span><span class="sf20b2">#131</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/131</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">78</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">400 Bad Request when restoring conversation from persistence. </span><span class="sf11b2">[</span><span class="sf20b2">#131</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/131</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">78</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Tool call errors failed to render in chat view. </span><span class="sf11b2">[</span><span class="sf20b2">PR#145</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/145</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">79</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Tool call errors failed to render in chat view. </span><span class="sf11b2">[</span><span class="sf20b2">PR#145</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/145</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">79</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">BYOK display name label should be optional. </span><span class="sf11b2">[</span><span class="sf20b2">PR#158</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/158</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">80</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">BYOK display name label should be optional. </span><span class="sf11b2">[</span><span class="sf20b2">PR#158</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/158</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">80</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Subagent progress events leak into unrelated conversation UI when switching sessions. </span><span class="sf11b2">[</span><span class="sf20b2">#160</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/160</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">81</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Subagent progress events leak into unrelated conversation UI when switching sessions. </span><span class="sf11b2">[</span><span class="sf20b2">#160</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/160</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">81</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Integrate CLS session persistence and restoration for conversation history. </span><span class="sf11b2">[</span><span class="sf20b2">PR#161</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/161</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">82</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Integrate CLS session persistence and restoration for conversation history. </span><span class="sf11b2">[</span><span class="sf20b2">PR#161</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/161</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">82</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Subagent turns appear as separate assistant messages after restoration. </span><span class="sf11b2">[</span><span class="sf20b2">#163</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/163</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">83</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Subagent turns appear as separate assistant messages after restoration. </span><span class="sf11b2">[</span><span class="sf20b2">#163</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/163</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">83</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">UI freeze: caused by deadlock in EditorsManager. </span><span class="sf11b2">[</span><span class="sf20b2">#175</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/175</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">84</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">UI freeze: caused by deadlock in EditorsManager. </span><span class="sf11b2">[</span><span class="sf20b2">#175</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/175</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">84</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">UI freeze: deadlock between main thread and LSP listener on quota fallback. </span><span class="sf11b2">[</span><span class="sf20b2">#179</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/179</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">85</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">UI freeze: deadlock between main thread and LSP listener on quota fallback. </span><span class="sf11b2">[</span><span class="sf20b2">#179</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/179</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">85</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">The mode picker will be blank in preference page when workspace contains 'remote' FS project. </span><span class="sf11b2">[</span><span class="sf20b2">#180</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/180</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">86</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">The mode picker will be blank in preference page when workspace contains 'remote' FS project. </span><span class="sf11b2">[</span><span class="sf20b2">#180</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/180</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">86</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Prevent focusing the Terminal view after executing a CLI command in Chat view. </span><span class="sf11b2">[</span><span class="sf20b2">#188</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/188</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@rsd-darshan</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/rsd-d<wbr>arshan</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">87</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Prevent focusing the Terminal view after executing a CLI command in Chat view. </span><span class="sf11b2">[</span><span class="sf20b2">#188</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/cop<wbr>ilot-for-eclipse/issues/188</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@rsd-darshan</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/rsd-d<wbr>arshan</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">87</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">88</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">88</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Engineering</span>&nbsp;</code></td>
+<td class="ln">89</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Engineering</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">89</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Extend CONTRIBUTING.md and adapt some Eclipse project settings to simplify getting started. </span><span class="sf11b2">[</span><span class="sf20b2">PR#176</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/176</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@travkin79</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/travkin<wbr>79</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">90</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Extend CONTRIBUTING.md and adapt some Eclipse project settings to simplify getting started. </span><span class="sf11b2">[</span><span class="sf20b2">PR#176</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/176</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@travkin79</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/travkin<wbr>79</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">90</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add explicit least-privilege permissions to CI workflow. </span><span class="sf11b2">[</span><span class="sf20b2">PR#185</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/185</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@arpitjain099</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/arpi<wbr>tjain099</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">91</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add explicit least-privilege permissions to CI workflow. </span><span class="sf11b2">[</span><span class="sf20b2">PR#185</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/185</span><span class="sf11b2">)</span><span class="sf3b2">, contributed by </span><span class="sf11b2">[</span><span class="sf20b2">@arpitjain099</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/arpi<wbr>tjain099</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">91</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">92</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">92</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">93</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">93</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.17.0</span>&nbsp;</code></td>
+<td class="ln">94</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.17.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">94</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">95</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">95</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add context size donut and popup for visualizing token usage.</span></code></td>
+<td class="ln">96</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add context size donut and popup for visualizing token usage.</span></code></td>
+</tr>
+<tr>
+<td class="ln">96</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add rate limit warning banner in chat view. </span><span class="sf11b2">[</span><span class="sf20b2">PR#17</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/co<wbr>pilot-for-eclipse/pull/17</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">97</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add rate limit warning banner in chat view. </span><span class="sf11b2">[</span><span class="sf20b2">PR#17</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/co<wbr>pilot-for-eclipse/pull/17</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">97</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support delegating read directory to IDE. </span><span class="sf11b2">[</span><span class="sf20b2">PR#18</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/co<wbr>pilot-for-eclipse/pull/18</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">98</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support delegating read directory to IDE. </span><span class="sf11b2">[</span><span class="sf20b2">PR#18</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/co<wbr>pilot-for-eclipse/pull/18</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">98</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support delegating file and text search to IDE. </span><span class="sf11b2">[</span><span class="sf20b2">PR#22</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/co<wbr>pilot-for-eclipse/pull/22</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">99</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support delegating file and text search to IDE. </span><span class="sf11b2">[</span><span class="sf20b2">PR#22</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/co<wbr>pilot-for-eclipse/pull/22</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">99</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support custom models (BYOK) for Copilot Business and Enterprise users. </span><span class="sf11b2">[</span><span class="sf20b2">PR#140</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/140</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">100</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support custom models (BYOK) for Copilot Business and Enterprise users. </span><span class="sf11b2">[</span><span class="sf20b2">PR#140</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/c<wbr>opilot-for-eclipse/pull/140</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">100</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">101</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">101</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+<td class="ln">102</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">102</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update the combos rendering and add context button style in chat view.</span></code></td>
+<td class="ln">103</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update the combos rendering and add context button style in chat view.</span></code></td>
+</tr>
+<tr>
+<td class="ln">103</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">104</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">104</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">105</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">105</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix ConcurrentModificationException in CompletionProvider listener iteration. </span><span class="sf11b2">[</span><span class="sf20b2">PR#13</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/co<wbr>pilot-for-eclipse/pull/13</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">106</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix ConcurrentModificationException in CompletionProvider listener iteration. </span><span class="sf11b2">[</span><span class="sf20b2">PR#13</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/co<wbr>pilot-for-eclipse/pull/13</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">106</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix capitalization of "GitHub" in signin description. </span><span class="sf11b2">[</span><span class="sf20b2">PR#10</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/co<wbr>pilot-for-eclipse/pull/10</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">107</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix capitalization of "GitHub" in signin description. </span><span class="sf11b2">[</span><span class="sf20b2">PR#10</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/co<wbr>pilot-for-eclipse/pull/10</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">107</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix NES annotation type mapping and foreign text marker registration. </span><span class="sf11b2">[</span><span class="sf20b2">#23</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/copi<wbr>lot-for-eclipse/issues/23</span><span class="sf11b2">)</span>&nbsp;</code></td>
+<td class="ln">108</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix NES annotation type mapping and foreign text marker registration. </span><span class="sf11b2">[</span><span class="sf20b2">#23</span><span class="sf11b2">](</span><span class="sf21b2">https://github.com/microsoft/copi<wbr>lot-for-eclipse/issues/23</span><span class="sf11b2">)</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">108</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">109</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">109</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.16.0</span>&nbsp;</code></td>
+<td class="ln">110</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.16.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">110</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">111</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">111</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support tool calling in Ask Mode.</span></code></td>
+<td class="ln">112</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support tool calling in Ask Mode.</span></code></td>
+</tr>
+<tr>
+<td class="ln">112</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Show detailed model information on dropdown hover.</span></code></td>
+<td class="ln">113</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Show detailed model information on dropdown hover.</span></code></td>
+</tr>
+<tr>
+<td class="ln">113</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add openChatView mode parameter and wire handoff to command.</span></code></td>
+<td class="ln">114</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add openChatView mode parameter and wire handoff to command.</span></code></td>
+</tr>
+<tr>
+<td class="ln">114</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">115</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">115</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+<td class="ln">116</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">116</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update chat mode selector and model selector to show more information.</span></code></td>
+<td class="ln">117</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update chat mode selector and model selector to show more information.</span></code></td>
+</tr>
+<tr>
+<td class="ln">117</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove 'Included' billing message and simplify multiplier to 0.</span></code></td>
+<td class="ln">118</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove 'Included' billing message and simplify multiplier to 0.</span></code></td>
+</tr>
+<tr>
+<td class="ln">118</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove border for Add Context button and center layout in ActionBar.</span></code></td>
+<td class="ln">119</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove border for Add Context button and center layout in ActionBar.</span></code></td>
+</tr>
+<tr>
+<td class="ln">119</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">120</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">120</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">121</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">121</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix NPE under updateCodeMinings() lambda if editor is already disposed</span></code></td>
+<td class="ln">122</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix NPE under updateCodeMinings() lambda if editor is already disposed</span></code></td>
+</tr>
+<tr>
+<td class="ln">122</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix bind Ctrl++ shortcut additionally for increaseChatFontSize command</span></code></td>
+<td class="ln">123</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix bind Ctrl++ shortcut additionally for increaseChatFontSize command</span></code></td>
+</tr>
+<tr>
+<td class="ln">123</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix Binary LSP agent start failed</span></code></td>
+<td class="ln">124</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix Binary LSP agent start failed</span></code></td>
+</tr>
+<tr>
+<td class="ln">124</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix some languages does not have syntax highlighting</span></code></td>
+<td class="ln">125</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix some languages does not have syntax highlighting</span></code></td>
+</tr>
+<tr>
+<td class="ln">125</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix wrong line delimiter is generated in completion</span></code></td>
+<td class="ln">126</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix wrong line delimiter is generated in completion</span></code></td>
+</tr>
+<tr>
+<td class="ln">126</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix "Copy and Open" does not copy</span></code></td>
+<td class="ln">127</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix "Copy and Open" does not copy</span></code></td>
+</tr>
+<tr>
+<td class="ln">127</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix BadPositionCategoryException in RenderManager when closing markdown editor</span></code></td>
+<td class="ln">128</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix BadPositionCategoryException in RenderManager when closing markdown editor</span></code></td>
+</tr>
+<tr>
+<td class="ln">128</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix use invisible OSC escape sequence for terminal command completion marker</span></code></td>
+<td class="ln">129</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix use invisible OSC escape sequence for terminal command completion marker</span></code></td>
+</tr>
+<tr>
+<td class="ln">129</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix URI comparison for similar URI schemes.</span></code></td>
+<td class="ln">130</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix URI comparison for similar URI schemes.</span></code></td>
+</tr>
+<tr>
+<td class="ln">130</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix CLS "temperature and top_p cannot both be specified for this model".</span></code></td>
+<td class="ln">131</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix CLS "temperature and top_p cannot both be specified for this model".</span></code></td>
+</tr>
+<tr>
+<td class="ln">131</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">132</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">132</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.15.0</span>&nbsp;</code></td>
+<td class="ln">133</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.15.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">133</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">134</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">134</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add JDT debugger tool for agent.</span></code></td>
+<td class="ln">135</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add JDT debugger tool for agent.</span></code></td>
+</tr>
+<tr>
+<td class="ln">135</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support increasing or decreasing font size in chat view.</span></code></td>
+<td class="ln">136</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support increasing or decreasing font size in chat view.</span></code></td>
+</tr>
+<tr>
+<td class="ln">136</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add ManageTodoList tool UI support.</span></code></td>
+<td class="ln">137</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add ManageTodoList tool UI support.</span></code></td>
+</tr>
+<tr>
+<td class="ln">137</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support agent max request preference.</span></code></td>
+<td class="ln">138</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support agent max request preference.</span></code></td>
+</tr>
+<tr>
+<td class="ln">138</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add current editor selection to chat context.</span></code></td>
+<td class="ln">139</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add current editor selection to chat context.</span></code></td>
+</tr>
+<tr>
+<td class="ln">139</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support custom scheme file creation, edit and get errors.</span></code></td>
+<td class="ln">140</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support custom scheme file creation, edit and get errors.</span></code></td>
+</tr>
+<tr>
+<td class="ln">140</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support commit instruction.</span></code></td>
+<td class="ln">141</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support commit instruction.</span></code></td>
+</tr>
+<tr>
+<td class="ln">141</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">142</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">142</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+<td class="ln">143</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">143</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update MCP registry dialog.</span></code></td>
+<td class="ln">144</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update MCP registry dialog.</span></code></td>
+</tr>
+<tr>
+<td class="ln">144</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove nightly check for the MCP registry feature.</span></code></td>
+<td class="ln">145</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove nightly check for the MCP registry feature.</span></code></td>
+</tr>
+<tr>
+<td class="ln">145</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update file change summary bar hover effect.</span></code></td>
+<td class="ln">146</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update file change summary bar hover effect.</span></code></td>
+</tr>
+<tr>
+<td class="ln">146</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">147</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">147</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">148</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">148</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove unimplemented ToolConfigurationQuickFixProcessor causing ClassNotFoundException.</span></code></td>
+<td class="ln">149</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove unimplemented ToolConfigurationQuickFixProcessor causing ClassNotFoundException.</span></code></td>
+</tr>
+<tr>
+<td class="ln">149</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">NPE from NES feature when working on an editor without text widget.</span></code></td>
+<td class="ln">150</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">NPE from NES feature when working on an editor without text widget.</span></code></td>
+</tr>
+<tr>
+<td class="ln">150</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update Jobs View category to reflect correct labeling.</span></code></td>
+<td class="ln">151</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update Jobs View category to reflect correct labeling.</span></code></td>
+</tr>
+<tr>
+<td class="ln">151</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix markup rendering under dark theme.</span></code></td>
+<td class="ln">152</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix markup rendering under dark theme.</span></code></td>
+</tr>
+<tr>
+<td class="ln">152</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix css for handoff container in dark mode.</span></code></td>
+<td class="ln">153</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix css for handoff container in dark mode.</span></code></td>
+</tr>
+<tr>
+<td class="ln">153</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support traverse through the chat view via Tab.</span></code></td>
+<td class="ln">154</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support traverse through the chat view via Tab.</span></code></td>
+</tr>
+<tr>
+<td class="ln">154</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix git repository detection when .git is excluded in .project.</span></code></td>
+<td class="ln">155</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix git repository detection when .git is excluded in .project.</span></code></td>
+</tr>
+<tr>
+<td class="ln">155</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix ChatView input undo/redo functionality.</span></code></td>
+<td class="ln">156</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix ChatView input undo/redo functionality.</span></code></td>
+</tr>
+<tr>
+<td class="ln">156</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove redundant focus listener for created buttons.</span></code></td>
+<td class="ln">157</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove redundant focus listener for created buttons.</span></code></td>
+</tr>
+<tr>
+<td class="ln">157</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Defer the status check until setting sync is finished.</span></code></td>
+<td class="ln">158</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Defer the status check until setting sync is finished.</span></code></td>
+</tr>
+<tr>
+<td class="ln">158</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Prevent deadlock in updateCodeMinings by using asyncExec.</span></code></td>
+<td class="ln">159</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Prevent deadlock in updateCodeMinings by using asyncExec.</span></code></td>
+</tr>
+<tr>
+<td class="ln">159</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add focus visual hint for widgets in action bar.</span></code></td>
+<td class="ln">160</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add focus visual hint for widgets in action bar.</span></code></td>
+</tr>
+<tr>
+<td class="ln">160</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Linux terminal shell not working due to incorrect environment property.</span></code></td>
+<td class="ln">161</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Linux terminal shell not working due to incorrect environment property.</span></code></td>
+</tr>
+<tr>
+<td class="ln">161</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add content type to the quickAssistProcessor extension point.</span></code></td>
+<td class="ln">162</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add content type to the quickAssistProcessor extension point.</span></code></td>
+</tr>
+<tr>
+<td class="ln">162</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Always update modeToolStatus even when no tools are defined.</span></code></td>
+<td class="ln">163</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Always update modeToolStatus even when no tools are defined.</span></code></td>
+</tr>
+<tr>
+<td class="ln">163</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Refactor action area visibility handling in chat history viewer.</span></code></td>
+<td class="ln">164</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Refactor action area visibility handling in chat history viewer.</span></code></td>
+</tr>
+<tr>
+<td class="ln">164</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Set model apply to always.</span></code></td>
+<td class="ln">165</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Set model apply to always.</span></code></td>
+</tr>
+<tr>
+<td class="ln">165</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">IllegalArgumentException when parsing Windows file paths in chat hyperlinks.</span></code></td>
+<td class="ln">166</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">IllegalArgumentException when parsing Windows file paths in chat hyperlinks.</span></code></td>
+</tr>
+<tr>
+<td class="ln">166</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">SWTException on shutdown when Chat view is open.</span></code></td>
+<td class="ln">167</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">SWTException on shutdown when Chat view is open.</span></code></td>
+</tr>
+<tr>
+<td class="ln">167</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">168</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">168</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.14.0</span>&nbsp;</code></td>
+<td class="ln">169</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.14.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">169</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">170</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">170</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Set a max file number for the FileChangeSummaryBar and make the bar scrollable.</span></code></td>
+<td class="ln">171</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Set a max file number for the FileChangeSummaryBar and make the bar scrollable.</span></code></td>
+</tr>
+<tr>
+<td class="ln">171</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add dialog prompting users about missing terminal dependencies.</span></code></td>
+<td class="ln">172</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add dialog prompting users about missing terminal dependencies.</span></code></td>
+</tr>
+<tr>
+<td class="ln">172</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Enable CVE Remediator sub-agent (rollout progressively).</span></code></td>
+<td class="ln">173</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Enable CVE Remediator sub-agent (rollout progressively).</span></code></td>
+</tr>
+<tr>
+<td class="ln">173</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">174</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">174</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+<td class="ln">175</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">175</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update MCP registry API version to v0.1.</span></code></td>
+<td class="ln">176</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update MCP registry API version to v0.1.</span></code></td>
+</tr>
+<tr>
+<td class="ln">176</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Move the Coding Agent Jobs top buttons to view toolbar.</span></code></td>
+<td class="ln">177</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Move the Coding Agent Jobs top buttons to view toolbar.</span></code></td>
+</tr>
+<tr>
+<td class="ln">177</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Move the Chat view top buttons to view toolbar.</span></code></td>
+<td class="ln">178</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Move the Chat view top buttons to view toolbar.</span></code></td>
+</tr>
+<tr>
+<td class="ln">178</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove the allow list for MCP contribution extension point.</span></code></td>
+<td class="ln">179</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove the allow list for MCP contribution extension point.</span></code></td>
+</tr>
+<tr>
+<td class="ln">179</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">180</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">180</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">181</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">181</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Simplify the parameters for getting built-in chat modes.</span></code></td>
+<td class="ln">182</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Simplify the parameters for getting built-in chat modes.</span></code></td>
+</tr>
+<tr>
+<td class="ln">182</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Do not show footer for coding agent turns.</span></code></td>
+<td class="ln">183</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Do not show footer for coding agent turns.</span></code></td>
+</tr>
+<tr>
+<td class="ln">183</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Completion not working in .agent.md files.</span></code></td>
+<td class="ln">184</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Completion not working in .agent.md files.</span></code></td>
+</tr>
+<tr>
+<td class="ln">184</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update feedback URL.</span></code></td>
+<td class="ln">185</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update feedback URL.</span></code></td>
+</tr>
+<tr>
+<td class="ln">185</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">NPE when initialize MCP registry dialog.</span></code></td>
+<td class="ln">186</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">NPE when initialize MCP registry dialog.</span></code></td>
+</tr>
+<tr>
+<td class="ln">186</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Failed to connect to proxy when auth contains backslash.</span></code></td>
+<td class="ln">187</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Failed to connect to proxy when auth contains backslash.</span></code></td>
+</tr>
+<tr>
+<td class="ln">187</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support non-UTF-8 encoded files.</span></code></td>
+<td class="ln">188</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support non-UTF-8 encoded files.</span></code></td>
+</tr>
+<tr>
+<td class="ln">188</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Eclipse hangs when the workspace contains too many files.</span></code></td>
+<td class="ln">189</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Eclipse hangs when the workspace contains too many files.</span></code></td>
+</tr>
+<tr>
+<td class="ln">189</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Exclude output files when collecting watched files.</span></code></td>
+<td class="ln">190</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Exclude output files when collecting watched files.</span></code></td>
+</tr>
+<tr>
+<td class="ln">190</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Enable horizontal scrolling for command text in tool confirmation box.</span></code></td>
+<td class="ln">191</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Enable horizontal scrolling for command text in tool confirmation box.</span></code></td>
+</tr>
+<tr>
+<td class="ln">191</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Chat view is empty when opening it after plugin activated.</span></code></td>
+<td class="ln">192</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Chat view is empty when opening it after plugin activated.</span></code></td>
+</tr>
+<tr>
+<td class="ln">192</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update the UI for organization managed settings.</span></code></td>
+<td class="ln">193</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update the UI for organization managed settings.</span></code></td>
+</tr>
+<tr>
+<td class="ln">193</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Revert workaround for free plan users default model.</span></code></td>
+<td class="ln">194</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Revert workaround for free plan users default model.</span></code></td>
+</tr>
+<tr>
+<td class="ln">194</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Tools status will not be updated when manually edit tool list.</span></code></td>
+<td class="ln">195</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Tools status will not be updated when manually edit tool list.</span></code></td>
+</tr>
+<tr>
+<td class="ln">195</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Prompt user to restart eclipse when sub-agent preference changes.</span></code></td>
+<td class="ln">196</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Prompt user to restart eclipse when sub-agent preference changes.</span></code></td>
+</tr>
+<tr>
+<td class="ln">196</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Load custom chat modes asynchronously to prevent UI freeze.</span></code></td>
+<td class="ln">197</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Load custom chat modes asynchronously to prevent UI freeze.</span></code></td>
+</tr>
+<tr>
+<td class="ln">197</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Directly open the created file when clicking it in file change summary bar.</span></code></td>
+<td class="ln">198</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Directly open the created file when clicking it in file change summary bar.</span></code></td>
+</tr>
+<tr>
+<td class="ln">198</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Cannot create new empty files in new workspace in agent mode.</span></code></td>
+<td class="ln">199</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Cannot create new empty files in new workspace in agent mode.</span></code></td>
+</tr>
+<tr>
+<td class="ln">199</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Tool list is not refresh after configure tools in an unsaved .agent.md file.</span></code></td>
+<td class="ln">200</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Tool list is not refresh after configure tools in an unsaved .agent.md file.</span></code></td>
+</tr>
+<tr>
+<td class="ln">200</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve tool specification parsing to handle server names with slashes.</span></code></td>
+<td class="ln">201</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve tool specification parsing to handle server names with slashes.</span></code></td>
+</tr>
+<tr>
+<td class="ln">201</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Avoid blocking the thread when sync tools.</span></code></td>
+<td class="ln">202</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Avoid blocking the thread when sync tools.</span></code></td>
+</tr>
+<tr>
+<td class="ln">202</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update prompt of run_in_terminal tool.</span></code></td>
+<td class="ln">203</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update prompt of run_in_terminal tool.</span></code></td>
+</tr>
+<tr>
+<td class="ln">203</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve event handling in ChatView and FileToolService.</span></code></td>
+<td class="ln">204</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve event handling in ChatView and FileToolService.</span></code></td>
+</tr>
+<tr>
+<td class="ln">204</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Quota display rendering not correct on MacOS.</span></code></td>
+<td class="ln">205</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Quota display rendering not correct on MacOS.</span></code></td>
+</tr>
+<tr>
+<td class="ln">205</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve the perf when typing in chat view.</span></code></td>
+<td class="ln">206</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve the perf when typing in chat view.</span></code></td>
+</tr>
+<tr>
+<td class="ln">206</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Limited description length to 100 in AgentMessageWidget.</span></code></td>
+<td class="ln">207</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Limited description length to 100 in AgentMessageWidget.</span></code></td>
+</tr>
+<tr>
+<td class="ln">207</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Should prompt user when disposing file change summary bar.</span></code></td>
+<td class="ln">208</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Should prompt user when disposing file change summary bar.</span></code></td>
+</tr>
+<tr>
+<td class="ln">208</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Changed files panel will not dispose when switching chat history.</span></code></td>
+<td class="ln">209</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Changed files panel will not dispose when switching chat history.</span></code></td>
+</tr>
+<tr>
+<td class="ln">209</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Added tool call status to the tool call reply.</span></code></td>
+<td class="ln">210</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Added tool call status to the tool call reply.</span></code></td>
+</tr>
+<tr>
+<td class="ln">210</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">211</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">211</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.13.1</span>&nbsp;</code></td>
+<td class="ln">212</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.13.1</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">212</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">213</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">213</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Chat View - NPE when rendering buttons in action bar.</span></code></td>
+<td class="ln">214</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Chat View - NPE when rendering buttons in action bar.</span></code></td>
+</tr>
+<tr>
+<td class="ln">214</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Completion - Invalid thread access when completion in Eclipse 2024-03.</span></code></td>
+<td class="ln">215</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Completion - Invalid thread access when completion in Eclipse 2024-03.</span></code></td>
+</tr>
+<tr>
+<td class="ln">215</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">216</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">216</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.13.0</span>&nbsp;</code></td>
+<td class="ln">217</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.13.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">217</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">218</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">218</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support Next Edit Suggestion (NES).</span></code></td>
+<td class="ln">219</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support Next Edit Suggestion (NES).</span></code></td>
+</tr>
+<tr>
+<td class="ln">219</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support Custom Agent.</span></code></td>
+<td class="ln">220</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support Custom Agent.</span></code></td>
+</tr>
+<tr>
+<td class="ln">220</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support Plan mode.</span></code></td>
+<td class="ln">221</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support Plan mode.</span></code></td>
+</tr>
+<tr>
+<td class="ln">221</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support Auto model.</span></code></td>
+<td class="ln">222</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support Auto model.</span></code></td>
+</tr>
+<tr>
+<td class="ln">222</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support delegating tasks to coding agent and view the jobs.</span></code></td>
+<td class="ln">223</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support delegating tasks to coding agent and view the jobs.</span></code></td>
+</tr>
+<tr>
+<td class="ln">223</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support dynamic OAuth for MCP servers.</span></code></td>
+<td class="ln">224</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support dynamic OAuth for MCP servers.</span></code></td>
+</tr>
+<tr>
+<td class="ln">224</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support allow list check for the MCP registry.</span></code></td>
+<td class="ln">225</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support allow list check for the MCP registry.</span></code></td>
+</tr>
+<tr>
+<td class="ln">225</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">226</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">226</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+<td class="ln">227</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">227</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update chat view icons.</span></code></td>
+<td class="ln">228</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update chat view icons.</span></code></td>
+</tr>
+<tr>
+<td class="ln">228</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">229</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">229</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">230</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">230</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP - Sync proxy bypass settings to CLS.</span></code></td>
+<td class="ln">231</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP - Sync proxy bypass settings to CLS.</span></code></td>
+</tr>
+<tr>
+<td class="ln">231</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP Registry - Cannot restore MCP registry URL.</span></code></td>
+<td class="ln">232</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP Registry - Cannot restore MCP registry URL.</span></code></td>
+</tr>
+<tr>
+<td class="ln">232</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP Registry - Auto load more not working on MacOS.</span></code></td>
+<td class="ln">233</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP Registry - Auto load more not working on MacOS.</span></code></td>
+</tr>
+<tr>
+<td class="ln">233</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP Registry - Check server ID and base URL for MCP servers from registry.</span></code></td>
+<td class="ln">234</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP Registry - Check server ID and base URL for MCP servers from registry.</span></code></td>
+</tr>
+<tr>
+<td class="ln">234</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP Registry - Dynamically set the table row height for MCP registry dialog.</span></code></td>
+<td class="ln">235</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP Registry - Dynamically set the table row height for MCP registry dialog.</span></code></td>
+</tr>
+<tr>
+<td class="ln">235</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP Registry - Only store the MCP registry URL to configuration scope.</span></code></td>
+<td class="ln">236</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP Registry - Only store the MCP registry URL to configuration scope.</span></code></td>
+</tr>
+<tr>
+<td class="ln">236</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP Registry - Refresh the tool bar of MCP registry dialog after clicking.</span></code></td>
+<td class="ln">237</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP Registry - Refresh the tool bar of MCP registry dialog after clicking.</span></code></td>
+</tr>
+<tr>
+<td class="ln">237</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Chat History - Persisted chat history title contains line breaks.</span></code></td>
+<td class="ln">238</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Chat History - Persisted chat history title contains line breaks.</span></code></td>
+</tr>
+<tr>
+<td class="ln">238</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Chat History - Conversation with id does not exist.</span></code></td>
+<td class="ln">239</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Chat History - Conversation with id does not exist.</span></code></td>
+</tr>
+<tr>
+<td class="ln">239</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Chat View: Apply default TM theme for source viewer.</span></code></td>
+<td class="ln">240</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Chat View: Apply default TM theme for source viewer.</span></code></td>
+</tr>
+<tr>
+<td class="ln">240</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Extension Point - Activate bundle when the checking the MCP registration.</span></code></td>
+<td class="ln">241</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Extension Point - Activate bundle when the checking the MCP registration.</span></code></td>
+</tr>
+<tr>
+<td class="ln">241</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Extension Point - Allow plugin to remove the mcp registration.</span></code></td>
+<td class="ln">242</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Extension Point - Allow plugin to remove the mcp registration.</span></code></td>
+</tr>
+<tr>
+<td class="ln">242</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Extension Point - Displaying new MCP server registration found but none actually exists.</span></code></td>
+<td class="ln">243</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Extension Point - Displaying new MCP server registration found but none actually exists.</span></code></td>
+</tr>
+<tr>
+<td class="ln">243</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Accessibility - Add name attribute to the widgets in chat view.</span></code></td>
+<td class="ln">244</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Accessibility - Add name attribute to the widgets in chat view.</span></code></td>
+</tr>
+<tr>
+<td class="ln">244</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Typo - typo in completion settings page.</span></code></td>
+<td class="ln">245</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Typo - typo in completion settings page.</span></code></td>
+</tr>
+<tr>
+<td class="ln">245</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">246</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">246</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">247</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">247</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.12.0</span>&nbsp;</code></td>
+<td class="ln">248</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.12.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">248</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">249</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">249</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support chat history.</span></code></td>
+<td class="ln">250</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support chat history.</span></code></td>
+</tr>
+<tr>
+<td class="ln">250</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support BYOK (Bring Your Own Keys), including Azure, OpenAI, Groq, Anthropic, OpenRouter and Gemini.</span></code></td>
+<td class="ln">251</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support BYOK (Bring Your Own Keys), including Azure, OpenAI, Groq, Anthropic, OpenRouter and Gemini.</span></code></td>
+</tr>
+<tr>
+<td class="ln">251</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">(Preview) Support MCP Registry.</span></code></td>
+<td class="ln">252</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">(Preview) Support MCP Registry.</span></code></td>
+</tr>
+<tr>
+<td class="ln">252</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">(Preview) Add an extension point to allow MCP server registration from other plugins.</span></code></td>
+<td class="ln">253</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">(Preview) Add an extension point to allow MCP server registration from other plugins.</span></code></td>
+</tr>
+<tr>
+<td class="ln">253</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">254</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">254</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+<td class="ln">255</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">255</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Show the generate commit message button to different places per Eclipse platform version.</span></code></td>
+<td class="ln">256</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Show the generate commit message button to different places per Eclipse platform version.</span></code></td>
+</tr>
+<tr>
+<td class="ln">256</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Re-organize the Copilot preference pages.</span></code></td>
+<td class="ln">257</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Re-organize the Copilot preference pages.</span></code></td>
+</tr>
+<tr>
+<td class="ln">257</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Use new GitHub App ID.</span></code></td>
+<td class="ln">258</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Use new GitHub App ID.</span></code></td>
+</tr>
+<tr>
+<td class="ln">258</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">259</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">259</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">260</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">260</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve focus indicator for buttons in chat view.</span></code></td>
+<td class="ln">261</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve focus indicator for buttons in chat view.</span></code></td>
+</tr>
+<tr>
+<td class="ln">261</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Misleading description for custom instructions.</span></code></td>
+<td class="ln">262</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Misleading description for custom instructions.</span></code></td>
+</tr>
+<tr>
+<td class="ln">262</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">SWT Resource was not properly disposed by run_in_terminal tool.</span></code></td>
+<td class="ln">263</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">SWT Resource was not properly disposed by run_in_terminal tool.</span></code></td>
+</tr>
+<tr>
+<td class="ln">263</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">java.nio.file.FileSystemException thrown by TerminalServiceManager.</span></code></td>
+<td class="ln">264</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">java.nio.file.FileSystemException thrown by TerminalServiceManager.</span></code></td>
+</tr>
+<tr>
+<td class="ln">264</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Rendering of the whats new page is broken on webkit.</span></code></td>
+<td class="ln">265</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Rendering of the whats new page is broken on webkit.</span></code></td>
+</tr>
+<tr>
+<td class="ln">265</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Consider product customization for what's new preferences.</span></code></td>
+<td class="ln">266</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Consider product customization for what's new preferences.</span></code></td>
+</tr>
+<tr>
+<td class="ln">266</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Get charset by file.</span></code></td>
+<td class="ln">267</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Get charset by file.</span></code></td>
+</tr>
+<tr>
+<td class="ln">267</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Dedup the files from the add context file dialog.</span></code></td>
+<td class="ln">268</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Dedup the files from the add context file dialog.</span></code></td>
+</tr>
+<tr>
+<td class="ln">268</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">'&amp;' is used as mnemonic character in SWT Label.</span></code></td>
+<td class="ln">269</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">'&amp;' is used as mnemonic character in SWT Label.</span></code></td>
+</tr>
+<tr>
+<td class="ln">269</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Refine color of line separator in chat view.</span></code></td>
+<td class="ln">270</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Refine color of line separator in chat view.</span></code></td>
+</tr>
+<tr>
+<td class="ln">270</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Validates the files before editing.</span></code></td>
+<td class="ln">271</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Validates the files before editing.</span></code></td>
+</tr>
+<tr>
+<td class="ln">271</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Set right background color and hover listener for action items in summary bar.</span></code></td>
+<td class="ln">272</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Set right background color and hover listener for action items in summary bar.</span></code></td>
+</tr>
+<tr>
+<td class="ln">272</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Do not trigger completion if code mining is disabled.</span></code></td>
+<td class="ln">273</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Do not trigger completion if code mining is disabled.</span></code></td>
+</tr>
+<tr>
+<td class="ln">273</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">UI bundle is started before CLS is activated.</span></code></td>
+<td class="ln">274</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">UI bundle is started before CLS is activated.</span></code></td>
+</tr>
+<tr>
+<td class="ln">274</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">275</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">275</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">276</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">276</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.11.0</span>&nbsp;</code></td>
+<td class="ln">277</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.11.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">277</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">278</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">278</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support drag and drop resources to referenced files.</span></code></td>
+<td class="ln">279</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support drag and drop resources to referenced files.</span></code></td>
+</tr>
+<tr>
+<td class="ln">279</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support adding resources to referenced files via context menu in Package Explorer and Project Explorer.</span></code></td>
+<td class="ln">280</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support adding resources to referenced files via context menu in Package Explorer and Project Explorer.</span></code></td>
+</tr>
+<tr>
+<td class="ln">280</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Enhance the color design of chat view.</span></code></td>
+<td class="ln">281</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Enhance the color design of chat view.</span></code></td>
+</tr>
+<tr>
+<td class="ln">281</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Use fragment bundle to split Copilot Language Server binaries.</span></code></td>
+<td class="ln">282</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Use fragment bundle to split Copilot Language Server binaries.</span></code></td>
+</tr>
+<tr>
+<td class="ln">282</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add public API to start a new ask session.</span></code></td>
+<td class="ln">283</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add public API to start a new ask session.</span></code></td>
+</tr>
+<tr>
+<td class="ln">283</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add Copilot chat view to JEE related perspectives.</span></code></td>
+<td class="ln">284</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add Copilot chat view to JEE related perspectives.</span></code></td>
+</tr>
+<tr>
+<td class="ln">284</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Use configuration scope to control whether to show what's new page and expose to preference dialog.</span></code></td>
+<td class="ln">285</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Use configuration scope to control whether to show what's new page and expose to preference dialog.</span></code></td>
+</tr>
+<tr>
+<td class="ln">285</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add copyright info and branding plugin.</span></code></td>
+<td class="ln">286</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add copyright info and branding plugin.</span></code></td>
+</tr>
+<tr>
+<td class="ln">286</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">287</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">287</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">288</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">288</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Input history in chat is wrong in a new conversation.</span></code></td>
+<td class="ln">289</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Input history in chat is wrong in a new conversation.</span></code></td>
+</tr>
+<tr>
+<td class="ln">289</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Use configuration scope to control getting started walkthrough page display.</span></code></td>
+<td class="ln">290</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Use configuration scope to control getting started walkthrough page display.</span></code></td>
+</tr>
+<tr>
+<td class="ln">290</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix compatibility issue for terminal across different Eclipse platform versions.</span></code></td>
+<td class="ln">291</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix compatibility issue for terminal across different Eclipse platform versions.</span></code></td>
+</tr>
+<tr>
+<td class="ln">291</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Typo in release note entry.</span></code></td>
+<td class="ln">292</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Typo in release note entry.</span></code></td>
+</tr>
+<tr>
+<td class="ln">292</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Referenced files cannot be closed if the project is deleted.</span></code></td>
+<td class="ln">293</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Referenced files cannot be closed if the project is deleted.</span></code></td>
+</tr>
+<tr>
+<td class="ln">293</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">NPE when calling InputNavigation.</span></code></td>
+<td class="ln">294</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">NPE when calling InputNavigation.</span></code></td>
+</tr>
+<tr>
+<td class="ln">294</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Shift+Tab move from inputText to chatContent.</span></code></td>
+<td class="ln">295</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Shift+Tab move from inputText to chatContent.</span></code></td>
+</tr>
+<tr>
+<td class="ln">295</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">296</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">296</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.10.0</span>&nbsp;</code></td>
+<td class="ln">297</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.10.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">297</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">298</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">298</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support custom instructions.</span></code></td>
+<td class="ln">299</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support custom instructions.</span></code></td>
+</tr>
+<tr>
+<td class="ln">299</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support MCP feature flag.</span></code></td>
+<td class="ln">300</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support MCP feature flag.</span></code></td>
+</tr>
+<tr>
+<td class="ln">300</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support GitHub MCP server OAuth.</span></code></td>
+<td class="ln">301</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support GitHub MCP server OAuth.</span></code></td>
+</tr>
+<tr>
+<td class="ln">301</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support adding image to the chat context.</span></code></td>
+<td class="ln">302</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support adding image to the chat context.</span></code></td>
+</tr>
+<tr>
+<td class="ln">302</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support adding folder to chat context.</span></code></td>
+<td class="ln">303</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support adding folder to chat context.</span></code></td>
+</tr>
+<tr>
+<td class="ln">303</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add confirmation dialog for unhandled files when create a new conversation in agent mode.</span></code></td>
+<td class="ln">304</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add confirmation dialog for unhandled files when create a new conversation in agent mode.</span></code></td>
+</tr>
+<tr>
+<td class="ln">304</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add </span><span class="sf12b2">`</span><span class="sf3b2">Edit Preferences...</span><span class="sf11b2">`</span><span class="sf3b2">&nbsp;button into chat top banner.</span></code></td>
+<td class="ln">305</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add </span><span class="sf12b2">`</span><span class="sf3b2">Edit Preferences...</span><span class="sf11b2">`</span><span class="sf3b2">&nbsp;button into chat top banner.</span></code></td>
+</tr>
+<tr>
+<td class="ln">305</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Show conversation title in chat top banner.</span></code></td>
+<td class="ln">306</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Show conversation title in chat top banner.</span></code></td>
+</tr>
+<tr>
+<td class="ln">306</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">307</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">307</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+<td class="ln">308</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">308</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve the Copilot perspective with onboarding images and more shortcuts.</span></code></td>
+<td class="ln">309</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve the Copilot perspective with onboarding images and more shortcuts.</span></code></td>
+</tr>
+<tr>
+<td class="ln">309</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update chat view's icon.</span></code></td>
+<td class="ln">310</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update chat view's icon.</span></code></td>
+</tr>
+<tr>
+<td class="ln">310</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Merge all open url related commands into one command.</span></code></td>
+<td class="ln">311</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Merge all open url related commands into one command.</span></code></td>
+</tr>
+<tr>
+<td class="ln">311</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">312</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">312</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">313</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">313</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Error 'Document for URI could not be found' during chat.</span></code></td>
+<td class="ln">314</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Error 'Document for URI could not be found' during chat.</span></code></td>
+</tr>
+<tr>
+<td class="ln">314</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Unexpected files are listed in the Search Attachments dialog.</span></code></td>
+<td class="ln">315</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Unexpected files are listed in the Search Attachments dialog.</span></code></td>
+</tr>
+<tr>
+<td class="ln">315</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Correct the default index when build SignInDialog.</span></code></td>
+<td class="ln">316</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Correct the default index when build SignInDialog.</span></code></td>
+</tr>
+<tr>
+<td class="ln">316</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Input history is not cleared after switching account.</span></code></td>
+<td class="ln">317</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Input history is not cleared after switching account.</span></code></td>
+</tr>
+<tr>
+<td class="ln">317</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Preference will be cleared if username is not ready when start up.</span></code></td>
+<td class="ln">318</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Preference will be cleared if username is not ready when start up.</span></code></td>
+</tr>
+<tr>
+<td class="ln">318</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Delay the show hint invocation timing to avoid command not found error.</span></code></td>
+<td class="ln">319</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Delay the show hint invocation timing to avoid command not found error.</span></code></td>
+</tr>
+<tr>
+<td class="ln">319</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Active model does not reset to default model when model list change.</span></code></td>
+<td class="ln">320</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Active model does not reset to default model when model list change.</span></code></td>
+</tr>
+<tr>
+<td class="ln">320</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Welcome view does not render correctly when height is limited.</span></code></td>
+<td class="ln">321</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Welcome view does not render correctly when height is limited.</span></code></td>
+</tr>
+<tr>
+<td class="ln">321</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Persist chat input when mode switches.</span></code></td>
+<td class="ln">322</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Persist chat input when mode switches.</span></code></td>
+</tr>
+<tr>
+<td class="ln">322</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Send MCP tools status notification after server started.</span></code></td>
+<td class="ln">323</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Send MCP tools status notification after server started.</span></code></td>
+</tr>
+<tr>
+<td class="ln">323</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">324</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">324</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Removed</span>&nbsp;</code></td>
+<td class="ln">325</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Removed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">325</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove CopilotAuthStatusListener from AvatarService.</span></code></td>
+<td class="ln">326</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove CopilotAuthStatusListener from AvatarService.</span></code></td>
+</tr>
+<tr>
+<td class="ln">326</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove CopilotAuthStatusListener from CopilotStatusManager.</span></code></td>
+<td class="ln">327</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove CopilotAuthStatusListener from CopilotStatusManager.</span></code></td>
+</tr>
+<tr>
+<td class="ln">327</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">328</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">328</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.9.3</span>&nbsp;</code></td>
+<td class="ln">329</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.9.3</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">329</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">330</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">330</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update CLS to 1.348.0.</span></code></td>
+<td class="ln">331</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update CLS to 1.348.0.</span></code></td>
+</tr>
+<tr>
+<td class="ln">331</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">332</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">332</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.9.2</span>&nbsp;</code></td>
+<td class="ln">333</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.9.2</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">333</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">334</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">334</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update CLS to 1.347.0.</span></code></td>
+<td class="ln">335</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update CLS to 1.347.0.</span></code></td>
+</tr>
+<tr>
+<td class="ln">335</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">336</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">336</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.9.1</span>&nbsp;</code></td>
+<td class="ln">337</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.9.1</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">337</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">338</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">338</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Reset history to avoid skipping the main section rendering.</span></code></td>
+<td class="ln">339</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Reset history to avoid skipping the main section rendering.</span></code></td>
+</tr>
+<tr>
+<td class="ln">339</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Updated bundle version to fit 2024-03.</span></code></td>
+<td class="ln">340</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Updated bundle version to fit 2024-03.</span></code></td>
+</tr>
+<tr>
+<td class="ln">340</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fixed Linux rendering problem.</span></code></td>
+<td class="ln">341</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fixed Linux rendering problem.</span></code></td>
+</tr>
+<tr>
+<td class="ln">341</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Async open chat after closing welcome page.</span></code></td>
+<td class="ln">342</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Async open chat after closing welcome page.</span></code></td>
+</tr>
+<tr>
+<td class="ln">342</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Use IPreferenceStore.getBoolean() to get the updated value.</span></code></td>
+<td class="ln">343</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Use IPreferenceStore.getBoolean() to get the updated value.</span></code></td>
+</tr>
+<tr>
+<td class="ln">343</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Perspective logo should support dark mode.</span></code></td>
+<td class="ln">344</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Perspective logo should support dark mode.</span></code></td>
+</tr>
+<tr>
+<td class="ln">344</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">345</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">345</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.9.0</span>&nbsp;</code></td>
+<td class="ln">346</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.9.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">346</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">347</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">347</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Show MCP logs in Console View.</span></code></td>
+<td class="ln">348</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Show MCP logs in Console View.</span></code></td>
+</tr>
+<tr>
+<td class="ln">348</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add welcome introduction page.</span></code></td>
+<td class="ln">349</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add welcome introduction page.</span></code></td>
+</tr>
+<tr>
+<td class="ln">349</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support workspace context (@workspace) in ask mode.</span></code></td>
+<td class="ln">350</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support workspace context (@workspace) in ask mode.</span></code></td>
+</tr>
+<tr>
+<td class="ln">350</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add open chat view command to perspectives' onboard command list.</span></code></td>
+<td class="ln">351</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add open chat view command to perspectives' onboard command list.</span></code></td>
+</tr>
+<tr>
+<td class="ln">351</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add keyboard shortcut command for open chat view command.</span></code></td>
+<td class="ln">352</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add keyboard shortcut command for open chat view command.</span></code></td>
+</tr>
+<tr>
+<td class="ln">352</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add new Copilot perspective.</span></code></td>
+<td class="ln">353</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add new Copilot perspective.</span></code></td>
+</tr>
+<tr>
+<td class="ln">353</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support generate git commit message.</span></code></td>
+<td class="ln">354</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support generate git commit message.</span></code></td>
+</tr>
+<tr>
+<td class="ln">354</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">355</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">355</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+<td class="ln">356</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">356</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support Eclipse 2024-03 &amp; 2024-06.</span></code></td>
+<td class="ln">357</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support Eclipse 2024-03 &amp; 2024-06.</span></code></td>
+</tr>
+<tr>
+<td class="ln">357</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Make agent mode as default chat mode.</span></code></td>
+<td class="ln">358</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Make agent mode as default chat mode.</span></code></td>
+</tr>
+<tr>
+<td class="ln">358</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve the chat view layout.</span></code></td>
+<td class="ln">359</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve the chat view layout.</span></code></td>
+</tr>
+<tr>
+<td class="ln">359</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve the Copilot menu in menu bar and status bar.</span></code></td>
+<td class="ln">360</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve the Copilot menu in menu bar and status bar.</span></code></td>
+</tr>
+<tr>
+<td class="ln">360</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove the spinner when completing code.</span></code></td>
+<td class="ln">361</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove the spinner when completing code.</span></code></td>
+</tr>
+<tr>
+<td class="ln">361</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">362</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">362</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">363</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">363</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP tool configuration button should not be visible in ask mode.</span></code></td>
+<td class="ln">364</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP tool configuration button should not be visible in ask mode.</span></code></td>
+</tr>
+<tr>
+<td class="ln">364</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Use workbench job to avoid blocking shutdown action.</span></code></td>
+<td class="ln">365</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Use workbench job to avoid blocking shutdown action.</span></code></td>
+</tr>
+<tr>
+<td class="ln">365</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Check if the project is accessible before scanning watched files.</span></code></td>
+<td class="ln">366</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Check if the project is accessible before scanning watched files.</span></code></td>
+</tr>
+<tr>
+<td class="ln">366</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix quota rendering issue on MacOS and Linux.</span></code></td>
+<td class="ln">367</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix quota rendering issue on MacOS and Linux.</span></code></td>
+</tr>
+<tr>
+<td class="ln">367</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Wrong completion when IDE auto closed brackets.</span></code></td>
+<td class="ln">368</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Wrong completion when IDE auto closed brackets.</span></code></td>
+</tr>
+<tr>
+<td class="ln">368</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Entire settings are synced even just changing one item.</span></code></td>
+<td class="ln">369</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Entire settings are synced even just changing one item.</span></code></td>
+</tr>
+<tr>
+<td class="ln">369</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Wrong welcome page displayed in chat view when user is not signed in.</span></code></td>
+<td class="ln">370</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Wrong welcome page displayed in chat view when user is not signed in.</span></code></td>
+</tr>
+<tr>
+<td class="ln">370</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">File with no extension cannot be attached in chat view.</span></code></td>
+<td class="ln">371</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">File with no extension cannot be attached in chat view.</span></code></td>
+</tr>
+<tr>
+<td class="ln">371</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Error 'SWT Resource was not properly disposed' after sign in.</span></code></td>
+<td class="ln">372</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Error 'SWT Resource was not properly disposed' after sign in.</span></code></td>
+</tr>
+<tr>
+<td class="ln">372</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">373</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">373</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.8.0</span>&nbsp;</code></td>
+<td class="ln">374</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.8.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">374</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">375</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">375</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Enable remote MCP server.</span></code></td>
+<td class="ln">376</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Enable remote MCP server.</span></code></td>
+</tr>
+<tr>
+<td class="ln">376</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add up-sell link to the model picker for free plan accounts.</span></code></td>
+<td class="ln">377</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add up-sell link to the model picker for free plan accounts.</span></code></td>
+</tr>
+<tr>
+<td class="ln">377</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">378</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">378</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+<td class="ln">379</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">379</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Make the chat view appear as a side bar by default.</span></code></td>
+<td class="ln">380</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Make the chat view appear as a side bar by default.</span></code></td>
+</tr>
+<tr>
+<td class="ln">380</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">381</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">381</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">382</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">382</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP tools are not visible.</span></code></td>
+<td class="ln">383</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">MCP tools are not visible.</span></code></td>
+</tr>
+<tr>
+<td class="ln">383</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Validate duplicate keys in MCP preference page.</span></code></td>
+<td class="ln">384</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Validate duplicate keys in MCP preference page.</span></code></td>
+</tr>
+<tr>
+<td class="ln">384</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Last line of the completion dialog in chat view is not visible.</span></code></td>
+<td class="ln">385</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Last line of the completion dialog in chat view is not visible.</span></code></td>
+</tr>
+<tr>
+<td class="ln">385</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support error status for tool invocation result.</span></code></td>
+<td class="ln">386</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support error status for tool invocation result.</span></code></td>
+</tr>
+<tr>
+<td class="ln">386</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix rendering issue on Linux GTK.</span></code></td>
+<td class="ln">387</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix rendering issue on Linux GTK.</span></code></td>
+</tr>
+<tr>
+<td class="ln">387</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Cannot use arrow up key in the completion dialog in chat view.</span></code></td>
+<td class="ln">388</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Cannot use arrow up key in the completion dialog in chat view.</span></code></td>
+</tr>
+<tr>
+<td class="ln">388</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Decimal display incorrectly in usage quota.</span></code></td>
+<td class="ln">389</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Decimal display incorrectly in usage quota.</span></code></td>
+</tr>
+<tr>
+<td class="ln">389</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Invalid thread access when reuse compare editor.</span></code></td>
+<td class="ln">390</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Invalid thread access when reuse compare editor.</span></code></td>
+</tr>
+<tr>
+<td class="ln">390</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Reuse existing compare editor for create_file tool.</span></code></td>
+<td class="ln">391</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Reuse existing compare editor for create_file tool.</span></code></td>
+</tr>
+<tr>
+<td class="ln">391</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add timeout when fetching env during activation on MacOS.</span></code></td>
+<td class="ln">392</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Add timeout when fetching env during activation on MacOS.</span></code></td>
+</tr>
+<tr>
+<td class="ln">392</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Check signin before get persisted path.</span></code></td>
+<td class="ln">393</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Check signin before get persisted path.</span></code></td>
+</tr>
+<tr>
+<td class="ln">393</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">394</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">394</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.7.0</span>&nbsp;</code></td>
+<td class="ln">395</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.7.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">395</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">396</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">396</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">New billing support and user interface update.</span></code></td>
+<td class="ln">397</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">New billing support and user interface update.</span></code></td>
+</tr>
+<tr>
+<td class="ln">397</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Input history navigation.</span></code></td>
+<td class="ln">398</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Input history navigation.</span></code></td>
+</tr>
+<tr>
+<td class="ln">398</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">A button shortcut to open the MCP configuration page.</span></code></td>
+<td class="ln">399</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">A button shortcut to open the MCP configuration page.</span></code></td>
+</tr>
+<tr>
+<td class="ln">399</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">400</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">400</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+<td class="ln">401</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">401</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update CLS to 1.327.0.</span></code></td>
+<td class="ln">402</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update CLS to 1.327.0.</span></code></td>
+</tr>
+<tr>
+<td class="ln">402</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update Copilot status icon.</span></code></td>
+<td class="ln">403</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Update Copilot status icon.</span></code></td>
+</tr>
+<tr>
+<td class="ln">403</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">404</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">404</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">405</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">405</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix the memory leak issue that the document is not disconnected.</span></code></td>
+<td class="ln">406</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fix the memory leak issue that the document is not disconnected.</span></code></td>
+</tr>
+<tr>
+<td class="ln">406</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Document for URI could not be found.</span></code></td>
+<td class="ln">407</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Document for URI could not be found.</span></code></td>
+</tr>
+<tr>
+<td class="ln">407</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">No tools is displayed in MCP configuration page.</span></code></td>
+<td class="ln">408</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">No tools is displayed in MCP configuration page.</span></code></td>
+</tr>
+<tr>
+<td class="ln">408</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">NPE when resolve menu bar handler.</span></code></td>
+<td class="ln">409</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">NPE when resolve menu bar handler.</span></code></td>
+</tr>
+<tr>
+<td class="ln">409</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Compare editor title cannot be rendered correctly.</span></code></td>
+<td class="ln">410</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Compare editor title cannot be rendered correctly.</span></code></td>
+</tr>
+<tr>
+<td class="ln">410</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">411</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">411</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.6.1</span>&nbsp;</code></td>
+<td class="ln">412</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.6.1</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">412</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">413</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">413</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Correct the bundle version requirement to align with Eclipse 2024-09.</span></code></td>
+<td class="ln">414</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Correct the bundle version requirement to align with Eclipse 2024-09.</span></code></td>
+</tr>
+<tr>
+<td class="ln">414</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">415</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">415</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.6.0</span>&nbsp;</code></td>
+<td class="ln">416</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.6.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">416</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">417</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">417</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support agent mode with stdio mcp server integration in chat.</span></code></td>
+<td class="ln">418</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support agent mode with stdio mcp server integration in chat.</span></code></td>
+</tr>
+<tr>
+<td class="ln">418</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">419</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">419</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.5.1</span>&nbsp;</code></td>
+<td class="ln">420</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.5.1</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">420</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">421</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">421</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Annotation model is null when triggering completion.</span></code></td>
+<td class="ln">422</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Annotation model is null when triggering completion.</span></code></td>
+</tr>
+<tr>
+<td class="ln">422</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Input text box shakes when sending message by hitting Enter-Key.</span></code></td>
+<td class="ln">423</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Input text box shakes when sending message by hitting Enter-Key.</span></code></td>
+</tr>
+<tr>
+<td class="ln">423</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">SWTException when disposing completion manager.</span></code></td>
+<td class="ln">424</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">SWTException when disposing completion manager.</span></code></td>
+</tr>
+<tr>
+<td class="ln">424</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Timeout error shows late when fail to login.</span></code></td>
+<td class="ln">425</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Timeout error shows late when fail to login.</span></code></td>
+</tr>
+<tr>
+<td class="ln">425</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve auto scroll to bottom behavior.</span></code></td>
+<td class="ln">426</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Improve auto scroll to bottom behavior.</span></code></td>
+</tr>
+<tr>
+<td class="ln">426</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fixed schema name copilotCapabilities.</span></code></td>
+<td class="ln">427</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Fixed schema name copilotCapabilities.</span></code></td>
+</tr>
+<tr>
+<td class="ln">427</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Wrong node runtime may be found.</span></code></td>
+<td class="ln">428</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Wrong node runtime may be found.</span></code></td>
+</tr>
+<tr>
+<td class="ln">428</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">429</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">429</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.5.0</span>&nbsp;</code></td>
+<td class="ln">430</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.5.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">430</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">431</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">431</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Added GitHub Copilot menu to the top menu bar.</span></code></td>
+<td class="ln">432</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Added GitHub Copilot menu to the top menu bar.</span></code></td>
+</tr>
+<tr>
+<td class="ln">432</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">433</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">433</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+<td class="ln">434</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">434</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Updated the LS to 1.290.0.</span></code></td>
+<td class="ln">435</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Updated the LS to 1.290.0.</span></code></td>
+</tr>
+<tr>
+<td class="ln">435</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">436</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">436</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">437</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">437</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Stop append INFO log when format preference changes.</span></code></td>
+<td class="ln">438</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Stop append INFO log when format preference changes.</span></code></td>
+</tr>
+<tr>
+<td class="ln">438</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Should not attach bin files even it was opened in editor (behavior of VSCode).</span></code></td>
+<td class="ln">439</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Should not attach bin files even it was opened in editor (behavior of VSCode).</span></code></td>
+</tr>
+<tr>
+<td class="ln">439</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">440</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">440</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.4.0</span>&nbsp;</code></td>
+<td class="ln">441</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.4.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">441</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">442</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">442</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support ABAP.</span></code></td>
+<td class="ln">443</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support ABAP.</span></code></td>
+</tr>
+<tr>
+<td class="ln">443</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">444</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">444</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+<td class="ln">445</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Changed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">445</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Mark org.eclipse.jdt.annotation to optional.</span></code></td>
+<td class="ln">446</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Mark org.eclipse.jdt.annotation to optional.</span></code></td>
+</tr>
+<tr>
+<td class="ln">446</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">447</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">447</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">448</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">448</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">NPE when IFile.getLocation() is null.</span></code></td>
+<td class="ln">449</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">NPE when IFile.getLocation() is null.</span></code></td>
+</tr>
+<tr>
+<td class="ln">449</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Illegal state exception in Turn widget.</span></code></td>
+<td class="ln">450</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Illegal state exception in Turn widget.</span></code></td>
+</tr>
+<tr>
+<td class="ln">450</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">SWT resources not disposed properly.</span></code></td>
+<td class="ln">451</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">SWT resources not disposed properly.</span></code></td>
+</tr>
+<tr>
+<td class="ln">451</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Markdown viewer fallbacks to textviewer.</span></code></td>
+<td class="ln">452</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Markdown viewer fallbacks to textviewer.</span></code></td>
+</tr>
+<tr>
+<td class="ln">452</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Chat input cannot be rendered as multi line when input text in too long.</span></code></td>
+<td class="ln">453</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Chat input cannot be rendered as multi line when input text in too long.</span></code></td>
+</tr>
+<tr>
+<td class="ln">453</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Exception when deleting word leading with brackets in chat input box.</span></code></td>
+<td class="ln">454</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Exception when deleting word leading with brackets in chat input box.</span></code></td>
+</tr>
+<tr>
+<td class="ln">454</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">455</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">455</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.3.0</span>&nbsp;</code></td>
+<td class="ln">456</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.3.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">456</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">457</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">457</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support chat feature</span></code></td>
+<td class="ln">458</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support chat feature</span></code></td>
+</tr>
+<tr>
+<td class="ln">458</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp;- </span><span class="sf3b2">Support to create a new conversation</span></code></td>
+<td class="ln">459</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp;- </span><span class="sf3b2">Support to create a new conversation</span></code></td>
+</tr>
+<tr>
+<td class="ln">459</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp;- </span><span class="sf3b2">Support slash commands</span></code></td>
+<td class="ln">460</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp;- </span><span class="sf3b2">Support slash commands</span></code></td>
+</tr>
+<tr>
+<td class="ln">460</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp;- </span><span class="sf3b2">Support to attach context files</span></code></td>
+<td class="ln">461</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp;- </span><span class="sf3b2">Support to attach context files</span></code></td>
+</tr>
+<tr>
+<td class="ln">461</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp;- </span><span class="sf3b2">Support cancel a conversation</span></code></td>
+<td class="ln">462</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp;- </span><span class="sf3b2">Support cancel a conversation</span></code></td>
+</tr>
+<tr>
+<td class="ln">462</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp;- </span><span class="sf3b2">Support model picker for chat</span></code></td>
+<td class="ln">463</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp;- </span><span class="sf3b2">Support model picker for chat</span></code></td>
+</tr>
+<tr>
+<td class="ln">463</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">464</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">464</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.2.0</span>&nbsp;</code></td>
+<td class="ln">465</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.2.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">465</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">466</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">466</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support C/C++ format options.</span></code></td>
+<td class="ln">467</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support C/C++ format options.</span></code></td>
+</tr>
+<tr>
+<td class="ln">467</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">468</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">468</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+<td class="ln">469</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Fixed</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">469</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Track uncaught exceptions.</span></code></td>
+<td class="ln">470</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Track uncaught exceptions.</span></code></td>
+</tr>
+<tr>
+<td class="ln">470</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Invalid thread access when generating completion.</span></code></td>
+<td class="ln">471</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Invalid thread access when generating completion.</span></code></td>
+</tr>
+<tr>
+<td class="ln">471</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">NPE when authStatesManager is not ready.</span></code></td>
+<td class="ln">472</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">NPE when authStatesManager is not ready.</span></code></td>
+</tr>
+<tr>
+<td class="ln">472</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Noise error log when signin is cancelled.</span></code></td>
+<td class="ln">473</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Noise error log when signin is cancelled.</span></code></td>
+</tr>
+<tr>
+<td class="ln">473</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Hide the credential information in proxy log.</span></code></td>
+<td class="ln">474</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Hide the credential information in proxy log.</span></code></td>
+</tr>
+<tr>
+<td class="ln">474</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove hard-coded plugin version in GithubPanicErrorReport.</span></code></td>
+<td class="ln">475</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Remove hard-coded plugin version in GithubPanicErrorReport.</span></code></td>
+</tr>
+<tr>
+<td class="ln">475</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Move the update status icon logic to display thread.</span></code></td>
+<td class="ln">476</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Move the update status icon logic to display thread.</span></code></td>
+</tr>
+<tr>
+<td class="ln">476</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">477</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">477</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.1.0</span>&nbsp;</code></td>
+<td class="ln">478</td><td class="sf3b2"><code><span class="sf11b2">##</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">0.1.0</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">478</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+<td class="ln">479</td><td class="sf3b2"><code><span class="sf11b2">###</span><span class="sf3b2">&nbsp;</span><span class="sf7b2">Added</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">479</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support authentication from GitHub Copilot.</span></code></td>
+<td class="ln">480</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support authentication from GitHub Copilot.</span></code></td>
+</tr>
+<tr>
+<td class="ln">480</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support free plan subscription.</span></code></td>
+<td class="ln">481</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support free plan subscription.</span></code></td>
+</tr>
+<tr>
+<td class="ln">481</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support inline completion.</span></code></td>
+<td class="ln">482</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support inline completion.</span></code></td>
+</tr>
+<tr>
+<td class="ln">482</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support accepting completion by word.</span></code></td>
+<td class="ln">483</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support accepting completion by word.</span></code></td>
+</tr>
+<tr>
+<td class="ln">483</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support fetching Java format options when triggering inline completion.</span></code></td>
+<td class="ln">484</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support fetching Java format options when triggering inline completion.</span></code></td>
+</tr>
+<tr>
+<td class="ln">484</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support proxy configuration.</span></code></td>
+<td class="ln">485</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support proxy configuration.</span></code></td>
+</tr>
+<tr>
+<td class="ln">485</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support toggling auto inline completion.</span></code></td>
+<td class="ln">486</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support toggling auto inline completion.</span></code></td>
+</tr>
+<tr>
+<td class="ln">486</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support configuring key bindings from the status bar menu.</span></code></td>
+<td class="ln">487</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support configuring key bindings from the status bar menu.</span></code></td>
+</tr>
+<tr>
+<td class="ln">487</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support opening feedback forum from the status bar menu.</span></code></td>
+<td class="ln">488</td><td class="sf3b2"><code><span class="sf11b2">- </span><span class="sf3b2">Support opening feedback forum from the status bar menu.</span></code></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

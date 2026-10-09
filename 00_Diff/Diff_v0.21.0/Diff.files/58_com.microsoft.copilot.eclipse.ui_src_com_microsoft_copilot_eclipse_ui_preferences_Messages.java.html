@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>WinMerge File Compare Report</title>
+<style>
+<!--
+body { font-family: "Segoe UI", Arial, sans-serif; margin: 20px; background-color: #ffffff; color: #1a1a1a; }
+table { table-layout: fixed; margin: 0; border: none; box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.15); font-size: 12.00pt; }
+.cmp-table-text td { word-break: break-all; padding: 0 3px; vertical-align: top; }
+.cmp-table-table td, .cmp-table-table th { word-break: break-all; padding: 0 3px; border: 1px solid #a0a0a0; vertical-align: top; }
+.cmp-table-image td, .cmp-table-webpage td { border: 1px solid #a0a0a0; }
+.title { font-weight: 600; color: #ffffff; text-align: left; padding: 8px 12px; background-color: #191970; border-bottom: none; position: sticky; vertical-align: top; text-align: center; top: 0; z-index: 9999; }
+.title-right, .title-middle { box-shadow: inset 1px 0 #ffffff; }
+.ln { position: sticky; left: 0; }
+.cmp-div-image { overflow: scroll; text-align: center; max-height: calc(100vh - 70px); }
+.cmp-pdf-webpage { width: 100%; height: calc(100vh - 70px) }
+.cmp-table-full { width: 100%; border-collapse: collapse; overflow: hidden; }
+.cmp-table-auto { width: max-content; border-collapse: collapse; overflow: hidden; }
+.cmp-table-header { position: sticky; top: 0; z-index: 99; }
+.cmp-grid { display: grid; grid-template-rows: max-content; height: calc(100vh - 30px); }
+.cmp-grid-2 { grid-template-columns: 50% 50%; }
+.cmp-grid-3 { grid-template-columns: 33.33% 33.33% 33.33%; }
+.cmp-collapsed-row { height: 1px; }
+.cmp-collapsed-cell { background-color: #000000; }
+.cmp-scroll { overflow-x: auto; }
+.sf3b2 {color: #000000; background-color: #ffffff; }
+.sf3b5 {color: #000000; background-color: #0078d7; }
+.sf3b14 {color: #000000; background-color: #ffa0a0; }
+.sf3b16 {color: #000000; background-color: #f1e2ad; }
+.sf3b18 {color: #000000; background-color: #ffaa82; }
+.sf3b19 {color: #000000; background-color: #c8816c; }
+.sf6b2 {color: #ffffff; background-color: #ffffff; }
+.sf6b5 {color: #ffffff; background-color: #0078d7; }
+.sf6b14 {color: #ffffff; background-color: #ffa0a0; }
+.sf6b16 {color: #ffffff; background-color: #f1e2ad; }
+.sf6b18 {color: #ffffff; background-color: #ffaa82; }
+.sf6b19 {color: #ffffff; background-color: #c8816c; }
+.sf7b2 {color: #0000ff; background-color: #ffffff; font-weight: bold; }
+.sf7b5 {color: #0000ff; background-color: #0078d7; font-weight: bold; }
+.sf7b14 {color: #0000ff; background-color: #ffa0a0; font-weight: bold; }
+.sf7b16 {color: #0000ff; background-color: #f1e2ad; font-weight: bold; }
+.sf7b18 {color: #0000ff; background-color: #ffaa82; font-weight: bold; }
+.sf7b19 {color: #0000ff; background-color: #c8816c; font-weight: bold; }
+.sf8b2 {color: #800080; background-color: #ffffff; }
+.sf8b5 {color: #800080; background-color: #0078d7; }
+.sf8b14 {color: #800080; background-color: #ffa0a0; }
+.sf8b16 {color: #800080; background-color: #f1e2ad; }
+.sf8b18 {color: #800080; background-color: #ffaa82; }
+.sf8b19 {color: #800080; background-color: #c8816c; }
+.sf9b2 {color: #008000; background-color: #ffffff; }
+.sf9b5 {color: #008000; background-color: #0078d7; }
+.sf9b14 {color: #008000; background-color: #ffa0a0; }
+.sf9b16 {color: #008000; background-color: #f1e2ad; }
+.sf9b18 {color: #008000; background-color: #ffaa82; }
+.sf9b19 {color: #008000; background-color: #c8816c; }
+.sf10b2 {color: #ff0000; background-color: #ffffff; }
+.sf10b5 {color: #ff0000; background-color: #0078d7; }
+.sf10b14 {color: #ff0000; background-color: #ffa0a0; }
+.sf10b16 {color: #ff0000; background-color: #f1e2ad; }
+.sf10b18 {color: #ff0000; background-color: #ffaa82; }
+.sf10b19 {color: #ff0000; background-color: #c8816c; }
+.sf11b2 {color: #606060; background-color: #ffffff; }
+.sf11b5 {color: #606060; background-color: #0078d7; }
+.sf11b14 {color: #606060; background-color: #ffa0a0; }
+.sf11b16 {color: #606060; background-color: #f1e2ad; }
+.sf11b18 {color: #606060; background-color: #ffaa82; }
+.sf11b19 {color: #606060; background-color: #c8816c; }
+.sf12b2 {color: #800000; background-color: #ffffff; }
+.sf12b5 {color: #800000; background-color: #0078d7; }
+.sf12b14 {color: #800000; background-color: #ffa0a0; }
+.sf12b16 {color: #800000; background-color: #f1e2ad; }
+.sf12b18 {color: #800000; background-color: #ffaa82; }
+.sf12b19 {color: #800000; background-color: #c8816c; }
+.sf13b2 {color: #0080c0; background-color: #ffffff; }
+.sf13b5 {color: #0080c0; background-color: #0078d7; }
+.sf13b14 {color: #0080c0; background-color: #ffa0a0; }
+.sf13b16 {color: #0080c0; background-color: #f1e2ad; }
+.sf13b18 {color: #0080c0; background-color: #ffaa82; }
+.sf13b19 {color: #0080c0; background-color: #c8816c; }
+.sf15b2 {color: #000000; background-color: #ffffff; }
+.sf15b5 {color: #000000; background-color: #0078d7; }
+.sf15b14 {color: #000000; background-color: #ffa0a0; }
+.sf15b16 {color: #000000; background-color: #f1e2ad; }
+.sf15b18 {color: #000000; background-color: #ffaa82; }
+.sf15b19 {color: #000000; background-color: #c8816c; }
+.sf17b2 {color: #000000; background-color: #ffffff; }
+.sf17b5 {color: #000000; background-color: #0078d7; }
+.sf17b14 {color: #000000; background-color: #ffa0a0; }
+.sf17b16 {color: #000000; background-color: #f1e2ad; }
+.sf17b18 {color: #000000; background-color: #ffaa82; }
+.sf17b19 {color: #000000; background-color: #c8816c; }
+.sf20b2 {color: #000080; background-color: #ffffff; }
+.sf20b5 {color: #000080; background-color: #0078d7; }
+.sf20b14 {color: #000080; background-color: #ffa0a0; }
+.sf20b16 {color: #000080; background-color: #f1e2ad; }
+.sf20b18 {color: #000080; background-color: #ffaa82; }
+.sf20b19 {color: #000080; background-color: #c8816c; }
+.sf21b2 {color: #0080c0; background-color: #ffffff; }
+.sf21b5 {color: #0080c0; background-color: #0078d7; }
+.sf21b14 {color: #0080c0; background-color: #ffa0a0; }
+.sf21b16 {color: #0080c0; background-color: #f1e2ad; }
+.sf21b18 {color: #0080c0; background-color: #ffaa82; }
+.sf21b19 {color: #0080c0; background-color: #c8816c; }
+.sf3b2i {color: #ababab; background-color: #ffffff; }
+.sf3b5i {color: #005190; background-color: #0078d7; }
+.sf3b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf3b16i {color: #a19774; background-color: #f1e2ad; }
+.sf3b18i {color: #ab7257; background-color: #ffaa82; }
+.sf3b19i {color: #865749; background-color: #c8816c; }
+.sf6b2i {color: #ffffff; background-color: #ffffff; }
+.sf6b5i {color: #54a4e4; background-color: #0078d7; }
+.sf6b14i {color: #ffbfbf; background-color: #ffa0a0; }
+.sf6b16i {color: #f5ebc8; background-color: #f1e2ad; }
+.sf6b18i {color: #ffc6ab; background-color: #ffaa82; }
+.sf6b19i {color: #daaa9c; background-color: #c8816c; }
+.sf7b2i {color: #ababff; background-color: #ffffff; font-weight: bold; }
+.sf7b5i {color: #0051e4; background-color: #0078d7; font-weight: bold; }
+.sf7b14i {color: #ab6bbf; background-color: #ffa0a0; font-weight: bold; }
+.sf7b16i {color: #a197c8; background-color: #f1e2ad; font-weight: bold; }
+.sf7b18i {color: #ab72ab; background-color: #ffaa82; font-weight: bold; }
+.sf7b19i {color: #86579c; background-color: #c8816c; font-weight: bold; }
+.sf8b2i {color: #d5abd5; background-color: #ffffff; }
+.sf8b5i {color: #2a51bb; background-color: #0078d7; }
+.sf8b14i {color: #d56b96; background-color: #ffa0a0; }
+.sf8b16i {color: #cc979f; background-color: #f1e2ad; }
+.sf8b18i {color: #d57282; background-color: #ffaa82; }
+.sf8b19i {color: #b15772; background-color: #c8816c; }
+.sf9b2i {color: #abd5ab; background-color: #ffffff; }
+.sf9b5i {color: #007a90; background-color: #0078d7; }
+.sf9b14i {color: #ab966b; background-color: #ffa0a0; }
+.sf9b16i {color: #a1c274; background-color: #f1e2ad; }
+.sf9b18i {color: #ab9d57; background-color: #ffaa82; }
+.sf9b19i {color: #868149; background-color: #c8816c; }
+.sf10b2i {color: #ffabab; background-color: #ffffff; }
+.sf10b5i {color: #545190; background-color: #0078d7; }
+.sf10b14i {color: #ff6b6b; background-color: #ffa0a0; }
+.sf10b16i {color: #f59774; background-color: #f1e2ad; }
+.sf10b18i {color: #ff7257; background-color: #ffaa82; }
+.sf10b19i {color: #da5749; background-color: #c8816c; }
+.sf11b2i {color: #cbcbcb; background-color: #ffffff; }
+.sf11b5i {color: #1f71b0; background-color: #0078d7; }
+.sf11b14i {color: #cb8b8b; background-color: #ffa0a0; }
+.sf11b16i {color: #c1b794; background-color: #f1e2ad; }
+.sf11b18i {color: #cb9277; background-color: #ffaa82; }
+.sf11b19i {color: #a67769; background-color: #c8816c; }
+.sf12b2i {color: #d5abab; background-color: #ffffff; }
+.sf12b5i {color: #2a5190; background-color: #0078d7; }
+.sf12b14i {color: #d56b6b; background-color: #ffa0a0; }
+.sf12b16i {color: #cc9774; background-color: #f1e2ad; }
+.sf12b18i {color: #d57257; background-color: #ffaa82; }
+.sf12b19i {color: #b15749; background-color: #c8816c; }
+.sf13b2i {color: #abd5eb; background-color: #ffffff; }
+.sf13b5i {color: #007ad0; background-color: #0078d7; }
+.sf13b14i {color: #ab96aa; background-color: #ffa0a0; }
+.sf13b16i {color: #a1c2b3; background-color: #f1e2ad; }
+.sf13b18i {color: #ab9d96; background-color: #ffaa82; }
+.sf13b19i {color: #868187; background-color: #c8816c; }
+.sf15b2i {color: #ababab; background-color: #ffffff; }
+.sf15b5i {color: #005190; background-color: #0078d7; }
+.sf15b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf15b16i {color: #a19774; background-color: #f1e2ad; }
+.sf15b18i {color: #ab7257; background-color: #ffaa82; }
+.sf15b19i {color: #865749; background-color: #c8816c; }
+.sf17b2i {color: #ababab; background-color: #ffffff; }
+.sf17b5i {color: #005190; background-color: #0078d7; }
+.sf17b14i {color: #ab6b6b; background-color: #ffa0a0; }
+.sf17b16i {color: #a19774; background-color: #f1e2ad; }
+.sf17b18i {color: #ab7257; background-color: #ffaa82; }
+.sf17b19i {color: #865749; background-color: #c8816c; }
+.sf20b2i {color: #ababd5; background-color: #ffffff; }
+.sf20b5i {color: #0051bb; background-color: #0078d7; }
+.sf20b14i {color: #ab6b96; background-color: #ffa0a0; }
+.sf20b16i {color: #a1979f; background-color: #f1e2ad; }
+.sf20b18i {color: #ab7282; background-color: #ffaa82; }
+.sf20b19i {color: #865772; background-color: #c8816c; }
+.sf21b2i {color: #abd5eb; background-color: #ffffff; }
+.sf21b5i {color: #007ad0; background-color: #0078d7; }
+.sf21b14i {color: #ab96aa; background-color: #ffa0a0; }
+.sf21b16i {color: #a1c2b3; background-color: #f1e2ad; }
+.sf21b18i {color: #ab9d96; background-color: #ffaa82; }
+.sf21b19i {color: #868187; background-color: #c8816c; }
+.cn {text-align: center; word-break: normal; color: #000000; background-color: #f0f0f0;}
+.ln {text-align: right; word-break: normal; color: #000000; background-color: #f0f0f0;}
+--></style>
+</head><body>
+<table class="cmp-table-text cmp-table-full cmp-table-2">
+<colgroup>
+<col style="width: 2.5em;" />
+<col style="width: calc(100% / 2 - 2.5em);" />
+<col style="width: 2.5em;" />
+<col style="width: calc(100% / 2 - 2.5em);" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="2" class="title title-left">D:\MyGitHub\copilot-for-eclipse_Old\com.microsoft.copilot.eclipse.ui\src\com\microsoft\copilot\eclipse\ui\preferences\Messages.java</th>
+<th colspan="2" class="title title-right">D:\MyGitHub\copilot-for-eclipse_New\com.microsoft.copilot.eclipse.ui\src\com\microsoft\copilot\eclipse\ui\preferences\Messages.java</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="ln">1</td><td class="sf3b2"><code><span class="sf9b2">// Copyright (c) Microsoft Corporation.</span></code></td>
+<td class="ln">1</td><td class="sf3b2"><code><span class="sf9b2">// Copyright (c) Microsoft Corporation.</span></code></td>
+</tr>
+<tr>
+<td class="ln">2</td><td class="sf3b2"><code><span class="sf9b2">// Licensed under the MIT license.</span></code></td>
+<td class="ln">2</td><td class="sf3b2"><code><span class="sf9b2">// Licensed under the MIT license.</span></code></td>
+</tr>
+<tr>
+<td class="ln">3</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">3</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">4</td><td class="sf3b2"><code><span class="sf7b2">package</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">prefer<wbr>ences</span><span class="sf11b2">;</span></code></td>
+<td class="ln">4</td><td class="sf3b2"><code><span class="sf7b2">package</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">com</span><span class="sf11b2">.</span><span class="sf3b2">microsoft</span><span class="sf11b2">.</span><span class="sf3b2">copilot</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">ui</span><span class="sf11b2">.</span><span class="sf3b2">prefer<wbr>ences</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">5</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">5</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">6</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">org</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">osgi</span><span class="sf11b2">.</span><span class="sf3b2">util</span><span class="sf11b2">.</span><span class="sf3b2">NLS</span><span class="sf11b2">;</span></code></td>
+<td class="ln">6</td><td class="sf3b2"><code><span class="sf7b2">import</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">org</span><span class="sf11b2">.</span><span class="sf3b2">eclipse</span><span class="sf11b2">.</span><span class="sf3b2">osgi</span><span class="sf11b2">.</span><span class="sf3b2">util</span><span class="sf11b2">.</span><span class="sf3b2">NLS</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">7</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">7</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">8</td><td class="sf3b2"><code><span class="sf9b2">/**</span></code></td>
+<td class="ln">8</td><td class="sf3b2"><code><span class="sf9b2">/**</span></code></td>
+</tr>
+<tr>
+<td class="ln">9</td><td class="sf3b2"><code><span class="sf9b2">&nbsp;* Messages used in preference page.</span></code></td>
+<td class="ln">9</td><td class="sf3b2"><code><span class="sf9b2">&nbsp;* Messages used in preference page.</span></code></td>
+</tr>
+<tr>
+<td class="ln">10</td><td class="sf3b2"><code><span class="sf9b2">&nbsp;*/</span>&nbsp;</code></td>
+<td class="ln">10</td><td class="sf3b2"><code><span class="sf9b2">&nbsp;*/</span>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">11</td><td class="sf3b2"><code><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">class</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">Messages</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">extends</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">NLS</span><span class="sf11b2">&nbsp;{</span></code></td>
+<td class="ln">11</td><td class="sf3b2"><code><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">class</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">Messages</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">extends</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">NLS</span><span class="sf11b2">&nbsp;{</span></code></td>
+</tr>
+<tr>
+<td class="ln">12</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">private</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">final</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">BUNDLE_NAME</span><span class="sf11b2">&nbsp;= </span><span class="sf12b2">"com.microsoft.copilot.eclipse.ui.prefe<wbr>rences.messages"</span><span class="sf11b2">; </span><span class="sf9b2">//$NON-NLS-1$</span></code></td>
+<td class="ln">12</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">private</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">final</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">BUNDLE_NAME</span><span class="sf11b2">&nbsp;= </span><span class="sf12b2">"com.microsoft.copilot.eclipse.ui.prefe<wbr>rences.messages"</span><span class="sf11b2">; </span><span class="sf9b2">//$NON-NLS-1$</span></code></td>
+</tr>
+<tr>
+<td class="ln">13</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">13</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">14</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_completions_autoShowCo<wbr>mpletion</span><span class="sf11b2">;</span></code></td>
+<td class="ln">14</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_completions_autoShowCo<wbr>mpletion</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">15</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">15</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">16</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_description</span><span class="sf11b2">;</span></code></td>
+<td class="ln">16</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_description</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">17</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_signin_descriptio<wbr>n</span><span class="sf11b2">;</span></code></td>
+<td class="ln">17</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_signin_descriptio<wbr>n</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">18</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_loading</span><span class="sf11b2">;</span></code></td>
+<td class="ln">18</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_loading</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">19</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_provider_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">19</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_provider_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">20</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_provider_descript<wbr>ion</span><span class="sf11b2">;</span></code></td>
+<td class="ln">20</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_provider_descript<wbr>ion</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">21</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_table_status_colu<wbr>mn</span><span class="sf11b2">;</span></code></td>
+<td class="ln">21</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_table_status_colu<wbr>mn</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">22</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_button</span><span class="sf11b2">;</span></code></td>
+<td class="ln">22</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_button</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">23</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_removeModel</span><span class="sf11b2">;</span></code></td>
+<td class="ln">23</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_removeModel</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">24</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_changeApi_button</span><span class="sf11b2">;<wbr></span></code></td>
+<td class="ln">24</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_changeApi_button</span><span class="sf11b2">;<wbr></span></code></td>
+</tr>
+<tr>
+<td class="ln">25</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_deleteApi_button</span><span class="sf11b2">;<wbr></span></code></td>
+<td class="ln">25</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_deleteApi_button</span><span class="sf11b2">;<wbr></span></code></td>
+</tr>
+<tr>
+<td class="ln">26</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_changeEndpoint_bu<wbr>tton</span><span class="sf11b2">;</span></code></td>
+<td class="ln">26</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_changeEndpoint_bu<wbr>tton</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">27</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_deleteEndpoint_bu<wbr>tton</span><span class="sf11b2">;</span></code></td>
+<td class="ln">27</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_deleteEndpoint_bu<wbr>tton</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">28</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_enableModel_butto<wbr>n</span><span class="sf11b2">;</span></code></td>
+<td class="ln">28</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_enableModel_butto<wbr>n</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">29</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_disableModel_butt<wbr>on</span><span class="sf11b2">;</span></code></td>
+<td class="ln">29</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_disableModel_butt<wbr>on</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">30</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_reload_button</span><span class="sf11b2">;</span></code></td>
+<td class="ln">30</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_reload_button</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">31</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_removeModel_confi<wbr>rmDialog_message</span><span class="sf11b2">;</span></code></td>
+<td class="ln">31</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_removeModel_confi<wbr>rmDialog_message</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">32</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_dialog_t<wbr>itle</span><span class="sf11b2">;</span></code></td>
+<td class="ln">32</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_dialog_t<wbr>itle</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">33</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_modelId</span><span class="sf11b2">;<wbr></span></code></td>
+<td class="ln">33</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_modelId</span><span class="sf11b2">;<wbr></span></code></td>
+</tr>
+<tr>
+<td class="ln">34</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_deployme<wbr>ntUrl</span><span class="sf11b2">;</span></code></td>
+<td class="ln">34</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_deployme<wbr>ntUrl</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">35</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_apiKey</span><span class="sf11b2">;</span></code></td>
+<td class="ln">35</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_apiKey</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">36</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_ollama_dialog_tit<wbr>le</span><span class="sf11b2">;</span></code></td>
+<td class="ln">36</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_ollama_dialog_tit<wbr>le</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">37</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_ollama_create_dia<wbr>log_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">37</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_ollama_create_dia<wbr>log_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">38</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_ollama_endpoint</span><span class="sf11b2">;</span></code></td>
+<td class="ln">38</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_ollama_endpoint</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"><a id="d1_1" href="#d1_1">.</a></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">39</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_addProvider_butto<wbr>n</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">40</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_customProvider_di<wbr>alog_title</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">41</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_customProvider_na<wbr>me</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">42</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_customProvider_en<wbr>dpoint</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">43</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_customProvider_ap<wbr>iKey</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">44</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_customProvider_ap<wbr>iKey_hint</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">45</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_customProvider_ap<wbr>iType</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">46</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_customProvider_ap<wbr>iType_chatCompletions</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">47</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_customProvider_ap<wbr>iType_responses</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">48</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_customProvider_ap<wbr>iType_messages</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">49</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_customProvider_ur<wbr>l_dialog_title</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">50</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_changeUrl_button</span><span style="color: #000000; background-color: #ef7774; ">;<wbr></span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">51</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_deleteProvider_bu<wbr>tton</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">52</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_deleteProvider_di<wbr>alog_title</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln"></td><td style="color: #000000; background-color: #f0c0c0; "><code>&nbsp;</code></td>
+<td class="ln">53</td><td style="color: #000000; background-color: #ef7774; "><code><span style="color: #000000; background-color: #ef7774; ">&nbsp; </span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">public</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; font-weight: bold; ">static</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">String</span><span style="color: #000000; background-color: #ef7774; ">&nbsp;</span><span style="color: #000000; background-color: #ef7774; ">preferences_page_byok_deleteProvider_di<wbr>alog_description</span><span style="color: #000000; background-color: #ef7774; ">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">39</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_displayN<wbr>ame</span><span class="sf11b2">;</span></code></td>
+<td class="ln">54</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_displayN<wbr>ame</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">40</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_supportV<wbr>ision</span><span class="sf11b2">;</span></code></td>
+<td class="ln">55</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_supportV<wbr>ision</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">41</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_supportT<wbr>oolCalling</span><span class="sf11b2">;</span></code></td>
+<td class="ln">56</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_addModel_supportT<wbr>oolCalling</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">42</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_changeApi_dialog_<wbr>title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">57</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_changeApi_dialog_<wbr>title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">43</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_changeApi_dialog_<wbr>description</span><span class="sf11b2">;</span></code></td>
+<td class="ln">58</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_changeApi_dialog_<wbr>description</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">44</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_deleteApi_dialog_<wbr>title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">59</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_deleteApi_dialog_<wbr>title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">45</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_deleteApi_dialog_<wbr>description</span><span class="sf11b2">;</span></code></td>
+<td class="ln">60</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_deleteApi_dialog_<wbr>description</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">46</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_deleteEndpoint_di<wbr>alog_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">61</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_deleteEndpoint_di<wbr>alog_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">47</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_deleteEndpoint_di<wbr>alog_description</span><span class="sf11b2">;</span></code></td>
+<td class="ln">62</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_deleteEndpoint_di<wbr>alog_description</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">48</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_dialog_add</span><span class="sf11b2">;</span></code></td>
+<td class="ln">63</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_dialog_add</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">49</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_dialog_delete</span><span class="sf11b2">;</span></code></td>
+<td class="ln">64</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_dialog_delete</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">50</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_dialog_yes</span><span class="sf11b2">;</span></code></td>
+<td class="ln">65</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_dialog_yes</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">51</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_default</span><span class="sf11b2">;</span></code></td>
+<td class="ln">66</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_default</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">52</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_dialog_cancel</span><span class="sf11b2">;</span></code></td>
+<td class="ln">67</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_dialog_cancel</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">53</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_dialog_remove</span><span class="sf11b2">;</span></code></td>
+<td class="ln">68</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_dialog_remove</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">54</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_customModels</span><span class="sf11b2">;</span></code></td>
+<td class="ln">69</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_customModels</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">55</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_enabledCount</span><span class="sf11b2">;</span></code></td>
+<td class="ln">70</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_enabledCount</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">56</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_disabled_tip</span><span class="sf11b2">;</span></code></td>
+<td class="ln">71</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_byok_disabled_tip</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">57</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_completions_codeMining<wbr>Note</span><span class="sf11b2">;</span></code></td>
+<td class="ln">72</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_completions_codeMining<wbr>Note</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">58</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_completions_enableNes</span><span class="sf11b2">;<wbr></span></code></td>
+<td class="ln">73</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_completions_enableNes</span><span class="sf11b2">;<wbr></span></code></td>
+</tr>
+<tr>
+<td class="ln">59</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_enable_strict_ssl</span><span class="sf11b2">;</span></code></td>
+<td class="ln">74</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_enable_strict_ssl</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">60</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_whats_new_settings</span><span class="sf11b2">;</span></code></td>
+<td class="ln">75</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_whats_new_settings</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">61</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_enable_whats_new</span><span class="sf11b2">;</span></code></td>
+<td class="ln">76</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_enable_whats_new</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">62</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_enable_whats_new_toolt<wbr>ip</span><span class="sf11b2">;</span></code></td>
+<td class="ln">77</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_enable_whats_new_toolt<wbr>ip</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">63</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_github_enterprise</span><span class="sf11b2">;</span></code></td>
+<td class="ln">78</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_github_enterprise</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">64</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp</span><span class="sf11b2">;</span></code></td>
+<td class="ln">79</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">65</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_proxy_config_link</span><span class="sf11b2">;</span></code></td>
+<td class="ln">80</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_proxy_config_link</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">66</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_proxy_settings</span><span class="sf11b2">;</span></code></td>
+<td class="ln">81</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_proxy_settings</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">67</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auth_settings</span><span class="sf11b2">;</span></code></td>
+<td class="ln">82</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auth_settings</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">68</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_settings</span><span class="sf11b2">;</span></code></td>
+<td class="ln">83</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_settings</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">69</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_enable_strict_ssl_tool<wbr>tip</span><span class="sf11b2">;</span></code></td>
+<td class="ln">84</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_enable_strict_ssl_tool<wbr>tip</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">70</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_proxy_config_link_tool<wbr>tip</span><span class="sf11b2">;</span></code></td>
+<td class="ln">85</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_proxy_config_link_tool<wbr>tip</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">71</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_github_enterprise_tool<wbr>tip</span><span class="sf11b2">;</span></code></td>
+<td class="ln">86</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_github_enterprise_tool<wbr>tip</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">72</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_tooltip</span><span class="sf11b2">;</span></code></td>
+<td class="ln">87</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_tooltip</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">73</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_note_content</span><span class="sf11b2">;</span></code></td>
+<td class="ln">88</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_note_content</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">74</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_disabled_tip</span><span class="sf11b2">;</span></code></td>
+<td class="ln">89</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_disabled_tip</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">75</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_tools_settings</span><span class="sf11b2">;</span></code></td>
+<td class="ln">90</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_tools_settings</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">76</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_tools_mode_selecto<wbr>r</span><span class="sf11b2">;</span></code></td>
+<td class="ln">91</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_tools_mode_selecto<wbr>r</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">77</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_tools_agent_mode</span><span class="sf11b2">;</span></code></td>
+<td class="ln">92</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_tools_agent_mode</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">78</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_tools_builtin</span><span class="sf11b2">;</span></code></td>
+<td class="ln">93</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_tools_builtin</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">79</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_tools_unknown_tool<wbr></span><span class="sf11b2">;</span></code></td>
+<td class="ln">94</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_tools_unknown_tool<wbr></span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">80</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_server_init_error</span><span class="sf11b2">;<wbr></span></code></td>
+<td class="ln">95</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_server_init_error</span><span class="sf11b2">;<wbr></span></code></td>
+</tr>
+<tr>
+<td class="ln">81</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_extMcp_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">96</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_extMcp_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">82</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_extMcp_button_edit</span><span class="sf11b2">;</span></code></td>
+<td class="ln">97</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_extMcp_button_edit</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">83</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_extMcp_button_tooltip</span><span class="sf11b2">;<wbr></span></code></td>
+<td class="ln">98</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_extMcp_button_tooltip</span><span class="sf11b2">;<wbr></span></code></td>
+</tr>
+<tr>
+<td class="ln">84</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_registry_settings</span><span class="sf11b2">;<wbr></span></code></td>
+<td class="ln">99</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_registry_settings</span><span class="sf11b2">;<wbr></span></code></td>
+</tr>
+<tr>
+<td class="ln">85</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_registry_url</span><span class="sf11b2">;</span></code></td>
+<td class="ln">100</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_registry_url</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">86</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_registry_descripti<wbr>on</span><span class="sf11b2">;</span></code></td>
+<td class="ln">101</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_registry_descripti<wbr>on</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">87</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_registry_button</span><span class="sf11b2">;</span></code></td>
+<td class="ln">102</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_registry_button</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">88</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_registry_restricte<wbr>d_info</span><span class="sf11b2">;</span></code></td>
+<td class="ln">103</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_registry_restricte<wbr>d_info</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">89</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_co<wbr>pilot_instructions_desc</span><span class="sf11b2">;</span></code></td>
+<td class="ln">104</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_co<wbr>pilot_instructions_desc</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">90</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_co<wbr>pilot_instructions_note</span><span class="sf11b2">;</span></code></td>
+<td class="ln">105</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_co<wbr>pilot_instructions_note</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">91</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_wo<wbr>rkspace</span><span class="sf11b2">;</span></code></td>
+<td class="ln">106</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_wo<wbr>rkspace</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">92</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_wo<wbr>rkspace_enable</span><span class="sf11b2">;</span></code></td>
+<td class="ln">107</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_wo<wbr>rkspace_enable</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">93</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject</span><span class="sf11b2">;</span></code></td>
+<td class="ln">108</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">94</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_intro</span><span class="sf11b2">;</span></code></td>
+<td class="ln">109</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_intro</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">95</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_table_projectName</span><span class="sf11b2">;</span></code></td>
+<td class="ln">110</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_table_projectName</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">96</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_table_fileLocation</span><span class="sf11b2">;</span></code></td>
+<td class="ln">111</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_table_fileLocation</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">97</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_table_editButton</span><span class="sf11b2">;</span></code></td>
+<td class="ln">112</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_table_editButton</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">98</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_table_note</span><span class="sf11b2">;</span></code></td>
+<td class="ln">113</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_table_note</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">99</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_editDialog_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">114</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_editDialog_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">100</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_editDialog_message</span><span class="sf11b2">;</span></code></td>
+<td class="ln">115</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_editDialog_message</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">101</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_editDialog_button_close</span><span class="sf11b2">;</span></code></td>
+<td class="ln">116</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_editDialog_button_close</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">102</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_editDialog_button_stay</span><span class="sf11b2">;</span></code></td>
+<td class="ln">117</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_editDialog_button_stay</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">103</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_file_save_reminder_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">118</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_file_save_reminder_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">104</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_file_save_reminder_desc</span><span class="sf11b2">;</span></code></td>
+<td class="ln">119</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_pr<wbr>oject_file_save_reminder_desc</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">105</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_gi<wbr>t_commit</span><span class="sf11b2">;</span></code></td>
+<td class="ln">120</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_gi<wbr>t_commit</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">106</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_gi<wbr>t_commit_desc</span><span class="sf11b2">;</span></code></td>
+<td class="ln">121</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_gi<wbr>t_commit_desc</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">107</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_gi<wbr>t_commit_note</span><span class="sf11b2">;</span></code></td>
+<td class="ln">122</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_gi<wbr>t_commit_note</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">108</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_ch<wbr>at_load_scope_label</span><span class="sf11b2">;</span></code></td>
+<td class="ln">123</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_ch<wbr>at_load_scope_label</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">109</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_ch<wbr>at_load_scope_all</span><span class="sf11b2">;</span></code></td>
+<td class="ln">124</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_ch<wbr>at_load_scope_all</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">110</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_ch<wbr>at_load_scope_referenced</span><span class="sf11b2">;</span></code></td>
+<td class="ln">125</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_ch<wbr>at_load_scope_referenced</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">111</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_ch<wbr>at_load_scope_combo_tooltip</span><span class="sf11b2">;</span></code></td>
+<td class="ln">126</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_custom_instructions_ch<wbr>at_load_scope_combo_tooltip</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">112</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_note_prefix</span><span class="sf11b2">;</span></code></td>
+<td class="ln">127</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_note_prefix</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">113</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_note_content</span><span class="sf11b2">;</span></code></td>
+<td class="ln">128</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_note_content</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">114</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">129</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">115</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">// CustomModesPreferencePage</span></code></td>
+<td class="ln">130</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">// CustomModesPreferencePage</span></code></td>
+</tr>
+<tr>
+<td class="ln">116</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_page_description</span><span class="sf11b2">;</span></code></td>
+<td class="ln">131</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_page_description</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">117</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_table_column_modeName</span><span class="sf11b2">;</span></code></td>
+<td class="ln">132</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_table_column_modeName</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">118</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_table_column_workspace</span><span class="sf11b2">;</span></code></td>
+<td class="ln">133</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_table_column_workspace</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">119</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_table_column_description</span><span class="sf11b2">;</span></code></td>
+<td class="ln">134</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_table_column_description</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">120</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_button_add</span><span class="sf11b2">;</span></code></td>
+<td class="ln">135</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_button_add</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">121</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_button_edit</span><span class="sf11b2">;</span></code></td>
+<td class="ln">136</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_button_edit</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">122</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_button_delete</span><span class="sf11b2">;</span></code></td>
+<td class="ln">137</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_button_delete</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">123</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_info_label</span><span class="sf11b2">;</span></code></td>
+<td class="ln">138</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_info_label</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">124</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_noWorkspaceFolder_tit<wbr>le</span><span class="sf11b2">;</span></code></td>
+<td class="ln">139</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_noWorkspaceFolder_tit<wbr>le</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">125</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_noWorkspaceFolder_mes<wbr>sage</span><span class="sf11b2">;</span></code></td>
+<td class="ln">140</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_noWorkspaceFolder_mes<wbr>sage</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">126</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_createMode_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">141</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_createMode_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">127</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_modeName_label</span><span class="sf11b2">;</span></code></td>
+<td class="ln">142</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_modeName_label</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">128</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_workspaceFolder_labe<wbr>l</span><span class="sf11b2">;</span></code></td>
+<td class="ln">143</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_workspaceFolder_labe<wbr>l</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">129</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_error_emptyName_titl<wbr>e</span><span class="sf11b2">;</span></code></td>
+<td class="ln">144</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_error_emptyName_titl<wbr>e</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">130</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_error_emptyName_mess<wbr>age</span><span class="sf11b2">;</span></code></td>
+<td class="ln">145</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_error_emptyName_mess<wbr>age</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">131</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_error_invalidName_ti<wbr>tle</span><span class="sf11b2">;</span></code></td>
+<td class="ln">146</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_error_invalidName_ti<wbr>tle</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">132</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_error_invalidName_me<wbr>ssage</span><span class="sf11b2">;</span></code></td>
+<td class="ln">147</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_error_invalidName_me<wbr>ssage</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">133</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_error_noFolder_title<wbr></span><span class="sf11b2">;</span></code></td>
+<td class="ln">148</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_error_noFolder_title<wbr></span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">134</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_error_noFolder_messa<wbr>ge</span><span class="sf11b2">;</span></code></td>
+<td class="ln">149</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_dialog_error_noFolder_messa<wbr>ge</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">135</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_createFailed_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">150</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_createFailed_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">136</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_createFailed_message</span><span class="sf11b2">;<wbr></span></code></td>
+<td class="ln">151</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_createFailed_message</span><span class="sf11b2">;<wbr></span></code></td>
+</tr>
+<tr>
+<td class="ln">137</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_fileNotFound_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">152</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_fileNotFound_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">138</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_fileNotFound_message</span><span class="sf11b2">;<wbr></span></code></td>
+<td class="ln">153</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_fileNotFound_message</span><span class="sf11b2">;<wbr></span></code></td>
+</tr>
+<tr>
+<td class="ln">139</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_openFailed_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">154</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_openFailed_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">140</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_openFailed_message</span><span class="sf11b2">;</span></code></td>
+<td class="ln">155</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_openFailed_message</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">141</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_delete_confirm_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">156</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_delete_confirm_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">142</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_delete_confirm_message</span><span class="sf11b2">;</span></code></td>
+<td class="ln">157</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_delete_confirm_message</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">143</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_deleteFailed_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">158</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_deleteFailed_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">144</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_deleteFailed_message</span><span class="sf11b2">;<wbr></span></code></td>
+<td class="ln">159</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">customModes_error_deleteFailed_message</span><span class="sf11b2">;<wbr></span></code></td>
+</tr>
+<tr>
+<td class="ln">145</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">160</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">146</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">//Agent Max Requests</span></code></td>
+<td class="ln">161</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">//Agent Max Requests</span></code></td>
+</tr>
+<tr>
+<td class="ln">147</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_agent_max_requests</span><span class="sf11b2">;</span></code></td>
+<td class="ln">162</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_agent_max_requests</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">148</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_agent_max_requests_des<wbr>c</span><span class="sf11b2">;</span></code></td>
+<td class="ln">163</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_agent_max_requests_des<wbr>c</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">149</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_agent_max_requests_val<wbr>idation_error</span><span class="sf11b2">;</span></code></td>
+<td class="ln">164</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_agent_max_requests_val<wbr>idation_error</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">150</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">165</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">151</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">// Skills</span></code></td>
+<td class="ln">166</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">// Skills</span></code></td>
+</tr>
+<tr>
+<td class="ln">152</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_skills_enabled</span><span class="sf11b2">;</span></code></td>
+<td class="ln">167</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_skills_enabled</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">153</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_skills_enabled_note_co<wbr>ntent</span><span class="sf11b2">;</span></code></td>
+<td class="ln">168</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_skills_enabled_note_co<wbr>ntent</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">154</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">169</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">155</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">setting_managed_by_organization</span><span class="sf11b2">;</span></code></td>
+<td class="ln">170</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">setting_managed_by_organization</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">156</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">setting_disabled_by_organization</span><span class="sf11b2">;</span></code></td>
+<td class="ln">171</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">setting_disabled_by_organization</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">157</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">172</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">158</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">// Shared Auto-Approve strings</span></code></td>
+<td class="ln">173</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">// Shared Auto-Approve strings</span></code></td>
+</tr>
+<tr>
+<td class="ln">159</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_disabled_<wbr>by_organization</span><span class="sf11b2">;</span></code></td>
+<td class="ln">174</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_disabled_<wbr>by_organization</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">160</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_column_st<wbr>atus</span><span class="sf11b2">;</span></code></td>
+<td class="ln">175</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_column_st<wbr>atus</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">161</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_add</span><span class="sf11b2">;</span></code></td>
+<td class="ln">176</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_add</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">162</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_remove</span><span class="sf11b2">;</span></code></td>
+<td class="ln">177</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_remove</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">163</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_reset</span><span class="sf11b2">;</span></code></td>
+<td class="ln">178</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_reset</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">164</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_reset_mes<wbr>sage</span><span class="sf11b2">;</span></code></td>
+<td class="ln">179</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_reset_mes<wbr>sage</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">165</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_allow</span><span class="sf11b2">;</span></code></td>
+<td class="ln">180</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_allow</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">166</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_deny</span><span class="sf11b2">;</span></code></td>
+<td class="ln">181</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_deny</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">167</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_add_dialo<wbr>g_approve</span><span class="sf11b2">;</span></code></td>
+<td class="ln">182</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_auto_approve_add_dialo<wbr>g_approve</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">168</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">183</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">169</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">// Terminal Auto-Approve</span></code></td>
+<td class="ln">184</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">// Terminal Auto-Approve</span></code></td>
+</tr>
+<tr>
+<td class="ln">170</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">185</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">171</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>description</span><span class="sf11b2">;</span></code></td>
+<td class="ln">186</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>description</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">172</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>column_command</span><span class="sf11b2">;</span></code></td>
+<td class="ln">187</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>column_command</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">173</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>reset_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">188</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>reset_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">174</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>unmatched</span><span class="sf11b2">;</span></code></td>
+<td class="ln">189</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>unmatched</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">175</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>unmatched_note</span><span class="sf11b2">;</span></code></td>
+<td class="ln">190</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>unmatched_note</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">176</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>add_dialog_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">191</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>add_dialog_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">177</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>add_dialog_message</span><span class="sf11b2">;</span></code></td>
+<td class="ln">192</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>add_dialog_message</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">178</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>add_dialog_command</span><span class="sf11b2">;</span></code></td>
+<td class="ln">193</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>add_dialog_command</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">179</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>add_dialog_placeholder</span><span class="sf11b2">;</span></code></td>
+<td class="ln">194</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_terminal_auto_approve_<wbr>add_dialog_placeholder</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">180</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">195</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">181</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">// File Operations Auto Approve</span></code></td>
+<td class="ln">196</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">// File Operations Auto Approve</span></code></td>
+</tr>
+<tr>
+<td class="ln">182</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_t<wbr>itle</span><span class="sf11b2">;</span></code></td>
+<td class="ln">197</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_t<wbr>itle</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">183</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_d<wbr>escription</span><span class="sf11b2">;</span></code></td>
+<td class="ln">198</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_d<wbr>escription</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">184</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_c<wbr>olumn_pattern</span><span class="sf11b2">;</span></code></td>
+<td class="ln">199</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_c<wbr>olumn_pattern</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">185</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_c<wbr>olumn_description</span><span class="sf11b2">;</span></code></td>
+<td class="ln">200</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_c<wbr>olumn_description</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">186</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_r<wbr>eset_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">201</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_r<wbr>eset_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">187</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_u<wbr>nmatched</span><span class="sf11b2">;</span></code></td>
+<td class="ln">202</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_u<wbr>nmatched</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">188</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_u<wbr>nmatched_note</span><span class="sf11b2">;</span></code></td>
+<td class="ln">203</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_u<wbr>nmatched_note</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">189</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_a<wbr>dd_dialog_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">204</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_a<wbr>dd_dialog_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">190</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_a<wbr>dd_dialog_message</span><span class="sf11b2">;</span></code></td>
+<td class="ln">205</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_a<wbr>dd_dialog_message</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">191</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_a<wbr>dd_dialog_pattern</span><span class="sf11b2">;</span></code></td>
+<td class="ln">206</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_a<wbr>dd_dialog_pattern</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">192</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_a<wbr>dd_dialog_description</span><span class="sf11b2">;</span></code></td>
+<td class="ln">207</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_a<wbr>dd_dialog_description</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">193</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_a<wbr>dd_dialog_pattern_hint</span><span class="sf11b2">;</span></code></td>
+<td class="ln">208</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_a<wbr>dd_dialog_pattern_hint</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">194</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_a<wbr>dd_dialog_description_hint</span><span class="sf11b2">;</span></code></td>
+<td class="ln">209</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_a<wbr>dd_dialog_description_hint</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">195</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_d<wbr>uplicate_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">210</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_d<wbr>uplicate_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">196</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_d<wbr>uplicate_message</span><span class="sf11b2">;</span></code></td>
+<td class="ln">211</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_file_op_auto_approve_d<wbr>uplicate_message</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">197</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">212</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">198</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">// MCP Auto-Approve</span></code></td>
+<td class="ln">213</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">// MCP Auto-Approve</span></code></td>
+</tr>
+<tr>
+<td class="ln">199</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_auto_approve_title<wbr></span><span class="sf11b2">;</span></code></td>
+<td class="ln">214</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_auto_approve_title<wbr></span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">200</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_auto_approve_trust<wbr>_annotations</span><span class="sf11b2">;</span></code></td>
+<td class="ln">215</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_auto_approve_trust<wbr>_annotations</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">201</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_auto_approve_trust<wbr>_annotations_note</span><span class="sf11b2">;</span></code></td>
+<td class="ln">216</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_auto_approve_trust<wbr>_annotations_note</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">202</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_auto_approve_serve<wbr>r_tools_label</span><span class="sf11b2">;</span></code></td>
+<td class="ln">217</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_mcp_auto_approve_serve<wbr>r_tools_label</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">203</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">218</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">204</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">// Global Auto-Approve</span></code></td>
+<td class="ln">219</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf9b2">// Global Auto-Approve</span></code></td>
+</tr>
+<tr>
+<td class="ln">205</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_global_auto_approve_ti<wbr>tle</span><span class="sf11b2">;</span></code></td>
+<td class="ln">220</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_global_auto_approve_ti<wbr>tle</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">206</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_global_auto_approve_la<wbr>bel</span><span class="sf11b2">;</span></code></td>
+<td class="ln">221</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_global_auto_approve_la<wbr>bel</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">207</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_global_auto_approve_co<wbr>nfirm_title</span><span class="sf11b2">;</span></code></td>
+<td class="ln">222</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_global_auto_approve_co<wbr>nfirm_title</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">208</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_global_auto_approve_co<wbr>nfirm_message</span><span class="sf11b2">;</span></code></td>
+<td class="ln">223</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_global_auto_approve_co<wbr>nfirm_message</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">209</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_global_auto_approve_co<wbr>nfirm_button</span><span class="sf11b2">;</span></code></td>
+<td class="ln">224</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_global_auto_approve_co<wbr>nfirm_button</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">210</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_global_auto_approve_ca<wbr>ncel_button</span><span class="sf11b2">;</span></code></td>
+<td class="ln">225</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">public</span><span class="sf11b2">&nbsp;</span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">String</span><span class="sf11b2">&nbsp;</span><span class="sf3b2">preferences_page_global_auto_approve_ca<wbr>ncel_button</span><span class="sf11b2">;</span></code></td>
+</tr>
+<tr>
+<td class="ln">211</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">226</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">212</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;{</span></code></td>
+<td class="ln">227</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">static</span><span class="sf11b2">&nbsp;{</span></code></td>
+</tr>
+<tr>
+<td class="ln">213</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf9b2">// initialize resource bundle</span></code></td>
+<td class="ln">228</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf9b2">// initialize resource bundle</span></code></td>
+</tr>
+<tr>
+<td class="ln">214</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">NLS</span><span class="sf11b2">.</span><span class="sf8b2">initializeMessages</span><span class="sf11b2">(</span><span class="sf3b2">BUNDLE_NAME</span><span class="sf11b2">, </span><span class="sf3b2">Messages</span><span class="sf11b2">.</span><span class="sf7b2">class</span><span class="sf11b2">);</span></code></td>
+<td class="ln">229</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; &nbsp; </span><span class="sf3b2">NLS</span><span class="sf11b2">.</span><span class="sf8b2">initializeMessages</span><span class="sf11b2">(</span><span class="sf3b2">BUNDLE_NAME</span><span class="sf11b2">, </span><span class="sf3b2">Messages</span><span class="sf11b2">.</span><span class="sf7b2">class</span><span class="sf11b2">);</span></code></td>
+</tr>
+<tr>
+<td class="ln">215</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; }</span></code></td>
+<td class="ln">230</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">216</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">231</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+<tr>
+<td class="ln">217</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">private</span><span class="sf11b2">&nbsp;</span><span class="sf8b2">Messages</span><span class="sf11b2">() {</span></code></td>
+<td class="ln">232</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; </span><span class="sf7b2">private</span><span class="sf11b2">&nbsp;</span><span class="sf8b2">Messages</span><span class="sf11b2">() {</span></code></td>
+</tr>
+<tr>
+<td class="ln">218</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; }</span></code></td>
+<td class="ln">233</td><td class="sf3b2"><code><span class="sf11b2">&nbsp; }</span></code></td>
+</tr>
+<tr>
+<td class="ln">219</td><td class="sf3b2"><code><span class="sf11b2">}</span></code></td>
+<td class="ln">234</td><td class="sf3b2"><code><span class="sf11b2">}</span></code></td>
+</tr>
+<tr>
+<td class="ln">220</td><td class="sf3b2"><code>&nbsp;</code></td>
+<td class="ln">235</td><td class="sf3b2"><code>&nbsp;</code></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

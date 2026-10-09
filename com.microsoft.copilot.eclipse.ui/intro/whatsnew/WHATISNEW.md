@@ -7,6 +7,11 @@ You can now connect Ollama as a custom Bring Your Own Key (BYOK) model provider 
 
 ---
 
+### Custom OpenAI-Compatible Providers
+In addition to the built-in providers, you can now register your own model providers that expose an OpenAI-compatible API — for example LM Studio, vLLM, LocalAI or a llama.cpp server. Use **Add Provider...** on the Model Management preference page to give the provider a name, its endpoint URL, an optional API key and the API type, then add the models you want to use. They appear in the chat model picker like any other custom model.
+
+---
+
 ### Agent Skills Are Generally Available
 Agent Skills are now generally available. Skills give Copilot reusable instructions and resources for specialized tasks, helping Agent Mode follow consistent workflows for your project.
 

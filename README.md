@@ -1,5 +1,30 @@
 # GitHub Copilot for Eclipse
 
+## v0.21.0 (build 20261009)
+
+因微软原版插件对本地大模型的支持不是太友好，仅仅ollama可用，而ollama又很鸡肋，故为支持更多本地大模型的使用，特此在微软开源基础上扩展了本地支持。
+- **00_Diff** - 本地变更对应的代码变更差分
+- **10_eclispe_install_zip** - 【Help → Install New Software → Add → **Archive**】的方式安装 → 选这个 zip
+- **20_eclipse_dropins_zip** - 解压后直接丢进 dropins 下的方式装 → 选这个 zip
+
+本地大模型的添加方式：
+- 登录 GitHub → Preferences → GitHub Copilot → Model Management → **Add Provider...** 添加你的本地 OpenAI 兼容端点
+- 选择你刚添加的本地 OpenAI 兼容端点后→ **Add Model...** 添加你的本地大模型信息
+
+####
+Because Microsoft's original plugin has limited support for local LLMs — only Ollama is supported, and Ollama is quite limited in usefulness — this project extends the Microsoft open-source plugin to support more local LLMs.
+
+- **00_Diff** - Code diff for the local changes
+- **10_eclipse_install_zip** - Install via **Help → Install New Software → Add → Archive** → choose this zip
+- **20_eclipse_dropins_zip** - Install by extracting the zip directly into the `dropins` folder → choose this zip
+
+How to add a local LLM:
+- Sign in to GitHub → Preferences → GitHub Copilot → Model Management → **Add Provider...** and add your local OpenAI-compatible endpoint
+- After selecting the local OpenAI-compatible endpoint you just added, click **Add Model...** and add your local LLM information
+
+##
+
+## GitHub Copilot for Eclipse
 GitHub Copilot for Eclipse brings AI-assisted coding to the Eclipse IDE with these core capabilities:
 
 - **Code completions** for in-editor suggestions from code context or natural-language comments.

@@ -70,8 +70,11 @@ import com.microsoft.copilot.eclipse.core.lsp.protocol.UpdateConversationToolsSt
 import com.microsoft.copilot.eclipse.core.lsp.protocol.UpdateMcpToolsStatusParams;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.WorkspaceFoldersParams;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokApiKey;
+import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokCustomProviderConfig;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokDeleteProviderConfigParams;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListApiKeyResponse;
+import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListCustomProviderConfigParams;
+import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListCustomProviderConfigResponse;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListModelParams;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListModelResponse;
 import com.microsoft.copilot.eclipse.core.lsp.protocol.byok.ByokListProviderConfigParams;
@@ -623,6 +626,27 @@ public class CopilotLanguageServerConnection {
       ByokListProviderConfigParams params) {
     Function<LanguageServer, CompletableFuture<ByokListProviderConfigResponse>> fn = server -> {
       return ((CopilotLanguageServer) server).listByokProviderConfigs(params);
+    };
+    return this.languageServerWrapper.execute(fn);
+  }
+
+  /**
+   * Save a custom (user-named) BYOK endpoint provider configuration.
+   */
+  public CompletableFuture<ByokStatusResponse> saveByokCustomProviderConfig(ByokCustomProviderConfig providerConfig) {
+    Function<LanguageServer, CompletableFuture<ByokStatusResponse>> fn = server -> {
+      return ((CopilotLanguageServer) server).saveByokCustomProviderConfig(providerConfig);
+    };
+    return this.languageServerWrapper.execute(fn);
+  }
+
+  /**
+   * List custom BYOK endpoint provider configurations.
+   */
+  public CompletableFuture<ByokListCustomProviderConfigResponse> listByokCustomProviderConfigs(
+      ByokListCustomProviderConfigParams params) {
+    Function<LanguageServer, CompletableFuture<ByokListCustomProviderConfigResponse>> fn = server -> {
+      return ((CopilotLanguageServer) server).listByokCustomProviderConfigs(params);
     };
     return this.languageServerWrapper.execute(fn);
   }

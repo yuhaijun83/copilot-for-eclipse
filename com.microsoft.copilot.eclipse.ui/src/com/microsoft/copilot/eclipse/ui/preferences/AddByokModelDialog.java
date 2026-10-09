@@ -47,14 +47,26 @@ public class AddByokModelDialog extends TrayDialog {
   private Image eyeClosedImg;
 
   private final String providerName;
+  private final String defaultDeploymentUrl;
   private final Consumer<ByokModel> onSave;
 
   /**
    * Create the dialog.
    */
   public AddByokModelDialog(Shell parentShell, String providerName, Consumer<ByokModel> onSave) {
+    this(parentShell, providerName, null, onSave);
+  }
+
+  /**
+   * Create the dialog.
+   *
+   * @param defaultDeploymentUrl pre-filled deployment URL for custom endpoint providers, or {@code null}
+   */
+  public AddByokModelDialog(Shell parentShell, String providerName, String defaultDeploymentUrl,
+      Consumer<ByokModel> onSave) {
     super(parentShell);
     this.providerName = providerName;
+    this.defaultDeploymentUrl = defaultDeploymentUrl;
     this.onSave = onSave;
     setShellStyle(getShellStyle() | SWT.RESIZE);
   }
@@ -88,6 +100,8 @@ public class AddByokModelDialog extends TrayDialog {
     // Provider-specific fields
     if (providerName.equals(ByokModelProvider.AZURE.getDisplayName())) {
       createAzureSpecificFields(container);
+    } else if (ByokModelProvider.isCustomProvider(providerName)) {
+      createCustomProviderFields(container);
     }
 
     // Display Name (optional for all providers)
@@ -115,8 +129,7 @@ public class AddByokModelDialog extends TrayDialog {
     return container;
   }
 
-  private void createAzureSpecificFields(Composite container) {
-    // Deployment URL *
+  private void createAzureSpecificFields(Composite container) {    // Deployment URL *
     new Label(container, SWT.NONE).setText(Messages.preferences_page_byok_addModel_deploymentUrl);
     deploymentUrlText = new Text(container, SWT.BORDER);
     deploymentUrlText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -144,6 +157,19 @@ public class AddByokModelDialog extends TrayDialog {
     toggleEyeBtn.setImage(eyeClosedImg);
     toggleEyeBtn.setLayoutData(new GridData(SWT.END, SWT.CENTER, false, false));
     toggleEyeBtn.addListener(SWT.Selection, e -> togglePasswordVisibility());
+  }
+
+  /**
+   * Custom endpoint providers require a per-model deployment URL; the API key is stored at provider level instead.
+   */
+  private void createCustomProviderFields(Composite container) {
+    new Label(container, SWT.NONE).setText(Messages.preferences_page_byok_addModel_deploymentUrl);
+    deploymentUrlText = new Text(container, SWT.BORDER);
+    deploymentUrlText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+    if (StringUtils.isNotBlank(defaultDeploymentUrl)) {
+      deploymentUrlText.setText(defaultDeploymentUrl);
+    }
+    deploymentUrlText.addModifyListener(this::onFieldChanged);
   }
 
   /**
@@ -190,6 +216,11 @@ public class AddByokModelDialog extends TrayDialog {
       }
     }
 
+    if (ByokModelProvider.isCustomProvider(providerName)
+        && (deploymentUrlText == null || StringUtils.isBlank(deploymentUrlText.getText()))) {
+      return false;
+    }
+
     return true;
   }
 
@@ -228,6 +259,8 @@ public class AddByokModelDialog extends TrayDialog {
         && apiKeyText != null) {
       model.setDeploymentUrl(deploymentUrlText.getText().trim());
       model.setApiKey(apiKeyText.getText().trim());
+    } else if (ByokModelProvider.isCustomProvider(providerName) && deploymentUrlText != null) {
+      model.setDeploymentUrl(deploymentUrlText.getText().trim());
     }
 
     // Set capabilities
