@@ -2,28 +2,71 @@
 
 ## v0.21.0 (build 20261009)
 
+#### 【中文】
 因微软原版插件对本地大模型的支持不是太友好，仅仅ollama可用，而ollama又很鸡肋，故为支持更多本地大模型的使用，特此在微软开源基础上扩展了本地支持。
 - **00_Diff** - 本地变更对应的代码变更差分
-- **Release/com.microsoft.copilot.eclipse.repository-0.21.0-20261009-YHJ(install).zip** - 【Help → Install New Software → Add → **Archive**】的方式安装 → 选这个 zip
-- **Release/com.microsoft.copilot.eclipse.repository-0.21.0-20261009-YHJ(dropins).zip** - 解压后直接丢进 dropins 下的方式装 → 选这个 zip
 
+####
 本地大模型的添加方式：
 - 登录 GitHub → Preferences → GitHub Copilot → Model Management → **Add Provider...** 添加你的本地 OpenAI 兼容端点
 - 选择你刚添加的本地 OpenAI 兼容端点后→ **Add Model...** 添加你的本地大模型信息
 
 ####
+**手动编译完整步骤：**
+
+```powershell or cmd
+# 1. 拉取语言服务器二进制（必须，约1-2分钟；-f 不能省，
+#    因为 package.json 声明了 5 个平台的包，不加 -f 会报 EBADPLATFORM）
+cd com.microsoft.copilot.eclipse.core\copilot-agent
+npm i -f
+
+# 2. 回根目录完整打包（约8分钟）
+cd ..\..
+.\mvnw.cmd clean package
+```
+
+产物：
+- **可安装 zip**：
+  `com.microsoft.copilot.eclipse.repository\target\com.microsoft.copilot.eclipse.repository-0.21.0-SNAPSHOT.zip`
+  （~500MB，含 5 平台语言服务器）
+- Eclipse 里 Install New Software → Add → Archive 选这个 zip 即可
+
+**环境要求**：JDK 17+、Node.js、Maven 用自带的 `mvnw.cmd` 即可。
+- --
+#### 【English】
 Because Microsoft's original plugin has limited support for local LLMs — only Ollama is supported, and Ollama is quite limited in usefulness — this project extends the Microsoft open-source plugin to support more local LLMs.
-
 - **00_Diff** - Code diff for the local changes
-- **Release/com.microsoft.copilot.eclipse.repository-0.21.0-20261009-YHJ(install).zip** - Install via **Help → Install New Software → Add → Archive** → choose this zip
-- **Release/com.microsoft.copilot.eclipse.repository-0.21.0-20261009-YHJ(dropins).zip** - Install by extracting the zip directly into the `dropins` folder → choose this zip
 
+####
 How to add a local LLM:
 - Sign in to GitHub → Preferences → GitHub Copilot → Model Management → **Add Provider...** and add your local OpenAI-compatible endpoint
 - After selecting the local OpenAI-compatible endpoint you just added, click **Add Model...** and add your local LLM information
 
-##
+####
+**Full manual build steps:**
 
+```powershell or cmd
+# 1. Fetch the language server binaries (required, ~1-2 minutes; do not omit -f,
+#    because package.json declares packages for 5 platforms; without -f it fails with EBADPLATFORM)
+cd com.microsoft.copilot.eclipse.core\copilot-agent
+npm i -f
+
+# 2. Go back to the repo root and do a full package build (~8 minutes)
+cd ..\..
+.\mvnw.cmd clean package
+```
+
+Artifacts:
+
+- **Installable zip**:
+  `com.microsoft.copilot.eclipse.repository\target\com.microsoft.copilot.eclipse.repository-0.21.0-SNAPSHOT.zip`
+  (~500MB, includes language servers for 5 platforms)
+- In Eclipse, use Install New Software → Add → Archive and select this zip
+
+**Requirements**: JDK 17+, Node.js, and Maven via the bundled `mvnw.cmd`.
+
+
+=============================================================
 ## GitHub Copilot for Eclipse
 GitHub Copilot for Eclipse brings AI-assisted coding to the Eclipse IDE with these core capabilities:
 
